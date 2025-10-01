@@ -21,6 +21,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
+.metadata
 
 ### NetBeans ###
 /nbproject/private/
@@ -37,3 +38,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+###
+.smarttomcat/
