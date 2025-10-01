@@ -13,7 +13,7 @@ public class DBConnection {
     private final String JDBC_URL = "jdbc:mysql://localhost:3306/cookrep?serverTimezone=Asia/Seoul";
 
     // DB 접속
-    public void open() {
+    public Connection open() {
         try {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(JDBC_URL, "root", "1111");
@@ -28,6 +28,7 @@ public class DBConnection {
             System.err.println("알 수 없는 오류 발생: " + e.getMessage());
             e.printStackTrace();
         }
+        return con;
     }
 
     // DB 종료

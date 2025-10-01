@@ -4,9 +4,14 @@ CREATE TABLE User (
                       user_id VARCHAR(30) PRIMARY KEY,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                      name VARCHAR(20),
+                      nickname VARCHAR(20),
+                      first_name VARCHAR(20),
+                      last_name VARCHAR(20),
+                      country VARCHAR(50),
+                      city  VARCHAR(50),
                       email VARCHAR(100),
-                      password VARCHAR(20)
+                      password VARCHAR(20),
+
 );
 
 -- 재료 테이블
@@ -32,7 +37,11 @@ CREATE TABLE Recipe (
                         title VARCHAR(100),
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        thumbnail_image_url VARCHAR(100),  -- S3 업로드 경로 (썸네일용 완성 이미지)
                         views INT DEFAULT 0,
+                        people_count INT DEFAULT 0,
+                        prep_time INT DEFAULT 0,
+                        cook_time INT DEFAULT 0,
                         `like` INT DEFAULT 0,
                         kcal INT,
                         FOREIGN KEY (user_id) REFERENCES User(user_id)
@@ -52,6 +61,7 @@ CREATE TABLE RecipeSteps (
 CREATE TABLE RecipeIngredient (
                                   recipe_id VARCHAR(20),
                                   ingredient_id INT,
+                                  count VARCHAR(20), -- 사용한 수량(단위랑 합쳐서 문자열)
                                   PRIMARY KEY (recipe_id, ingredient_id),
                                   FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id),
                                   FOREIGN KEY (ingredient_id) REFERENCES Ingredient(ingredient_id)
@@ -64,6 +74,7 @@ CREATE TABLE Comment (
                          recipe_id VARCHAR(20) NOT NULL,
                          contents TEXT NOT NULL,                      -- 긴 글은 TEXT
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                          FOREIGN KEY (user_id) REFERENCES User(user_id),
                          FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id)
 );
