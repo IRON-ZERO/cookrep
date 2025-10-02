@@ -7,57 +7,62 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class RecipeDAO {
 
-    private DBConnection db;
+    private final DBConnection db = new DBConnection();
 
-    public RecipeDAO(){
-        db = new DBConnection();
-    }
+    // Recipe와 Step을 함께 DB에 저장
+    public void insertRecipeWithSteps(RecipeDTO recipe) throws SQLException {
+        String recipeSql = "INSERT INTO Recipe(recipe_id, user_id, title, thumbnail_image_url, views, people_count, prep_time, cook_time, `like`, kcal) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String stepSql = "INSERT INTO RecipeSteps(recipe_id, step_order, contents, image_url) VALUES (?, ?, ?, ?)";
 
-    public String getLastRecipeId(String datePrefix){
-//        오늘 날짜(prefix)로 시작하는 recipe_id를 조회
-        String sql = "select recipe_id from Recipe where recipe_id like ? order by recipe_id desc limit 1";
+        try (Connection con = db.open()) {
+            con.setAutoCommit(false); // 트랜잭션 시작
 
-        try (Connection con = db.open();
-             PreparedStatement pstmt = con.prepareStatement(sql)){
+            String userId = "u001";
+            // 1️⃣ Recipe 테이블 저장
+            try (PreparedStatement recipeStmt = con.prepareStatement(recipeSql)) {
+                recipeStmt.setString(1, recipe.getRecipe_id());
+                recipeStmt.setString(2, userId); // Session에서 가져온 userId
+                recipeStmt.setString(3, recipe.getTitle());
+                recipeStmt.setString(4, recipe.getThumbnail_image_url()); // 메인 이미지 URL
+                recipeStmt.setInt(5, recipe.getViews());
+                recipeStmt.setInt(6, recipe.getPeople_count());
+                recipeStmt.setInt(7, recipe.getPrep_time());
+                recipeStmt.setInt(8, recipe.getCook_time());
+                recipeStmt.setInt(9, recipe.getLike());
+                recipeStmt.setInt(10, recipe.getKcal());
 
-            pstmt.setString(1, datePrefix + "%");
-            ResultSet rs = pstmt.executeQuery();
-            if(rs.next()){
-                return rs.getString("recipe_id");
+                recipeStmt.executeUpdate();
             }
+
+            // 2️⃣ Step 테이블 저장
+            List<RecipeDTO.Step> steps = recipe.getSteps();
+            if (steps != null && !steps.isEmpty()) {
+                try (PreparedStatement stepStmt = con.prepareStatement(stepSql)) {
+                    for (RecipeDTO.Step step : steps) {
+                        stepStmt.setString(1, recipe.getRecipe_id());
+                        stepStmt.setInt(2, step.getStepOrder()); // 수정: stepOrder
+                        stepStmt.setString(3, step.getContents()); // 수정: contents
+                        stepStmt.setString(4, step.getImageUrl()); // 수정: imageUrl
+                        stepStmt.addBatch();
+                    }
+                    stepStmt.executeBatch();
+                }
+            }
+
+            con.commit(); // 트랜잭션 커밋
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        return null; //null값이면 오늘 첫 레시피인 것
-    }
-
-    // Recipe 테이블에 삽입
-    public void insertRecipe(RecipeDTO recipe) {
-        String sql = "INSERT INTO Recipe " +
-                "(recipe_id, user_id, title, created_at, updated_at, thumbnail_image_url, views, people_count, prep_time, cook_time, `like`, kcal) " +
-                "VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (Connection con = db.open();
-             PreparedStatement pstmt = con.prepareStatement(sql)) {
-
-//            pstmt.setString(1, recipe.getRecipeId());
-//            pstmt.setString(2, recipe.getUserId());
-//            pstmt.setString(3, recipe.getTitle());
-//            pstmt.setString(4, recipe.getThumbnailImageUrl());
-//            pstmt.setInt(5, recipe.getViews());
-//            pstmt.setInt(6, recipe.getPeopleCount());
-//            pstmt.setInt(7, recipe.getPrepTime());
-//            pstmt.setInt(8, recipe.getCookTime());
-//            pstmt.setInt(9, recipe.getLikeCount());
-//            pstmt.setInt(10, recipe.getKcal());
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            throw e; // 호출한 쪽에서 rollback 처리 가능
         }
     }
+
+    //내 recipe 조회
+
 }
-

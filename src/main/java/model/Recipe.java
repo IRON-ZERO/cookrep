@@ -1,33 +1,42 @@
 package model;
 
 public class Recipe {
-   private int recipe_id;
-   private String created_at;
-   private String updated_at;
-
-   private User author;
-
-   private String title; //레시피 제목
-    private String description; //레시피 전체 설명
-   private String foodStyle;
-   private String level;
-   private int makingTime;
-
-   //단계별 레시피
-   private String stepName; //레시피 단계별 제목
-   private String imageURL; //레시피 단계별 이미지
-   private String contents; //레시피 단계별 설명
-
-    private String hasgTag;
+    private String recipe_id;   // 20251001_001
+    private String user_id;     // 작성자 ID (User FK)
+    private String title;       // 레시피 제목
+    private String created_at;
+    private String updated_at;
+    private String thumbnail_image_url; // 썸네일 S3 URL
     private int views;
+    private int people_count;
+    private int prep_time;
+    private int cook_time;
     private int like;
+    private int kcal;
 
-    public int getRecipe_id() {
+    // ===== Getter / Setter =====
+    public String getRecipe_id() {
         return recipe_id;
     }
 
-    public void setRecipe_id(int recipe_id) {
+    public void setRecipe_id(String recipe_id) {
         this.recipe_id = recipe_id;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getCreated_at() {
@@ -46,84 +55,12 @@ public class Recipe {
         this.updated_at = updated_at;
     }
 
-    public User getAuthor() {
-        return author;
+    public String getThumbnail_image_url() {
+        return thumbnail_image_url;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getFoodStyle() {
-        return foodStyle;
-    }
-
-    public void setFoodStyle(String foodStyle) {
-        this.foodStyle = foodStyle;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public int getMakingTime() {
-        return makingTime;
-    }
-
-    public void setMakingTime(int makingTime) {
-        this.makingTime = makingTime;
-    }
-
-    public String getStepName() {
-        return stepName;
-    }
-
-    public void setStepName(String stepName) {
-        this.stepName = stepName;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public String getHasgTag() {
-        return hasgTag;
-    }
-
-    public void setHasgTag(String hasgTag) {
-        this.hasgTag = hasgTag;
+    public void setThumbnail_image_url(String thumbnail_image_url) {
+        this.thumbnail_image_url = thumbnail_image_url;
     }
 
     public int getViews() {
@@ -134,11 +71,43 @@ public class Recipe {
         this.views = views;
     }
 
+    public int getPeople_count() {
+        return people_count;
+    }
+
+    public void setPeople_count(int people_count) {
+        this.people_count = people_count;
+    }
+
+    public int getPrep_time() {
+        return prep_time;
+    }
+
+    public void setPrep_time(int prep_time) {
+        this.prep_time = prep_time;
+    }
+
+    public int getCook_time() {
+        return cook_time;
+    }
+
+    public void setCook_time(int cook_time) {
+        this.cook_time = cook_time;
+    }
+
     public int getLike() {
         return like;
     }
 
     public void setLike(int like) {
         this.like = like;
+    }
+
+    public int getKcal() {
+        return kcal;
+    }
+
+    public void setKcal(int kcal) {
+        this.kcal = kcal;
     }
 }
