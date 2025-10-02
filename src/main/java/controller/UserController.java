@@ -2,6 +2,7 @@ package controller;
 
 import dto.user.UserDTO;
 import exception.UserNotFoundException;
+import org.apache.commons.beanutils.BeanUtils;
 import service.UserService;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 @WebServlet("/mypage")
 public class UserController extends HttpServlet {
@@ -21,6 +23,8 @@ public class UserController extends HttpServlet {
             case "getprofile" :
                 view += getProfile(req,resp);
                 break;
+            case "updateprofile" :
+                view += updateProfile(req,resp);
         }
         req.getRequestDispatcher(view).forward(req, resp);
     }
@@ -36,5 +40,18 @@ public class UserController extends HttpServlet {
             req.setAttribute("error",e);
             return "/errortest.jsp";
         }
+    }
+    private String updateProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        UserService userService = new UserService();
+        UserDTO userDTO = new UserDTO();
+        try {
+            BeanUtils.populate(userDTO,req.getParameterMap());
+            userService.updateProfile(userDTO);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        return "/mypagetest.jsp";
     }
 }
