@@ -15,6 +15,15 @@
     <h3>메인 이미지</h3>
     <input type="file" id="mainImage" name="mainImage"><br><br>
 
+    <h3>인원 수</h3>
+    <input type="number" id="peopleCount" placeholder="예: 2"><br><br>
+
+    <h3>준비 시간 (분)</h3>
+    <input type="number" id="prepTime" placeholder="예: 30"><br><br>
+
+    <h3>조리 시간 (분)</h3>
+    <input type="number" id="cookTime" placeholder="예: 45"><br><br>
+
     <h3>조리 단계</h3>
     <div id="steps"></div>
     <button type="button" onclick="addStep()">+ 단계 추가</button><br><br>
@@ -86,8 +95,12 @@
         const recipeData = {
             userId,
             title: document.getElementById("recipeTitle").value,
+            peopleCount: parseInt(document.getElementById("peopleCount").value) || 0,
+            prepTime: parseInt(document.getElementById("prepTime").value) || 0,
+            cookTime: parseInt(document.getElementById("cookTime").value) || 0,
             steps: []
         };
+
 
         for (let i = 1; i <= stepCount; i++) {
             const content = document.getElementById(`stepContent${i}`).value;

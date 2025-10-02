@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 import javax.servlet.ServletException;
@@ -21,7 +23,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-// 서명된 url 반환해주는 컨트롤러
+// post시 서명된 url 반환해주는 컨트롤러
 @WebServlet("/recipe/s3/postrecipe")
 public class RecipeRegisterS3Controller extends HttpServlet {
 
@@ -103,4 +105,42 @@ public class RecipeRegisterS3Controller extends HttpServlet {
             e.printStackTrace();
         }
     }
-}
+
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        // 조회용 Presigned URL
+//        resp.setContentType("application/json;charset=UTF-8");
+//        try {
+//            String fileName = req.getParameter("fileName");
+//            if (fileName == null || fileName.isEmpty()) {
+//                resp.setStatus(400);
+//                resp.getWriter().write("{\"error\":\"fileName required\"}");
+//                return;
+//            }
+//
+//            GetObjectRequest getRequest = GetObjectRequest.builder()
+//                    .bucket(BUCKET_NAME)
+//                    .key(fileName)
+//                    .build();
+//
+//            GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+//                    .getObjectRequest(getRequest)
+//                    .signatureDuration(Duration.ofMinutes(10))
+//                    .build();
+//
+//            String presignedUrl = presigner.presignGetObject(presignRequest).url().toString();
+//            ObjectNode resultJson = objectMapper.createObjectNode();
+//            resultJson.put("fileName", fileName);
+//            resultJson.put("downloadUrl", presignedUrl);
+//
+//            resp.getWriter().write(objectMapper.writeValueAsString(resultJson));
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            resp.setStatus(500);
+//            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
+//        }
+//    }
+
+    }
+

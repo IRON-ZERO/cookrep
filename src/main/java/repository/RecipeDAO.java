@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class RecipeDAO {
             con.setAutoCommit(false); // 트랜잭션 시작
 
             String userId = "u001";
-            // 1️⃣ Recipe 테이블 저장
+            // Recipe 테이블 저장
             try (PreparedStatement recipeStmt = con.prepareStatement(recipeSql)) {
                 recipeStmt.setString(1, recipe.getRecipe_id());
                 recipeStmt.setString(2, userId); // Session에서 가져온 userId
@@ -41,7 +42,7 @@ public class RecipeDAO {
                 recipeStmt.executeUpdate();
             }
 
-            // 2️⃣ Step 테이블 저장
+            // Step 테이블 저장
             List<RecipeDTO.Step> steps = recipe.getSteps();
             if (steps != null && !steps.isEmpty()) {
                 try (PreparedStatement stepStmt = con.prepareStatement(stepSql)) {
@@ -63,6 +64,118 @@ public class RecipeDAO {
         }
     }
 
-    //내 recipe 조회
+    // 사용자 레시피 리스트 조회
+    public List<RecipeDTO> getRecipesByUser(String userId) throws SQLException {
+        List<RecipeDTO> list = new ArrayList<>();
+        String sql = "SELECT * FROM Recipe WHERE user_id = ? ORDER BY created_at DESC";
+
+        try(Connection con = db.open();
+            PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            try(ResultSet rs = pstmt.executeQuery()) {
+                while(rs.next()) {
+                    RecipeDTO recipe = new RecipeDTO();
+                    recipe.setRecipe_id(rs.getString("recipe_id"));
+                    recipe.setUser_id(rs.getString("user_id"));
+                    recipe.setTitle(rs.getString("title"));
+                    recipe.setThumbnail_image_url(rs.getString("thumbnail_image_url"));
+                    recipe.setPeople_count(rs.getInt("people_count"));
+                    recipe.setPrep_time(rs.getInt("prep_time"));
+                    recipe.setCook_time(rs.getInt("cook_time"));
+                    recipe.setViews(rs.getInt("views"));
+                    recipe.setLike(rs.getInt("like"));
+                    list.add(recipe);
+                }
+            }
+        }
+        return list;
+    }
+
+    // 레시피 상세 조회 (Recipe + Steps)
+    public RecipeDTO getRecipeById(String recipeId) throws SQLException {
+        RecipeDTO recipe = null;
+
+        String recipeSql = "SELECT * FROM Recipe WHERE recipe_id = ?";
+        String stepsSql = "SELECT * FROM RecipeSteps WHERE recipe_id = ? ORDER BY step_order ASC";
+
+        try (Connection con = db.open()) {
+            // Recipe 정보 조회
+            try (PreparedStatement pstmt = con.prepareStatement(recipeSql)) {
+                pstmt.setString(1, recipeId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        recipe = new RecipeDTO();
+                        recipe.setRecipe_id(rs.getString("recipe_id"));
+                        recipe.setUser_id(rs.getString("user_id"));
+                        recipe.setTitle(rs.getString("title"));
+                        recipe.setThumbnail_image_url(rs.getString("thumbnail_image_url"));
+                        recipe.setPeople_count(rs.getInt("people_count"));
+                        recipe.setPrep_time(rs.getInt("prep_time"));
+                        recipe.setCook_time(rs.getInt("cook_time"));
+                        recipe.setViews(rs.getInt("views"));
+                        recipe.setLike(rs.getInt("like"));
+                        recipe.setKcal(rs.getInt("kcal"));
+                    }
+                }
+            }
+
+            if (recipe != null) {
+                // Step 정보 조회
+                try (PreparedStatement pstmt = con.prepareStatement(stepsSql)) {
+                    pstmt.setString(1, recipeId);
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        List<RecipeDTO.Step> steps = new ArrayList<>();
+                        while (rs.next()) {
+                            RecipeDTO.Step step = new RecipeDTO.Step();
+                            step.setStepId(rs.getInt("step_id"));
+                            step.setStepOrder(rs.getInt("step_order"));
+                            step.setContents(rs.getString("contents"));
+                            step.setImageUrl(rs.getString("image_url"));
+                            steps.add(step);
+                        }
+                        recipe.setSteps(steps);
+                    }
+                }
+            }
+        }
+
+        return recipe;
+    }
+
+
+    // 레시피 삭제 (steps 먼저 삭제)
+    public void deleteRecipe(String recipeId) throws SQLException {
+        String deleteStepsSql = "DELETE FROM recipesteps WHERE recipe_id = ?";
+        String deleteRecipeSql = "DELETE FROM recipe WHERE recipe_id = ?";
+
+        try (Connection con = db.open()) {
+            // 트랜잭션 시작
+            con.setAutoCommit(false);
+            try {
+                // 1. 단계(step) 삭제
+                try (PreparedStatement pstmt = con.prepareStatement(deleteStepsSql)) {
+                    pstmt.setString(1, recipeId);
+                    pstmt.executeUpdate();
+                }
+
+                // 2. 레시피 삭제
+                try (PreparedStatement pstmt = con.prepareStatement(deleteRecipeSql)) {
+                    pstmt.setString(1, recipeId);
+                    pstmt.executeUpdate();
+                }
+
+                // 커밋
+                con.commit();
+            } catch (SQLException e) {
+                // 문제 발생 시 롤백
+                con.rollback();
+                throw e;
+            } finally {
+                con.setAutoCommit(true);
+            }
+        }
+    }
+
+
 
 }

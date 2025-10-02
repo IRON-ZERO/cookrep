@@ -1,7 +1,5 @@
 package dto.recipe;
 
-import model.User;
-
 import java.util.List;
 
 public class RecipeDTO {
@@ -20,11 +18,20 @@ public class RecipeDTO {
 
     // ===== Step 관련 =====
     public static class Step {
-        private int stepOrder;     // step_order
-        private String contents;   // contents
-        private String imageUrl;   // image_url
+        private int stepId;       // step_id
+        private int stepOrder;    // step_order
+        private String contents;  // contents
+        private String imageUrl;  // image_url
 
         // Getter / Setter
+        public int getStepId() {
+            return stepId;
+        }
+
+        public void setStepId(int stepId) {
+            this.stepId = stepId;
+        }
+
         public int getStepOrder() {
             return stepOrder;
         }
@@ -49,7 +56,6 @@ public class RecipeDTO {
             this.imageUrl = imageUrl;
         }
     }
-
 
     // Step 리스트
     private List<Step> steps;
