@@ -1,0 +1,156 @@
+@charset "UTF-8";
+
+/* Lgoin page */
+.login-page {
+  display: flex;
+  justify-content: flex-end;
+}
+/* Login page Background */
+.login-page__bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    url("https://images.unsplash.com/photo-1726713357919-64c34d622097?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    no-repeat center/cover;
+  filter: brightness(0.5);
+  width: 100%;
+}
+/* Login Form Container */
+.login-page__form--cont {
+  border-radius: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.login-page__form--cont img {
+  width: 300px;
+  margin: 40px 0px;
+}
+/* Login Mode */
+.login-page__mode {
+  display: flex;
+  position: relative;
+}
+
+.login-page__mode::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: var(--ck-white);
+  border-radius: 20px 0 0 20px;
+  transition: transform 0.3s ease, border-radius 0.3s ease;
+  z-index: 0;
+}
+
+.login-page__mode.email-active::before {
+  transform: translateX(100%);
+  border-radius: 0 20px 20px 0;
+}
+
+.login-page__mode button {
+  z-index: 1;
+  width: 150px;
+  text-wrap: nowrap;
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 10px 40px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.login-page__mode button:first-child {
+  border-top: 1px solid var(--ck-white);
+  border-left: 1px solid var(--ck-white);
+  border-bottom: 1px solid var(--ck-white);
+  border-right: none;
+  border-radius: 20px 0px 0px 20px;
+}
+
+.login-page__mode button:last-child {
+  border-top: 1px solid var(--ck-white);
+  border-left: none;
+  border-bottom: 1px solid var(--ck-white);
+  border-right: 1px solid var(--ck-white);
+  border-radius: 0px 20px 20px 0px;
+}
+
+/* Form Fields */
+.login-page__form--fieldset {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-page__form--fieldset label {
+  font-size: 25px;
+  color: var(--ck-white);
+}
+
+.login-page__form--fieldset input::placeholder {
+  line-height: 1.5;
+}
+
+.login-page__form--fieldset small {
+  color: var(--ck-red);
+  font-weight: 500;
+  font-size: 15px;
+}
+
+/* Form Btn */
+.login-page__form--fieldset button {
+  background-color: var(--ck-orange);
+  color: var(--ck-white);
+  transition: background-color 0.3s ease-in-out;
+  letter-spacing: 10px;
+}
+
+.login-page__form--fieldset button:hover {
+  background-color: var(--ck-orange-dark);
+}
+
+/* Seperator  */
+.login-page__seperator {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.login-page__seperator hr {
+  width: 100%;
+  height: 2px;
+}
+
+.login-page__seperator span {
+  margin: 0px 15px;
+  color: var(--ck-subTxt);
+}
+/* Go To Join*/
+.login-page__link--join {
+  display: flex;
+  height: 100%; 
+  justify-content : center;
+  gap: 10px;
+  place-items: end;
+}
+
+.login-page__link--join span {
+  color: var(--ck-subTxt);
+}
+
+.login-page__link--join a {
+  color: cornflowerblue;
+  transition: color 0.4s ease-in-out;
+}
+
+.login-page__link--join a:hover {
+  color: rgb(91, 121, 230);
+}
