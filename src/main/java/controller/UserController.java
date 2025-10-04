@@ -17,20 +17,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@WebServlet("/mypage")
+@WebServlet(urlPatterns = {"/mypage","/mypage/freezer","/mypage/scrap"})
 public class UserController extends HttpServlet {
+    String testUserId = "1";
+    int testIngredientId = 1;
+    int[] testIngredientIds = {1,2,3};
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
+        String path = req.getServletPath();
         String view = "";
         if (action == null) {
-            view = "/test.jsp";
+            switch (path){
+                case "/mypage":
+                    view = getProfile(req,resp);
+                    break;
+                case "/mypage/freezer" :
+                    view = getIngredients(req,resp);
+                    break;
+                case "/mypage/scrap" :
+                    break;
+            }
         }else {
             switch (action) {
                 case "getprofile":
                     view = getProfile(req, resp);
+                    break;
+                case "getingredients" :
+                    view = getIngredients(req,resp);
                     break;
             }
         }
@@ -58,11 +74,10 @@ public class UserController extends HttpServlet {
     // return 되는 path는 화면 만들면 수정
     // 유저 조회, 업데이트
     private String getProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = "1"; // 테스트용
         UserService userService = new UserService();
         UserDTO user = null;
         try {
-            user = userService.getProfile(id);
+            user = userService.getProfile(testUserId);
             req.setAttribute("status","200");
             req.setAttribute("message","사용자 정보 조회에 성공했습니다.");
             req.setAttribute("user",user);
@@ -70,13 +85,14 @@ public class UserController extends HttpServlet {
             req.setAttribute("status","500");
             req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
         }
-        return "/test.jsp";
+        return "/views/mypage/mypage.jsp";
     }
     private String updateProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
         UserDTO userDTO = new UserDTO();
         try {
             BeanUtils.populate(userDTO,req.getParameterMap());
+            userDTO.setId(testUserId);
             userService.updateProfile(userDTO);
             req.setAttribute("status","200");
             req.setAttribute("message","사용자 정보 업데이트에 성공했습니다.");
@@ -90,58 +106,59 @@ public class UserController extends HttpServlet {
             req.setAttribute("status","500");
             req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
         }
-        return "/test.jsp";
+        return getProfile(req,resp);
 
     }
 
     // 냉장고(유저가 가진 재료) 추가, 삭제, 조회
     private String deleteIngredient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
-        String userId = "1";
-        int ingredientId = 1;
+        String userId = req.getParameter("userId");
+        int ingredientId = Integer.parseInt(req.getParameter("ingredientId"));
         try {
-            userService.removeIngredient(userId,ingredientId);
+            userService.removeIngredient(userId, ingredientId);
             req.setAttribute("status","200");
             req.setAttribute("message","재료 삭제에 성공했습니다.");
         }catch (SQLException e){
             req.setAttribute("status","500");
             req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
         }
-        return "/test.jsp";
+        return getIngredients(req,resp);
     }
     private String addIngredient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
-        String userId = "1";
-        int[] ingredientIds = {1,2,3};
-        for(int ingredientId : ingredientIds){
-            try {
-                userService.addIngredient(userId,ingredientId);
-                req.setAttribute("status","200");
-                req.setAttribute("message","재료 삭제에 성공했습니다.");
-            } catch (SQLException e) {
-                req.setAttribute("status","500");
-                req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
-            }
+//        언어수준 7에선 사용 못하는 문법. java 8+ 사용 시 개선
+//        int[] ingredientIds = Arrays.stream(req.getParameter("ingredientIds").trim().split(","))
+//                                    .mapToInt(Integer::parseInt)
+//                                    .toArray();
+        String[] stringIngredientIds = req.getParameter("ingredientIds").replaceAll(" ","").split(",");
+        int[] ingredientIds = new int[stringIngredientIds.length];
+        for(int i = 0; i < stringIngredientIds.length; i++){
+            ingredientIds[i] = Integer.parseInt(stringIngredientIds[i]);
         }
-        return "/test.jsp";
+        try {
+            userService.addIngredient(testUserId,ingredientIds);
+            req.setAttribute("status","200");
+            req.setAttribute("message","재료 추가에 성공했습니다.");
+        } catch (SQLException e) {
+            req.setAttribute("status","500");
+            req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
+        }
+        return getIngredients(req,resp);
     }
 
     private String getIngredients(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
-        String userId = "1";
-        int[] ingredientIds = {1,2,3};
-        List<UserIngredient> ingredients = new ArrayList<>();
-        for(int ingredientId : ingredientIds){
-            try {
-                ingredients = userService.getIngredients(userId);
-                req.setAttribute("status","200");
-                req.setAttribute("message","재료 삭제에 성공했습니다.");
-            } catch (SQLException e) {
-                req.setAttribute("status","500");
-                req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
-            }
+        UserDTO user = null;
+        try {
+            user = userService.getProfile(testUserId);
+            req.setAttribute("status","200");
+            req.setAttribute("message","재료 조회에 성공했습니다.");
+        } catch (SQLException e) {
+            req.setAttribute("status","500");
+            req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
         }
-        req.setAttribute("ingredients",ingredients);
-        return "/test.jsp";
+        req.setAttribute("user",user);
+        return "/views/mypage/myfreezer.jsp";
     }
 }

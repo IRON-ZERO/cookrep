@@ -32,6 +32,12 @@ public class UserService {
         userIngredientDAO.addUserIngredient(userId,ingredientId);
 
     }
+    // addIngredient 오버로딩, 배열로 왔을 경우에 해당 재료들 전부 업로드.
+    public void addIngredient(String userId, int[] ingredientIds) throws SQLException {
+        for(int ingredientId : ingredientIds){
+            addIngredient(userId,ingredientId);
+        }
+    }
     public void removeIngredient(String userId, int ingredientId) throws SQLException {
         UserIngredientDAO userIngredientDAO = new UserIngredientDAO();
         IngredientDAO ingredientDAO = new IngredientDAO();
@@ -39,7 +45,7 @@ public class UserService {
         userIngredientDAO.removeUserIngredient(userId,ingredientId);
 
     }
-    public List<UserIngredient> getIngredients(String userId) throws SQLException {
+    private List<UserIngredient> getIngredients(String userId) throws SQLException {
         UserIngredientDAO userIngredientDAO = new UserIngredientDAO();
         List<UserIngredient> ingredients;
         // 추후에 필요한 exception 있으면 던지면 됨.

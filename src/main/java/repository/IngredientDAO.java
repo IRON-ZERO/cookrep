@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class IngredientDAO {
     private Connection conn = null;
@@ -39,10 +38,9 @@ public class IngredientDAO {
         preparedStatement.executeUpdate();
     }
     public void addIngredient(Ingredient ingredient) throws SQLException {
-        String sql = "insert into Ingredient (ingredient_id, name) values (?, ?)";
+        String sql = "insert into Ingredient (name) values (?)";
         PreparedStatement preparedStatement = this.conn.prepareStatement(sql);
-        preparedStatement.setInt(1, ingredient.getIngredientId());
-        preparedStatement.setString(2, ingredient.getName());
+        preparedStatement.setString(1, ingredient.getName());
         preparedStatement.executeUpdate();
     }
 }

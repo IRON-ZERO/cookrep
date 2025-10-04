@@ -1,6 +1,6 @@
 package model;
 
-// 유저가 가진 재료 user_ingredient -> 개수, 언제 넣었는지(추후 속성 추가)
+// 유저가 가진 재료 user_ingredient -> 개수, 냉장고에 언제 넣었는지(추후 속성 추가)
 public class UserIngredient {
     private Ingredient ingredient;
     private int ingredientId;

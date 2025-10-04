@@ -30,7 +30,7 @@ public class UserIngredientDAO {
         pstmt.executeUpdate();
     }
     public void removeUserIngredient(String userId, int ingredientId) throws SQLException {
-        String sql = "DELETE FROM userIngredient WHERE userId = ? AND ingredientId = ?";
+        String sql = "DELETE FROM userIngredient WHERE user_id = ? AND ingredient_id = ?";
         try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userId);
             pstmt.setInt(2, ingredientId);
@@ -49,6 +49,7 @@ public class UserIngredientDAO {
                 UserIngredient userIngredient = new UserIngredient();
                 int ingredientId = rs.getInt("ingredient_id");
                 Ingredient ingredient = ingredientDAO.findById(ingredientId);
+                userIngredient.setUserId(rs.getString("user_id"));
                 userIngredient.setIngredient(ingredient);
                 userIngredient.setIngredientId(ingredientId);
                 ingredients.add(userIngredient);
