@@ -5,13 +5,16 @@
 
 /* Views */
 @import "./views/auth/loginPage.css";
+@import "./views/auth/joinPage.css";
 
 /* Components */
 @import "./components/shared.css";
+@import "./views/auth/authComponents.css";
 
 /* Global Style */
 :root {
   --ck-white: #EFEFEF;
+  --ck-green-light: rgb(121, 195, 104);
   --ck-green: #3F7D58;
   --ck-green-dark: rgb(39, 123, 64);
   --ck-red: #EC5228;
@@ -29,7 +32,6 @@
 
 html, body {
   width: 100%;
-  height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6, p, span, button, label, input, input::placeholder

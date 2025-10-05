@@ -1,8 +1,10 @@
 use cookrep;
 DROP TABLE User;
+DELETE FROM User WHERE user_id ="11";
+select * from User; 
 -- 사용자 테이블
 CREATE TABLE User (
-                      user_id VARCHAR(30) PRIMARY KEY,
+                      user_id VARCHAR(36) PRIMARY KEY,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                       nickname VARCHAR(20) NOT NULL UNIQUE,
@@ -11,7 +13,7 @@ CREATE TABLE User (
                       country VARCHAR(50),
                       city  VARCHAR(50),
                       email VARCHAR(100) NOT NULL UNIQUE,
-                      password VARCHAR(20)
+                      password VARCHAR(90)
 );
 
 -- 재료 테이블

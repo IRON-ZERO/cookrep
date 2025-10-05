@@ -7,21 +7,21 @@ public class User {
 	private Date created_at;
 	private Date updated_at;
 	private String nickname;
-	private String first_namel;
+	private String first_name;
 	private String last_name;
 	private String country;
 	private String city;
 	private String email;
 	private String password;
 
-	public User(long user_id, Date created_at, Date updated_at, String nickname, String first_namel, String last_name,
+	public User(long user_id, Date created_at, Date updated_at, String nickname, String first_name, String last_name,
 		String country, String city, String email, String password) {
 		super();
 		this.user_id = user_id;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 		this.nickname = nickname;
-		this.first_namel = first_namel;
+		this.first_name = first_name;
 		this.last_name = last_name;
 		this.country = country;
 		this.city = city;
@@ -61,12 +61,12 @@ public class User {
 		this.nickname = nickname;
 	}
 
-	public String getFirst_namel() {
-		return first_namel;
+	public String getFirst_name() {
+		return first_name;
 	}
 
-	public void setFirst_namel(String first_namel) {
-		this.first_namel = first_namel;
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
 	}
 
 	public String getLast_name() {

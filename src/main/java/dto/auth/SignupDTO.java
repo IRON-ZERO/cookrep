@@ -10,6 +10,19 @@ public class SignupDTO {
 	private String email;
 	private String password;
 
+	public SignupDTO(String id, String nickname, String first_name, String last_name, String country, String city,
+		String email, String password) {
+		super();
+		this.id = id;
+		this.nickname = nickname;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.country = country;
+		this.city = city;
+		this.email = email;
+		this.password = password;
+	}
+
 	public String getId() {
 		return id;
 	}

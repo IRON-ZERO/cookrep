@@ -53,7 +53,7 @@ public class AuthDAO {
 	 * @return 회원가입 성공시 1 실패시 0
 	 * @throws 
 	 */
-	public int signUpUser(SignupDTO userData) {
+	public String signUpUser(SignupDTO userData) throws SQLException {
 		db.open();
 		String sql = """
 			INSERT INTO User
@@ -70,13 +70,11 @@ public class AuthDAO {
 			pstmt.setString(6, userData.getCity());
 			pstmt.setString(7, userData.getEmail());
 			pstmt.setString(8, userData.getPassword());
-			return pstmt.executeUpdate();
+			pstmt.executeUpdate();
+			return userData.getId();
 		} catch (SQLException e) {
 			log.severe("signUpUser DAO에서 에러 발생 : " + e.getMessage());
-			db.close();
-			return 0;
-		} finally {
-			db.close();
+			throw e;
 		}
 	}
 
@@ -86,7 +84,7 @@ public class AuthDAO {
 	 * @param userData
 	 * @return LoginDTO
 	 */
-	public LoginDTO loginUserByNickname(LoginDTO userData) {
+	public LoginDTO loginUserByNickname(LoginDTO userData) throws SQLException {
 		db.open();
 		String sql = """
 			SELECT user_id, password
@@ -106,10 +104,7 @@ public class AuthDAO {
 			return null;
 		} catch (SQLException e) {
 			log.severe("loginUserByNickName DAO에서 에러 발생 : " + e.getMessage());
-			db.close();
-			return null;
-		} finally {
-			db.close();
+			throw e;
 		}
 	}
 
@@ -120,7 +115,7 @@ public class AuthDAO {
 	 * @return LoginDTO
 	 */
 
-	public LoginDTO loginUserByEmail(LoginDTO userData) {
+	public LoginDTO loginUserByEmail(LoginDTO userData) throws SQLException {
 		db.open();
 		String sql = """
 			SELECT user_id, password
@@ -140,10 +135,7 @@ public class AuthDAO {
 			return null;
 		} catch (SQLException e) {
 			log.severe("loginUserByEmail DAO에서 에러 발생 : " + e.getMessage());
-			db.close();
-			return null;
-		} finally {
-			db.close();
+			throw e;
 		}
 	}
 
@@ -163,7 +155,7 @@ public class AuthDAO {
 	 * 
 	 * @return
 	 */
-	public boolean deleteUser(String id) {
+	public boolean deleteUser(String id) throws SQLException {
 		db.open();
 		String sql = """
 			DELETE FROM User
@@ -176,10 +168,7 @@ public class AuthDAO {
 			return result > 0;
 		} catch (SQLException e) {
 			log.severe("deleteUser DAO에서 에러 발생 : " + e.getMessage());
-			db.close();
-			return false;
-		} finally {
-			db.close();
+			throw e;
 		}
 	}
 
@@ -191,8 +180,7 @@ public class AuthDAO {
 	 * @param nickname
 	 * @return boolean
 	 */
-	public boolean existsUserByNickName(String nickname) {
-		// db open
+	public boolean existsUserByNickName(String nickname) throws SQLException {
 		db.open();
 		// sql query
 		String sql = """
@@ -207,11 +195,7 @@ public class AuthDAO {
 			return result.next();
 		} catch (SQLException e) {
 			log.severe("existsUserByNickName DAO에서 에러 발생 : " + e.getMessage());
-			e.printStackTrace();
-			db.close();
-			return false;
-		} finally {
-			db.close();
+			throw e;
 		}
 	}
 
@@ -221,8 +205,7 @@ public class AuthDAO {
 	 * @param email
 	 * @return boolean
 	 */
-	public boolean existsUserByEmail(String email) {
-		// db open
+	public boolean existsUserByEmail(String email) throws SQLException {
 		db.open();
 		// sql query
 		String sql = """
@@ -237,12 +220,7 @@ public class AuthDAO {
 			return result.next();
 		} catch (SQLException e) {
 			log.severe("existsUserByEmail DAO에서 에러 발생 : " + e.getMessage());
-			db.close();
-			e.printStackTrace();
-			return false;
-		} finally {
-			db.close();
+			throw e;
 		}
-
 	}
 }

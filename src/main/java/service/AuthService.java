@@ -1,5 +1,11 @@
 package service;
 
+import java.sql.SQLException;
+import java.util.Optional;
+import java.util.logging.Logger;
+
+import Exceptions.AuthExceptions.DuplicateEmailException;
+import Exceptions.AuthExceptions.DuplicatieNicknameException;
 import dto.auth.LoginDTO;
 import dto.auth.SignupDTO;
 import repository.AuthDAO;
@@ -28,6 +34,8 @@ import utils.ValidatorUtils;
 public class AuthService {
 	// repository
 	private AuthDAO authRepo = AuthDAO.getInstance();
+	// Logger 
+	private Logger log = Logger.getLogger(AuthService.class.getName());
 
 	// constructor
 	private AuthService() {}
@@ -48,19 +56,22 @@ public class AuthService {
 	 * @return boolean
 	 * @throws
 	 */
-	public boolean signUpUser(SignupDTO userData) {
+	public String signUpUser(SignupDTO userData) throws DuplicateEmailException, DuplicatieNicknameException {
 		// variable
 		String nickname = userData.getNickname();
 		String email = userData.getEmail();
 
 		// validator
 		if (!ValidatorUtils.validateNickname(nickname) || !ValidatorUtils.validateEmail(email)) {
-			return false;
+			throw new IllegalArgumentException("유효하지 않는 입력값입니다.");
 		}
 
 		// 유저의 존재 확인
-		if (emailExists(email) || nicknameExists(nickname)) {
-			return false;
+		if (emailExists(email)) {
+			throw new DuplicateEmailException(email);
+		}
+		if (nicknameExists(nickname)) {
+			throw new DuplicatieNicknameException(nickname);
 		}
 
 		// 비밀번호 해쉬화
@@ -71,47 +82,78 @@ public class AuthService {
 		userData.setPassword(hashPassword + ":" + salt);
 
 		// DB로 데이터 전달
-		int success = authRepo.signUpUser(userData);
-		return success > 0;
+
+		try {
+			String uid = authRepo.signUpUser(userData);
+			return uid;
+		} catch (SQLException e) {
+			log.severe("AuthService SignUpUser에서 에러 :" + e.getMessage());
+			throw new RuntimeException("회원가입 처리 중 오류가 발생했습니다.");
+		}
 	}
 
 	/**
 	 * 닉네임으로 로그인하는 메서드입니다.
 	 * 
 	 * @param userData
-	 * @return user_id
+	 * @return user_id 없으면 optional.empty
 	 */
-	public String loginUserByNickname(LoginDTO userData) {
-		// db에 데이터를 보내 결과값 리턴
-		LoginDTO result = authRepo.loginUserByNickname(userData);
-		if (result == null) {
-			return null;
+	public Optional<String> loginUserByNickname(LoginDTO userData) {
+		try {
+			// db에 데이터를 보내 결과값 리턴
+			LoginDTO result = authRepo.loginUserByNickname(userData);
+			if (result == null) {
+				return Optional.empty();
+			}
+			String[] splitPassword = result.getPassword().split(":");
+			if (splitPassword.length != 2) {
+				log.severe("AuthService Loing 비밀번호 데이터 오류");
+				return Optional.empty();
+			}
+			// 입력된 비밀번호 값과 db에 저장된 비밀번호 비교  
+			boolean equals = PasswordUtils.verifyPassword(userData.getPassword(), splitPassword[1], splitPassword[0]);
+			// 결과값 비밀번호 verify
+			return equals ? Optional.of(result.getIdentifyId()) : Optional.empty();
+		} catch (SQLException e) {
+			log.severe("AuthService loginUserByNickname에서 에러 :" + e.getMessage());
+			return Optional.empty();
+		} catch (Exception e) {
+			log.severe("AuthService loginUserByNickname에서 에러 :" + e.getMessage());
+			return Optional.empty();
 		}
-		// 결과값 비밀번호 verify 준
-		String[] splitPassword = result.getPassword().split(":");
-
-		// 입력된 비밀번호 값과 db에 저장된 비밀번호 비교  
-		boolean equals = PasswordUtils.verifyPassword(userData.getPassword(), splitPassword[1], splitPassword[0]);
-		return equals ? result.getIdentifyId() : null;
 	}
 
 	/**
 	 * 이메일로 로그인하는 메서드입니다.
 	 * 
 	 * @param userData
-	 * @return user_id
+	 * @return user_id 없으면 optional.empty
 	 */
-	public String loginUserByEmail(LoginDTO userData) {
+	public Optional<String> loginUserByEmail(LoginDTO userData) {
 		// db에 데이터를 보내 결과값 리턴
-		LoginDTO result = authRepo.loginUserByEmail(userData);
-		if (result == null) {
-			return null;
+
+		try {
+			LoginDTO result = authRepo.loginUserByEmail(userData);
+			if (result == null) {
+				return Optional.empty();
+			}
+			String[] splitPassword = result.getPassword().split(":");
+			if (splitPassword.length != 2) {
+				log.severe("AuthService Loing 비밀번호 데이터 오류");
+				return Optional.empty();
+			}
+			// 입력된 비밀번호 값과 db에 저장된 비밀번호 비교  
+			boolean equals = PasswordUtils.verifyPassword(userData.getPassword(), splitPassword[1], splitPassword[0]);
+			return equals ? Optional.of(result.getIdentifyId()) : Optional.empty();
+		} catch (SQLException e) {
+			log.severe("AuthService loginUserByNickname에서 에러 :" + e.getMessage());
+			return Optional.empty();
+		} catch (Exception e) {
+			log.severe("AuthService loginUserByNickname에서 에러 :" + e.getMessage());
+			return Optional.empty();
 		}
+
 		// 결과값 비밀번호 verify 준
-		String[] splitPassword = result.getPassword().split(":");
-		// 입력된 비밀번호 값과 db에 저장된 비밀번호 비교  
-		boolean equals = PasswordUtils.verifyPassword(userData.getPassword(), splitPassword[1], splitPassword[0]);
-		return equals ? result.getIdentifyId() : null;
 	}
 
 	/**
@@ -120,7 +162,13 @@ public class AuthService {
 	 * @return boolean
 	 */
 	public boolean deleteUser(String userId) {
-		return authRepo.deleteUser(userId);
+		try {
+			return authRepo.deleteUser(userId);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			log.severe("AuthService deletUser에서 에러 :" + e.getMessage());
+			return false;
+		}
 	}
 
 	/* Helper Methods */
@@ -131,7 +179,12 @@ public class AuthService {
 	 * @return boolean
 	 */
 	private boolean emailExists(String email) {
-		return authRepo.existsUserByEmail(email);
+		try {
+			return authRepo.existsUserByEmail(email);
+		} catch (SQLException e) {
+			log.severe("AuthService emailExists에서 에러 :" + e.getMessage());
+			return false;
+		}
 	}
 
 	/**
@@ -141,6 +194,11 @@ public class AuthService {
 	 * @return boolean
 	 */
 	private boolean nicknameExists(String nickname) {
-		return authRepo.existsUserByNickName(nickname);
+		try {
+			return authRepo.existsUserByNickName(nickname);
+		} catch (SQLException e) {
+			log.severe("AuthService nicknameExists에서 에러 :" + e.getMessage());
+			return false;
+		}
 	}
 }
