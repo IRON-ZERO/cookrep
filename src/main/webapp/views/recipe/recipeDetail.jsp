@@ -82,8 +82,8 @@
 
     <!-- Back / Edit / Delete 버튼 -->
     <div class="back-btn">
-        <button onclick="location.href='mypage/recipe?action=list'">Back to List</button>
-        <button onclick="location.href='mypage/recipe?action=edit&recipe_id=<%= recipe.getRecipe_id() %>'">수정</button>
+        <button onclick="location.href='mypage?action=list'">Back to List</button>
+        <button onclick="location.href='mypage?action=edit&recipe_id=<%= recipe.getRecipe_id() %>'">수정</button>
         <button onclick="deleteRecipe('<%= recipe.getRecipe_id() %>')">삭제</button>
     </div>
 </div>

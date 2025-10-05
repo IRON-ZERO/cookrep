@@ -106,41 +106,7 @@ public class RecipeRegisterS3Controller extends HttpServlet {
         }
     }
 
-//    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        // 조회용 Presigned URL
-//        resp.setContentType("application/json;charset=UTF-8");
-//        try {
-//            String fileName = req.getParameter("fileName");
-//            if (fileName == null || fileName.isEmpty()) {
-//                resp.setStatus(400);
-//                resp.getWriter().write("{\"error\":\"fileName required\"}");
-//                return;
-//            }
-//
-//            GetObjectRequest getRequest = GetObjectRequest.builder()
-//                    .bucket(BUCKET_NAME)
-//                    .key(fileName)
-//                    .build();
-//
-//            GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-//                    .getObjectRequest(getRequest)
-//                    .signatureDuration(Duration.ofMinutes(10))
-//                    .build();
-//
-//            String presignedUrl = presigner.presignGetObject(presignRequest).url().toString();
-//            ObjectNode resultJson = objectMapper.createObjectNode();
-//            resultJson.put("fileName", fileName);
-//            resultJson.put("downloadUrl", presignedUrl);
-//
-//            resp.getWriter().write(objectMapper.writeValueAsString(resultJson));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            resp.setStatus(500);
-//            resp.getWriter().write("{\"error\":\"" + e.getMessage() + "\"}");
-//        }
-//    }
+
 
     }
 
