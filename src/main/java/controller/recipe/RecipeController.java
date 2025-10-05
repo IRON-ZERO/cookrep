@@ -90,115 +90,37 @@ public class RecipeController extends HttpServlet {
 
     // 내 레시피 수정
     private String editRecipe(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String method = req.getMethod();
+        String recipeId = req.getParameter("recipe_id");
+        if (recipeId == null || recipeId.isEmpty()) {
+            return "redirect:/mypage?action=list";
+        }
 
-        if ("GET".equalsIgnoreCase(method)) {
-            // ---------------- GET: 수정폼 표시 ----------------
-            String recipeId = req.getParameter("recipe_id");
-            if (recipeId == null || recipeId.isEmpty()) {
+        try {
+            RecipeDTO recipe = recipeDAO.getRecipeById(recipeId);
+            if (recipe == null) {
                 return "redirect:/mypage?action=list";
             }
 
-            try {
-                RecipeDTO recipe = recipeDAO.getRecipeById(recipeId);
-                if (recipe == null) {
-                    return "redirect:/mypage?action=list";
-                }
-
-                // S3 Presigned URL 생성 (썸네일 + 단계별 이미지)
-                if (recipe.getThumbnail_image_url() != null && !recipe.getThumbnail_image_url().isEmpty()) {
-                    recipe.setThumbnail_image_url(generatePresignedUrl(recipe.getThumbnail_image_url()));
-                }
-                if (recipe.getSteps() != null) {
-                    for (RecipeDTO.Step step : recipe.getSteps()) {
-                        if (step.getImageUrl() != null && !step.getImageUrl().isEmpty()) {
-                            step.setImageUrl(generatePresignedUrl(step.getImageUrl()));
-                        }
+            // S3 Presigned URL 생성 (썸네일 + 단계별 이미지)
+            if (recipe.getThumbnail_image_url() != null && !recipe.getThumbnail_image_url().isEmpty()) {
+                recipe.setThumbnail_image_url(generatePresignedUrl(recipe.getThumbnail_image_url()));
+            }
+            if (recipe.getSteps() != null) {
+                for (RecipeDTO.Step step : recipe.getSteps()) {
+                    if (step.getImageUrl() != null && !step.getImageUrl().isEmpty()) {
+                        step.setImageUrl(generatePresignedUrl(step.getImageUrl()));
                     }
                 }
-
-                req.setAttribute("recipe", recipe);
-                return "/recipeEdit.jsp"; // 수정 폼 JSP
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "/error.jsp";
             }
 
-        } else if ("POST".equalsIgnoreCase(method)) {
-            // ---------------- POST: 수정 처리 ----------------
-            req.setCharacterEncoding("UTF-8");
-            resp.setContentType("application/json;charset=UTF-8");
-
-            try {
-                // JSON 읽기
-                StringBuilder sb = new StringBuilder();
-                try (BufferedReader reader = req.getReader()) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                }
-
-                ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode root = objectMapper.readTree(sb.toString());
-
-                String recipeId = root.has("recipeId") ? root.get("recipeId").asText() : null;
-                if (recipeId == null) {
-                    resp.setStatus(400);
-                    resp.getWriter().write("{\"status\":\"error\",\"message\":\"recipeId required\"}");
-                    return null;
-                }
-
-                String userId = root.has("userId") ? root.get("userId").asText() : "u001";
-                String title = root.has("title") ? root.get("title").asText() : "";
-                String mainImageUrl = root.has("mainImageUrl") ? root.get("mainImageUrl").asText() : "";
-                int peopleCount = root.has("peopleCount") ? root.get("peopleCount").asInt() : 0;
-                int prepTime = root.has("prepTime") ? root.get("prepTime").asInt() : 0;
-                int cookTime = root.has("cookTime") ? root.get("cookTime").asInt() : 0;
-
-                List<RecipeDTO.Step> steps = new ArrayList<>();
-                if (root.has("steps")) {
-                    int stepOrder = 1;
-                    for (JsonNode stepNode : root.get("steps")) {
-                        String content = stepNode.has("content") ? stepNode.get("content").asText() : "";
-                        String imageUrl = stepNode.has("imageUrl") ? stepNode.get("imageUrl").asText() : "";
-
-                        RecipeDTO.Step step = new RecipeDTO.Step();
-                        step.setStepOrder(stepOrder);
-                        step.setContents(content);
-                        step.setImageUrl(imageUrl);
-                        steps.add(step);
-
-                        stepOrder++;
-                    }
-                }
-
-                RecipeDTO recipe = new RecipeDTO();
-                recipe.setRecipe_id(recipeId);
-                recipe.setUser_id(userId);
-                recipe.setTitle(title);
-                recipe.setThumbnail_image_url(mainImageUrl);
-                recipe.setPeople_count(peopleCount);
-                recipe.setPrep_time(prepTime);
-                recipe.setCook_time(cookTime);
-                recipe.setSteps(steps);
-
-                // DB 업데이트 (Recipe + Steps)
-                recipeDAO.updateRecipeWithSteps(recipe);
-
-                resp.getWriter().write("{\"status\":\"success\"}");
-                return null;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                resp.setStatus(500);
-                resp.getWriter().write("{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}");
-                return null;
-            }
+            req.setAttribute("recipe", recipe);
+            return "/recipeEdit.jsp"; // 수정 폼 JSP
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "/error.jsp";
         }
-
-        return "/error.jsp";
     }
+
 
 
     // ---------------- 리스트 조회 ----------------

@@ -161,51 +161,43 @@ public class RecipeDAO {
     }
 
 
-    // Recipe + Step 수정
-    public void updateRecipeWithSteps(RecipeDTO recipe) throws SQLException {
+    // Recipe + Step 수정 (Controller에서 전달된 Connection 사용)
+    public void updateRecipeWithSteps(Connection con, RecipeDTO recipe) throws SQLException {
         String updateRecipeSql = "UPDATE Recipe SET title=?, thumbnail_image_url=?, people_count=?, prep_time=?, cook_time=? WHERE recipe_id=?";
         String deleteStepsSql = "DELETE FROM RecipeSteps WHERE recipe_id=?";
         String insertStepSql = "INSERT INTO RecipeSteps(recipe_id, step_order, contents, image_url) VALUES (?, ?, ?, ?)";
 
-        try (Connection con = db.open()) {
-            con.setAutoCommit(false);
+        // 1. Recipe 테이블 업데이트
+        try (PreparedStatement pstmt = con.prepareStatement(updateRecipeSql)) {
+            pstmt.setString(1, recipe.getTitle());
+            pstmt.setString(2, recipe.getThumbnail_image_url());
+            pstmt.setInt(3, recipe.getPeople_count());
+            pstmt.setInt(4, recipe.getPrep_time());
+            pstmt.setInt(5, recipe.getCook_time());
+            pstmt.setString(6, recipe.getRecipe_id());
+            pstmt.executeUpdate();
+        }
 
-            // 1. Recipe 테이블 업데이트
-            try (PreparedStatement pstmt = con.prepareStatement(updateRecipeSql)) {
-                pstmt.setString(1, recipe.getTitle());
-                pstmt.setString(2, recipe.getThumbnail_image_url());
-                pstmt.setInt(3, recipe.getPeople_count());
-                pstmt.setInt(4, recipe.getPrep_time());
-                pstmt.setInt(5, recipe.getCook_time());
-                pstmt.setString(6, recipe.getRecipe_id());
-                pstmt.executeUpdate();
-            }
+        // 2. 기존 Step 삭제
+        try (PreparedStatement pstmt = con.prepareStatement(deleteStepsSql)) {
+            pstmt.setString(1, recipe.getRecipe_id());
+            pstmt.executeUpdate();
+        }
 
-            // 2. 기존 Step 삭제
-            try (PreparedStatement pstmt = con.prepareStatement(deleteStepsSql)) {
-                pstmt.setString(1, recipe.getRecipe_id());
-                pstmt.executeUpdate();
-            }
-
-            // 3. Step 재삽입
-            if (recipe.getSteps() != null && !recipe.getSteps().isEmpty()) {
-                try (PreparedStatement pstmt = con.prepareStatement(insertStepSql)) {
-                    for (RecipeDTO.Step step : recipe.getSteps()) {
-                        pstmt.setString(1, recipe.getRecipe_id());
-                        pstmt.setInt(2, step.getStepOrder());
-                        pstmt.setString(3, step.getContents());
-                        pstmt.setString(4, step.getImageUrl());
-                        pstmt.addBatch();
-                    }
-                    pstmt.executeBatch();
+        // 3. Step 재삽입
+        if (recipe.getSteps() != null && !recipe.getSteps().isEmpty()) {
+            try (PreparedStatement pstmt = con.prepareStatement(insertStepSql)) {
+                for (RecipeDTO.Step step : recipe.getSteps()) {
+                    pstmt.setString(1, recipe.getRecipe_id());
+                    pstmt.setInt(2, step.getStepOrder());
+                    pstmt.setString(3, step.getContents());
+                    pstmt.setString(4, step.getImageUrl());
+                    pstmt.addBatch();
                 }
+                pstmt.executeBatch();
             }
-
-            con.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
         }
     }
+
 
 }
