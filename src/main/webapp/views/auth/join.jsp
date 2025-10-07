@@ -88,7 +88,7 @@
           <%-- password --%>
           <label for="joinPwInput">비밀번호</label>
           <%-- min max 값  --%>
-          <input id="joinPwInput" name="password" type="text"
+          <input id="joinPwInput" name="password" type="password"
             placeholder="비밀번호를 입력해주세요." value="${password}" required
           />
           <c:if test="${not empty error_password}">
@@ -97,7 +97,7 @@
           <%-- password check --%>
           <label for="joinCheckPassInput">2차확인 비밀번호</label>
           <%-- min max 값  --%>
-          <input id="joinCheckPassInput" name="check_pass" type="text"
+          <input id="joinCheckPassInput" name="check_pass" type="password"
             placeholder="2차확인 비밀번호를 입력해주세요." value="${check_pass}" required
           />
           <button type="submit">회원가입</button>

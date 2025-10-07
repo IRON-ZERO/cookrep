@@ -45,7 +45,7 @@
           <%-- Password --%>
           <label for="loginPwInput">Password</label>
           <%-- min max 값  --%>
-          <input id="loginPwInput" name="password" type="text" placeholder="비밀번호를 입력해주세요." required />
+          <input id="loginPwInput" name="password" type="password" placeholder="비밀번호를 입력해주세요." required />
           
           
           <button type="submit">로그인</button>

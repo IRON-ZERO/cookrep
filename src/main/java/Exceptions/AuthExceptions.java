@@ -11,8 +11,8 @@ public class AuthExceptions extends Exception {
 		}
 	}
 
-	public static class DuplicatieNicknameException extends AuthExceptions {
-		public DuplicatieNicknameException(String nickname) {
+	public static class DuplicateNicknameException extends AuthExceptions {
+		public DuplicateNicknameException(String nickname) {
 			super("이미 사용중인 유저이름입니다. " + nickname);
 		}
 	}

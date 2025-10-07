@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Exceptions.AuthExceptions.DuplicateEmailException;
-import Exceptions.AuthExceptions.DuplicatieNicknameException;
+import Exceptions.AuthExceptions.DuplicateNicknameException;
 import dto.auth.SignupDTO;
 import service.AuthService;
 import utils.ValidatorUtils;
@@ -67,7 +67,7 @@ public class JoinController extends HttpServlet {
 			String userId = authService.signUpUser(signup);
 			// Session
 			HttpSession session = req.getSession();
-			session.setAttribute("userId", session);
+			session.setAttribute("userId", userId);
 			// redirect
 			resp.sendRedirect("/index.jsp");
 		} catch (DuplicateEmailException e) {
@@ -75,7 +75,7 @@ public class JoinController extends HttpServlet {
 			setUserAttribute(req, nickname, email, firstName, lastName, country, city);
 
 			req.getRequestDispatcher("/views/auth/join.jsp").forward(req, resp);
-		} catch (DuplicatieNicknameException e) {
+		} catch (DuplicateNicknameException e) {
 			req.setAttribute("error_nickname", "이미 사용 중인 유저이름입니다.");
 			setUserAttribute(req, nickname, email, firstName, lastName, country, city);
 

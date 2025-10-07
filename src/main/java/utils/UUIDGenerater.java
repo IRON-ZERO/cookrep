@@ -2,7 +2,7 @@ package utils;
 
 import java.util.UUID;
 
-public class UUIDgenerater {
+public class UUIDGenerater {
 	public static String generator() {
 		return UUID.randomUUID().toString();
 	}

@@ -5,12 +5,12 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import Exceptions.AuthExceptions.DuplicateEmailException;
-import Exceptions.AuthExceptions.DuplicatieNicknameException;
+import Exceptions.AuthExceptions.DuplicateNicknameException;
 import dto.auth.LoginDTO;
 import dto.auth.SignupDTO;
 import repository.AuthDAO;
 import utils.PasswordUtils;
-import utils.UUIDgenerater;
+import utils.UUIDGenerater;
 import utils.ValidatorUtils;
 
 /**
@@ -56,7 +56,7 @@ public class AuthService {
 	 * @return boolean
 	 * @throws
 	 */
-	public String signUpUser(SignupDTO userData) throws DuplicateEmailException, DuplicatieNicknameException {
+	public String signUpUser(SignupDTO userData) throws DuplicateEmailException, DuplicateNicknameException {
 		// variable
 		String nickname = userData.getNickname();
 		String email = userData.getEmail();
@@ -71,14 +71,14 @@ public class AuthService {
 			throw new DuplicateEmailException(email);
 		}
 		if (nicknameExists(nickname)) {
-			throw new DuplicatieNicknameException(nickname);
+			throw new DuplicateNicknameException(nickname);
 		}
 
 		// 비밀번호 해쉬화
 		String password = userData.getPassword();
 		String salt = PasswordUtils.generateSalt();
 		String hashPassword = PasswordUtils.hashPassword(password, salt);
-		userData.setId(UUIDgenerater.generator());
+		userData.setId(UUIDGenerater.generator());
 		userData.setPassword(hashPassword + ":" + salt);
 
 		// DB로 데이터 전달
