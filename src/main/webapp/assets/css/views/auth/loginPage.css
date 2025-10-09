@@ -56,3 +56,38 @@
   border-right: 1px solid var(--ck-white);
   border-radius: 0px 20px 20px 0px;
 }
+
+.login-page__input-id, .login-page__input-pw {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-page__input-id>img, .login-page__input-pw>img,
+  .login-page__input-pw button {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+}
+
+.login-page__input-id>img, .login-page__input-pw>img:first-child {
+  left: 10px;
+}
+
+.login-page__input-pw button {
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: inherit !important;
+}
+
+.login-page__input-pw button img {
+  width: 30px;
+  height: 30px;
+}
+
+.login-page__input-id>input, .login-page__input-pw>input {
+  width: 100%;
+  padding-left: 45px;
+}

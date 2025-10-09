@@ -76,7 +76,8 @@ public class LoginController extends HttpServlet {
 			// Optional Check
 			if (userId.isPresent()) {
 				session.setAttribute("userId", userId.get());
-				resp.sendRedirect("/index.jsp");
+				// 브라우저 url에 index.js가 안나오도록 고민해야함..
+				resp.sendRedirect("/");
 			} else {
 				req.setAttribute("error_result", "아이디 혹은 비밀번호가 틀렸습니다.");
 				req.getRequestDispatcher("/views/auth/login.jsp").forward(req, resp);
