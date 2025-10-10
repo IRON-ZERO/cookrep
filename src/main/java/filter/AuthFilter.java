@@ -16,7 +16,9 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 	private static final Set<String> NOT_LOGIN_PAGES = Set.of("/", "/login", "/join");
-	private static final Set<String> LOGIN_PAGES = Set.of("/", "/rank", "/search", "/mypage", "/logout");
+	private static final Set<String> LOGIN_PAGES = Set.of("/", "/rank", "/search", "/new-recipe", "/mypage", "/logout");
+	private static final Set<String> START_WITH_STATIC_RESOURCE = Set.of("/assets", "/js/", "/images/");
+	private static final Set<String> END_WITH_STATIC_RESOURCE = Set.of(".css", ".js", ".png");
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -26,8 +28,7 @@ public class AuthFilter implements Filter {
 		HttpSession session = req.getSession();
 		Object userId = session.getAttribute("userId");
 		String path = req.getRequestURI();
-		if (path.startsWith("/assets/") || path.startsWith("/js/") || path.startsWith("/images/") || path.endsWith(".css")
-			|| path.endsWith(".js") || path.endsWith(".png") || path.endsWith(".jpg")) {
+		if (START_WITH_STATIC_RESOURCE.contains(path) || END_WITH_STATIC_RESOURCE.contains(path)) {
 			chain.doFilter(request, response);
 			return;
 		}

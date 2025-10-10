@@ -4,7 +4,7 @@
   isELIgnored="false"
 %>
 <%
-  LocalDate localDate =LocalDate.now() ;
+  LocalDate localDate = LocalDate.now();
   int year = localDate.getYear();
   request.setAttribute("year", year);
  %>
