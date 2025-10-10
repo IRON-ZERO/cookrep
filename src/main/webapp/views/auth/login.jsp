@@ -9,7 +9,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="./assets/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="/assets/css/style.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap" rel="stylesheet">
@@ -30,22 +30,32 @@
       <%-- Form --%>
       <form id="loginForm" class="auth-page__form" action="/login?action=username-login" method="POST">
         <fieldset class="auth-page__form--fieldset">
-          <legend hidden>로그인</legend>
-          
+          <legend>로그인</legend>
           <%-- Identify Name --%>
           <label id="loginIdLabel" for="loginIdInput">Username</label>
-          <%-- min max 값  --%>
-          <input id="loginIdInput" name="identifyName" type="text" placeholder="유저이름을 입력해주세요." required />
+          <div class="login-page__input-id">
+            <img alt="유저아이콘" src="/assets/images/icons/user-icon-1.png"/>
+            <input id="loginIdInput" name="identifyName" type="text"
+              placeholder="유저이름을 입력해주세요." minlength="5" maxlength="20" required
+            />
+          </div>
           <c:if test="${not empty error_nickname}">
             <small>${error_nickname}</small>
           </c:if>
           <c:if test="${not empty error_email}">
             <small>${error_email}</small>
           </c:if>
+          
           <%-- Password --%>
           <label for="loginPwInput">Password</label>
-          <%-- min max 값  --%>
-          <input id="loginPwInput" name="password" type="password" placeholder="비밀번호를 입력해주세요." required />
+          <div class="login-page__input-pw">
+            <img alt="유저아이콘" src="/assets/images/icons/lock.png"/>
+            <%-- min max 값  --%>
+            <input id="loginPwInput" name="password" type="password" placeholder="비밀번호를 입력해주세요." required />
+            <button type="button">            
+              <img alt="유저아이콘" src="/assets/images/icons/closed-eyes.png"/>
+            </button>
+          </div>
           
           
           <button type="submit">로그인</button>

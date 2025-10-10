@@ -29,7 +29,7 @@
   gap: 20px;
 }
 /* Auth Form Container Img */
-.auth-page__form--cont img {
+.auth-page__form--cont > img {
   width: 300px;
   margin: 40px 0px;
 }
@@ -48,7 +48,11 @@
   flex-direction: column;
   gap: 20px;
 }
-
+.auth-page__form--fieldset legend{
+  height:0;
+  width:0;
+  opacity:0;
+}
 .auth-page__form--fieldset label {
   font-size: 25px;
   color: var(--ck-white);
