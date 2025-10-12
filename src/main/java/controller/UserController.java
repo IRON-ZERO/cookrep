@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -19,9 +20,6 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/mypage","/mypage/freezer","/mypage/scrap"})
 public class UserController extends HttpServlet {
-    String testUserId = "1";
-    int testIngredientId = 1;
-    int[] testIngredientIds = {1,2,3};
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -71,13 +69,14 @@ public class UserController extends HttpServlet {
         req.getRequestDispatcher(view).forward(req, resp);
     }
 
-    // return 되는 path는 화면 만들면 수정
     // 유저 조회, 업데이트
     private String getProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
         UserDTO user = null;
+        HttpSession session = req.getSession(false);
+        String userId = (String)session.getAttribute("userId");
         try {
-            user = userService.getProfile(testUserId);
+            user = userService.getProfile(userId);
             req.setAttribute("status","200");
             req.setAttribute("message","사용자 정보 조회에 성공했습니다.");
             req.setAttribute("user",user);
@@ -90,9 +89,11 @@ public class UserController extends HttpServlet {
     private String updateProfile(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
         UserDTO userDTO = new UserDTO();
+        HttpSession session = req.getSession(false);
+        String userId = (String)session.getAttribute("userId");
         try {
             BeanUtils.populate(userDTO,req.getParameterMap());
-            userDTO.setId(testUserId);
+            userDTO.setId(userId);
             userService.updateProfile(userDTO);
             req.setAttribute("status","200");
             req.setAttribute("message","사용자 정보 업데이트에 성공했습니다.");
@@ -113,7 +114,10 @@ public class UserController extends HttpServlet {
     // 냉장고(유저가 가진 재료) 추가, 삭제, 조회
     private String deleteIngredient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
-        String userId = req.getParameter("userId");
+
+        HttpSession session = req.getSession(false);
+        String userId = (String)session.getAttribute("userId");
+
         int ingredientId = Integer.parseInt(req.getParameter("ingredientId"));
         try {
             userService.removeIngredient(userId, ingredientId);
@@ -127,17 +131,22 @@ public class UserController extends HttpServlet {
     }
     private String addIngredient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
-//        언어수준 7에선 사용 못하는 문법. java 8+ 사용 시 개선
-//        int[] ingredientIds = Arrays.stream(req.getParameter("ingredientIds").trim().split(","))
-//                                    .mapToInt(Integer::parseInt)
-//                                    .toArray();
-        String[] stringIngredientIds = req.getParameter("ingredientIds").replaceAll(" ","").split(",");
-        int[] ingredientIds = new int[stringIngredientIds.length];
-        for(int i = 0; i < stringIngredientIds.length; i++){
-            ingredientIds[i] = Integer.parseInt(stringIngredientIds[i]);
-        }
+
+        int[] ingredientIds = Arrays.stream(req.getParameter("ingredientIds").trim().split(","))
+                                    .mapToInt(Integer::parseInt)
+                                    .toArray();
+//        위의 코드는 언어수준 7에선 사용 못하는 문법. java 8 미만에서 사용한다면 아래 코드로
+//        String[] stringIngredientIds = req.getParameter("ingredientIds").replaceAll(" ","").split(",");
+//        int[] ingredientIds = new int[stringIngredientIds.length];
+//        for(int i = 0; i < stringIngredientIds.length; i++){
+//            ingredientIds[i] = Integer.parseInt(stringIngredientIds[i]);
+//        }
+
+        HttpSession session = req.getSession(false);
+        String userId = (String)session.getAttribute("userId");
+
         try {
-            userService.addIngredient(testUserId,ingredientIds);
+            userService.addIngredient(userId,ingredientIds);
             req.setAttribute("status","200");
             req.setAttribute("message","재료 추가에 성공했습니다.");
         } catch (SQLException e) {
@@ -150,8 +159,12 @@ public class UserController extends HttpServlet {
     private String getIngredients(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
         UserDTO user = null;
+
+        HttpSession session = req.getSession(false);
+        String userId = (String)session.getAttribute("userId");
+
         try {
-            user = userService.getProfile(testUserId);
+            user = userService.getProfile(userId);
             req.setAttribute("status","200");
             req.setAttribute("message","재료 조회에 성공했습니다.");
         } catch (SQLException e) {
