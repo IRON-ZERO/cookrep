@@ -25,7 +25,7 @@
       <%-- Form --%>
       <form id="joinForm" class="auth-page__form" action="/join" method="POST">
         <fieldset class="auth-page__form--fieldset">
-          <legend hidden>회원가입</legend>
+          <legend>회원가입</legend>
           <%-- username --%>
           <label for="joinNicknameInput">Username</label>
           <%-- min max 값  --%>
