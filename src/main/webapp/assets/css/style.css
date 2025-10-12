@@ -5,23 +5,31 @@
 
 /* Views */
 @import "./views/auth/loginPage.css";
+
 @import "./views/auth/joinPage.css";
+
+@import "./views/404.css";
 
 /* Components */
 @import "./components/shared.css";
+
+@import "./components/header.css";
+
+@import "./components/footer.css";
+
 @import "./views/auth/authComponents.css";
 
 /* Global Style */
 :root {
   --ck-white: #EFEFEF;
-  --ck-green-light: rgb(121, 195, 104);
+  --ck-green-light: #79c368;
   --ck-green: #3F7D58;
-  --ck-green-dark: rgb(39, 123, 64);
+  --ck-green-dark: #277b40;
   --ck-red: #EC5228;
-  --ck-red-dark: rgb(218, 66, 58);
+  --ck-red-dark: #da423a;
   --ck-orange: #EF9651;
-  --ck-orange-dark: rgb(226, 113, 80);
-  --ck-subTxt: rgb(157, 157, 157);
+  --ck-orange-dark: #e27150;
+  --ck-subTxt: #9d9d9d;
   --ck-subTxt-dark: #666666;
   --ck-txt: #434343;
 }
@@ -32,6 +40,20 @@
 
 html, body {
   width: 100%;
+  min-height: 100dvh;
+}
+
+body {
+  background-color: var(--ck-white);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  margin-top: 150px;
+  display: flex;
+  flex: 1;
 }
 
 h1, h2, h3, h4, h5, h6, p, span, button, label, input, input::placeholder
@@ -68,7 +90,8 @@ button {
 }
 
 input {
-  font-size: 18px; padding : 10px 20px;
+  font-size: 18px;
+  padding: 10px 20px;
   background-color: #C8C8C8;
   border-radius: 10px;
   border: none;
