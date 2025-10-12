@@ -1,0 +1,64 @@
+@charset "UTF-8";
+/* Join page Background */
+.join-page__bg {
+  background:
+    url("https://images.unsplash.com/photo-1550077794-09c524079666?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    no-repeat center/cover;
+}
+
+.join-page__addressBtn-cont {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.join-page__addressBtn-cont--header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.join-page__addressBtn-cont--header div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.join-page__addressBtn-cont--header div input{
+  width:0px;
+  height:0px;
+  opacity: 0;
+  position:absolute; 
+}
+.join-page__address-cont--checkbox{
+  display:flex;
+  align-items: center;
+  gap:10px;
+  cursor: pointer;
+}
+.join-page__address-cont--checkbox span:first-child{
+  color:var(--ck-white);
+}
+.join-page__address-cont--checkbox-bg{
+  display:flex;
+  width: 75px;
+  height: auto;
+  background-color: var(--ck-subTxt);
+  padding: 5px 10px;
+  border-radius: 50px;
+  transition: background-color ease-in-out 0.3s;
+}
+.address-self--active{
+  background-color: var(--ck-green);
+}
+.join-page__address-cont--checkbox-bg span{
+  width:25px;
+  height:25px;
+  border-radius:100%;
+  background-color:  var(--ck-subTxt-dark);
+  position:relative;
+  transition: background-color ease-in-out 0.3s, transform ease-in-out 0.3s;
+}
+.join-page__address-cont--checkbox-bg span.address-self--activeBtn{
+  background-color: var(--ck-green-light);
+  transform:translateX(100%);
+}
