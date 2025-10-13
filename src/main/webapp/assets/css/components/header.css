@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+header {
+  background-color: var(--ck-white);
+  color: var(--ck-txt);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 100%;
+  height: 150px;
+  box-shadow: 0px 5px 15px var(--ck-txt);
+  padding: 35px;
+}
+
+header>div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ck-subTxt);
+}
+
+header>div>a {
+  animation: 60s infinite ease-in-out shakeLogo;
+  transform-origin: center;
+}
+
+header>div img {
+  width: 150px;
+}
+
+header>div nav, header>div nav:last-child div, header>div nav ul {
+  display: flex;
+}
+
+header>div nav {
+  margin-left: 120px;
+}
+
+header>div nav ul {
+  gap: 50px;
+}
+
+header>div nav:nth-child(2) a, header>div nav:last-child a {
+  display: block;
+  text-wrap: nowrap;
+  font-size: 25px;
+  font-weight: 600;
+  color: gray;
+}
+
+header>div nav:nth-child(2) a {
+  transform: translateY(0);
+  transition: color ease-in-out 0.2s, transform ease-in-out 0.2s;
+}
+
+header>div nav a.nav-active {
+  color: var(--ck-red);
+}
+
+header>div nav a:active {
+  color: var(--ck-red);
+}
+
+header>div nav:nth-child(2) a:hover {
+  color: var(--ck-red);
+  transform: translateY(-10px);
+}
+
+header>div nav:last-child {
+  margin-left: auto;
+}
+
+header>div nav:last-child  div {
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@keyframes shakeLogo { 
+  0% {
+  transform: rotateZ(0deg);
+  }
+  1%{
+  transform: rotateZ(10deg);
+  }
+  2%{
+  transform: rotateZ(-10deg);
+  }
+  3%{
+  transform: rotateZ(10deg);
+  }
+  4%{
+  transform: rotateZ(0deg);
+  }
+  100%{
+  transform: rotateZ(0deg);
+  }
+}

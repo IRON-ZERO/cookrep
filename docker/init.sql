@@ -3,16 +3,16 @@ SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 사용자 테이블
 CREATE TABLE User (
-                      user_id VARCHAR(30) PRIMARY KEY,
+                      user_id VARCHAR(36) PRIMARY KEY,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                      nickname VARCHAR(20),
-                      first_name VARCHAR(20),
-                      last_name VARCHAR(20),
+                      nickname VARCHAR(20) NOT NULL UNIQUE,
+                      first_name VARCHAR(20) NOT NULL,
+                      last_name VARCHAR(20) NOT NULL,
                       country VARCHAR(50),
                       city  VARCHAR(50),
-                      email VARCHAR(100),
-                      password VARCHAR(20)
+                      email VARCHAR(100) NOT NULL UNIQUE,
+                      password VARCHAR(90)
 
 );
 
@@ -25,7 +25,7 @@ CREATE TABLE Ingredient (
 
 -- 사용자-재료 관계 (사용자 냉장고)
 CREATE TABLE userIngredient (
-                                user_id VARCHAR(30) NOT NULL,                   -- users.user_id와 타입 맞춤
+                                user_id VARCHAR(36) NOT NULL,                   -- users.user_id와 타입 맞춤
                                 ingredient_id INT NOT NULL,                      -- ingredient_id와 타입 맞춤
                                 PRIMARY KEY (user_id, ingredient_id),
                                 FOREIGN KEY (user_id) REFERENCES User(user_id),
@@ -35,7 +35,7 @@ CREATE TABLE userIngredient (
 -- 레시피 테이블
 CREATE TABLE Recipe (
                         recipe_id VARCHAR(50) PRIMARY KEY,  -- 예: 20251001_001
-                        user_id VARCHAR(30),
+                        user_id VARCHAR(36),
                         title VARCHAR(100),
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -72,7 +72,7 @@ CREATE TABLE RecipeIngredient (
 -- 댓글 테이블
 CREATE TABLE Comment (
                          comment_id INT AUTO_INCREMENT PRIMARY KEY,   -- 댓글 수 많지 않으면 INT 충분
-                         user_id VARCHAR(30) NOT NULL,
+                         user_id VARCHAR(36) NOT NULL,
                          recipe_id VARCHAR(50) NOT NULL,
                          contents TEXT NOT NULL,                      -- 긴 글은 TEXT
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -84,7 +84,7 @@ CREATE TABLE Comment (
 -- 스크랩 테이블
 CREATE TABLE Scrap (
                        recipe_id VARCHAR(50) NOT NULL,
-                       user_id VARCHAR(30) NOT NULL,
+                       user_id VARCHAR(36) NOT NULL,
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        PRIMARY KEY (recipe_id, user_id),
                        FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id),
