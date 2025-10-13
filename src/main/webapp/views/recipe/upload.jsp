@@ -259,5 +259,9 @@
         location.href = `/mypage/recipe?action=detail&recipe_id=${result.recipe_id}`;
     }
 </script>
+
+<script src="/assets/js/header.js">
+
+</script>
 </body>
 </html>
