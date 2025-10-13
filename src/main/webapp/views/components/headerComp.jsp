@@ -1,6 +1,6 @@
-<%@ page language="java"
-  pageEncoding="UTF-8" isELIgnored="false"
-%>
+<%--<%@ page language="java"--%>
+<%--  pageEncoding="UTF-8" isELIgnored="false"--%>
+<%--%>--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header class="font__notosans">
   <div>
@@ -33,6 +33,7 @@
           <a href="/logout">로그아웃</a>
         </div>
       </c:if>
+
     </nav>
   </div>
 </header>
