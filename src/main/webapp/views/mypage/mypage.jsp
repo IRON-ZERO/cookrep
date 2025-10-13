@@ -5,115 +5,102 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>${user.nickname}님의 프로필 | CookRep</title>
-		<link rel="stylesheet" href="/assets/css/mypage/style.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+				href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
+				rel="stylesheet"
+		>
+		<link rel="stylesheet" href="/assets/css/mypage/mypage.css">
 		<link rel="stylesheet" href="/assets/css/style.css"/>
 	</head>
 	<body>
-		<%@ include file="/views/components/headerComp.jsp"%>
-		<div class="layout">
+		<div class="mypage__layout">
 			<!-- 사이드바 -->
-			<aside class="sidebar">
+			<aside class="mypage__navigation">
+				<a href="/">
+					<img alt="로고이미지" src="/assets/images/logos/logo_1.png" />
+				</a>
 				<div class="profile-box">
-					<img src="https://via.placeholder.com/100" alt="profile" class="profile-img">
+					<img src="/assets/images/icons/user-icon-1.png" alt="profile" class="profile-img">
 					<h3>${user.nickname}</h3>
 					<p>${user.email}</p>
 				</div>
-				<nav class="menu">
-					<a href="/mypage" class="active">프로필</a>
-					<a href="/mypage/freezer">내 냉장고</a>
-					<a href="/mypage/scrap">내 냉동고</a>
+				<nav>
+					<a href="/mypage" class="active">
+						<div>
+							<img src="assets/images/icons/profile_icon.png" alt="profile_icon">
+							<p>프로필</p>
+						</div>
+					</a>
+					<a href="/mypage/fridge">
+						<div>
+							<img src="assets/images/icons/fridge_icon.png" alt="fridge_icon">
+							<p>내 냉장고</p>
+						</div>
+						</a>
+					<a href="/mypage/scrap">
+						<div>
+							<img src="assets/images/icons/fridge_icon.png" alt="freezer_icon">
+							<p>내 냉동고</p>
+						</div>
+					</a>
 				</nav>
 				<div class="logout"><a href="/logout">로그아웃</a></div>
 			</aside>
 			
 			<!-- 메인 영역 -->
-			<main class="content">
-				<section class="section profile-section">
-					<h2>${user.nickname}님의 Profile</h2>
-					
-					<div class="card">
-						<div class="card-header">
-							<h3>기본 정보</h3>
-							<button type="button" class="edit-btn" onclick="toggleEdit(this)">Edit ✏️</button>
+			<section class="mypage__content">
+				<span class="content-header">${user.nickname}님의 Profile</span>
+				<div class="user-info">
+					<div class="info-header">
+						<a href="">✏️</a>
+					</div>
+					<div class="info-body">
+						<div class="info-view-wrapper">
+							<div class="info-view-image">
+								<img src="/assets/images/icons/user-icon-1.png" alt="profile_picture">
+							</div>
+							<div class="info-view-context">
+								<h3>${user.nickname}</h3>
+								<span>${user.email}</span>
+							</div>
 						</div>
-						
-						<div class="card-body">
-							<!-- 보기 모드 -->
-							<div class="view-mode">
-								<div class="user-info">
-									<img src="https://via.placeholder.com/80" alt="profile" class="profile-img">
-									<div>
-										<h4>${user.nickname}</h4>
-										<p>${user.email}</p>
-										<p>${user.firstName} ${user.lastName}</p>
-										<p>${user.city}, ${user.country}</p>
+						<div class="detail-info-wrapper">
+							<div class="detail-info">
+								<div class="detail-info-header">Personal Information</div>
+								<div class="detail-info-body">
+									<div class="body-item">
+										<label for="firstName">이름(성)</label>
+										<span id="firstName">${user.firstName}</span>
+									</div>
+									<div class="body-item">
+										<label for="lastName">이름</label>
+										<span id="lastName">${user.lastName}</span>
+									</div>
+									<div class="body-item">
+										<label for="email">이메일</label>
+										<span id="email">${user.email}</span>
 									</div>
 								</div>
 							</div>
-							
-							<!-- 수정 모드 -->
-							<form class="edit-mode" action="/mypage" method="post" style="display:none;">
-								<input type="hidden" name="action" value="updateprofile">
-								<div class="user-info-edit">
-									<img src="https://via.placeholder.com/80" alt="profile" class="profile-img">
-									<h4>${user.nickname}</h4>
-									<p>${user.email}</p>
-									<div class="input-group">
-										<label>이름</label>
-										<input type="text" name="firstName" value="${user.firstName}">
-										<input type="text" name="lastName" value="${user.lastName}">
+							<div class="detail-info">
+								<div class="detail-info-header">Address</div>
+								<div class="detail-info-body">
+									<div class="body-item">
+										<label for="country">Country</label>
+										<span id="country">${user.country}</span>
 									</div>
-									<div class="input-group">
-										<label>도시 / 국가</label>
-										<input type="text" name="city" value="${user.city}">
-										<input type="text" name="country" value="${user.country}">
+									<div class="body-item">
+										<label for="city">City</label>
+										<span id="city">${user.city}</span>
 									</div>
 								</div>
-								<div class="edit-buttons">
-									<button type="submit" class="save-btn">저장</button>
-									<button type="button" class="cancel-btn" onclick="toggleEdit(this)">취소</button>
-								</div>
-							</form>
+							</div>
 						</div>
 					</div>
-				
-				
-				<div class="card">
-						<div class="card-header">
-							<h3>Personal Information</h3>
-						</div>
-						<div class="card-body">
-							<table class="info-table">
-								<tr>
-									<th>이름(성)</th><td>${user.firstName}</td>
-									<th>이름</th><td>${user.lastName}</td>
-								</tr>
-								<tr>
-									<th>이메일</th><td>${user.email}</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-					
-					<div class="card">
-						<div class="card-header">
-							<h3>Address</h3>
-						</div>
-						<div class="card-body">
-							<table class="info-table">
-								<tr>
-									<th>Country</th><td>${user.country}</td>
-									<th>City</th><td>${user.city}</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-					
-					<div class="delete-btn-area">
-						<button class="delete-btn">회원탈퇴</button>
-					</div>
-				</section>
-			</main>
+				</div>
+			</section>
 		</div>
 		
 		<%@ include file="/views/components/footerComp.jsp"%>

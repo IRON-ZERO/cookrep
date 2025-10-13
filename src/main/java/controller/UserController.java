@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/mypage","/mypage/freezer","/mypage/scrap"})
+@WebServlet(urlPatterns = {"/mypage","/mypage/fridge","/mypage/scrap"})
 public class UserController extends HttpServlet {
 
     @Override
@@ -32,7 +32,7 @@ public class UserController extends HttpServlet {
                 case "/mypage":
                     view = getProfile(req,resp);
                     break;
-                case "/mypage/freezer" :
+                case "/mypage/fridge" :
                     view = getIngredients(req,resp);
                     break;
                 case "/mypage/scrap" :
@@ -173,6 +173,6 @@ public class UserController extends HttpServlet {
             req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
         }
         req.setAttribute("user",user);
-        return "/views/mypage/myfreezer.jsp";
+        return "/views/mypage/myfridge.jsp";
     }
 }

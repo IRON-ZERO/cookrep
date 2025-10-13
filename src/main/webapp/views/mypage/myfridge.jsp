@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>${user.nickname}님의 냉장고 | CookRep</title>
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/mypage/style.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/mypage/mypageStyle.css">
 		<link rel="stylesheet" href="/assets/css/style.css"/>
 		<style>
             .ingredient-tag {
@@ -54,8 +54,6 @@
 		</style>
 	</head>
 	<body>
-		<%@ include file="/views/components/headerComp.jsp"%>
-		
 		<div class="layout">
 			<!-- 사이드바 -->
 			<aside class="sidebar">
@@ -66,7 +64,7 @@
 				</div>
 				<nav class="menu">
 					<a href="/mypage">프로필</a>
-					<a href="/mypage/freezer" class="active">내 냉장고</a>
+					<a href="/mypage/fridge" class="active">내 냉장고</a>
 					<a href="/myscrap">내 냉동고</a>
 				</nav>
 				<div class="logout"><a href="/logout">로그아웃</a></div>

@@ -10,6 +10,8 @@
 
 @import "./views/404.css";
 
+@import "mypage/mypage.css";
+
 /* Components */
 @import "./components/shared.css";
 
