@@ -67,7 +67,7 @@
 				<nav class="menu">
 					<a href="/mypage">프로필</a>
 					<a href="/mypage/freezer" class="active">내 냉장고</a>
-					<a href="/myscrap">내 냉동고</a>
+					<a href="/mypage/scrap">내 냉동고</a>
 				</nav>
 				<div class="logout"><a href="/logout">로그아웃</a></div>
 			</aside>
