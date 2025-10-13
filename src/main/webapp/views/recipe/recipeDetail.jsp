@@ -82,8 +82,8 @@
 
     <!-- Back / Edit / Delete 버튼 -->
     <div class="back-btn">
-        <button onclick="location.href='mypage?action=list'">Back to List</button>
-        <button onclick="location.href='mypage?action=edit&recipe_id=<%= recipe.getRecipe_id() %>'">수정</button>
+        <button onclick="location.href='/mypage/recipe?action=list'">Back to List</button>
+        <button onclick="location.href='/mypage/recipe?action=edit&recipe_id=<%= recipe.getRecipe_id() %>'">수정</button>
         <button onclick="deleteRecipe('<%= recipe.getRecipe_id() %>')">삭제</button>
     </div>
 </div>
@@ -92,13 +92,13 @@
     function deleteRecipe(recipeId) {
         if (!confirm("정말 삭제하시겠습니까?")) return;
 
-        fetch(`mypage?action=delRecipe&recipe_id=${recipeId}`, {
+        fetch(`/mypage/recipe?action=delRecipe&recipe_id=${recipeId}`, {
             method: 'POST'
         })
             .then(res => {
                 if (res.ok) {
                     alert("삭제 완료!");
-                    location.href = "mypage?action=list";
+                    location.href = "/mypage/recipe?action=list";
                 } else {
                     alert("삭제 실패");
                 }

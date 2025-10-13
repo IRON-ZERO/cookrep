@@ -42,7 +42,7 @@
         if (recipes != null) {
             for (RecipeDTO r : recipes) {
     %>
-    <div class="card" onclick="location.href='mypage?action=detail&recipe_id=<%= r.getRecipe_id() %>'">
+    <div class="card" onclick="location.href='/mypage/recipe?action=detail&recipe_id=<%= r.getRecipe_id() %>'">
         <img src="<%= r.getThumbnail_image_url() %>" alt="<%= r.getTitle() %>">
         <div class="card-title"><%= r.getTitle() %></div>
     </div>

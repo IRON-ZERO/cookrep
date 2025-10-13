@@ -196,7 +196,7 @@
             });
 
             alert("레시피 수정 완료!");
-            location.href = `/mypage?action=detail&recipe_id=${recipeId}`;
+            location.href = `/mypage/recipe?action=detail&recipe_id=${recipeId}`;
 
         } catch (err) {
             console.error("레시피 수정 실패", err);

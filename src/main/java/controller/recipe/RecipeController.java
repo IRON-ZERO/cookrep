@@ -26,7 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/mypage")
+@WebServlet("/mypage/recipe")
 public class RecipeController extends HttpServlet {
     private S3Client s3Client;
 
@@ -92,13 +92,13 @@ public class RecipeController extends HttpServlet {
     private String editRecipe(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String recipeId = req.getParameter("recipe_id");
         if (recipeId == null || recipeId.isEmpty()) {
-            return "redirect:/mypage?action=list";
+            return "redirect:/mypage/recipe?action=list";
         }
 
         try {
             RecipeDTO recipe = recipeDAO.getRecipeById(recipeId);
             if (recipe == null) {
-                return "redirect:/mypage?action=list";
+                return "redirect:/mypage/recipe?action=list";
             }
 
             // S3 Presigned URL 생성 (썸네일 + 단계별 이미지)
@@ -154,7 +154,7 @@ public class RecipeController extends HttpServlet {
             if (recipeId == null || recipeId.isEmpty()) return "redirect:/mypage?action=list";
 
             RecipeDTO recipe = recipeDAO.getRecipeById(recipeId);
-            if (recipe == null) return "redirect:/mypage?action=list";
+            if (recipe == null) return "redirect:/mypage/recipe?action=list";
 
             // 메인 이미지 Presigned URL
             if (recipe.getThumbnail_image_url() != null && !recipe.getThumbnail_image_url().isEmpty()) {
@@ -181,7 +181,7 @@ public class RecipeController extends HttpServlet {
     // ---------------- 삭제 ----------------
     private String delRecipe(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String recipeId = req.getParameter("recipe_id");
-        if (recipeId == null || recipeId.isEmpty()) return "redirect:/mypage?action=list";
+        if (recipeId == null || recipeId.isEmpty()) return "redirect:/mypage/recipe?action=list";
 
         DBConnection db = new DBConnection();
         Connection con = null;
@@ -222,7 +222,7 @@ public class RecipeController extends HttpServlet {
                 return null;
             }
 
-            return "redirect:/mypage?action=list";
+            return "redirect:/mypage/recipe?action=list";
 
         } catch (Exception e) {
             e.printStackTrace();

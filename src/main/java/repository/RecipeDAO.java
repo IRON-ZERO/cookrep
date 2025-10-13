@@ -145,8 +145,8 @@ public class RecipeDAO {
 
     // 레시피 삭제 (steps 먼저 삭제)
     public void deleteRecipe(Connection con, String recipeId) throws SQLException {
-        String deleteStepsSql = "DELETE FROM recipesteps WHERE recipe_id = ?";
-        String deleteRecipeSql = "DELETE FROM recipe WHERE recipe_id = ?";
+        String deleteStepsSql = "DELETE FROM RecipeSteps WHERE recipe_id = ?";
+        String deleteRecipeSql = "DELETE FROM Recipe WHERE recipe_id = ?";
 
         // DAO 안에서는 Connection을 닫지 않고, commit/rollback도 Controller에서 처리
         try (PreparedStatement pstmt1 = con.prepareStatement(deleteStepsSql)) {

@@ -119,13 +119,22 @@
             recipeData.mainImageUrl = `users/${userId}/recipes/${now}/main/${mainFile.name}`;
         }
 
-        await fetch("/recipe/register", {
+        const registerResp = await fetch("/recipe/register", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(recipeData)
         });
 
+        if (!registerResp.ok) {
+            alert("레시피 등록 실패!");
+            return;
+        }
+
+        const result = await registerResp.json(); // { recipe_id: "4154af23-..." }
+
         alert("레시피 등록 완료!");
+        // 등록된 레시피 상세 페이지로 이동
+        location.href = `/mypage/recipe?action=detail&recipe_id=${result.recipe_id}`;
     }
 
 
