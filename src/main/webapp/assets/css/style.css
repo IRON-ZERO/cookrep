@@ -8,6 +8,8 @@
 
 @import "./views/auth/joinPage.css";
 
+@import "./views/search/search.css";
+
 @import "./views/404.css";
 
 /* Components */
@@ -16,6 +18,8 @@
 @import "./components/header.css";
 
 @import "./components/footer.css";
+
+@import "./components/grid-comp.css";
 
 @import "./views/auth/authComponents.css";
 
