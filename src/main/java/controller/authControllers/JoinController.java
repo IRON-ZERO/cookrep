@@ -69,7 +69,7 @@ public class JoinController extends HttpServlet {
 			HttpSession session = req.getSession();
 			session.setAttribute("userId", userId);
 			// redirect
-			resp.sendRedirect("/index.jsp");
+			resp.sendRedirect("/");
 		} catch (DuplicateEmailException e) {
 			req.setAttribute("error_email", "이미 사용 중인 이메일입니다.");
 			setUserAttribute(req, nickname, email, firstName, lastName, country, city);

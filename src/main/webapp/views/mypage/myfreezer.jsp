@@ -6,6 +6,7 @@
 		<meta charset="UTF-8">
 		<title>${user.nickname}님의 냉장고 | CookRep</title>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/mypage/style.css">
+		<link rel="stylesheet" href="/assets/css/style.css"/>
 		<style>
             .ingredient-tag {
                 display: inline-block;
@@ -53,10 +54,11 @@
 		</style>
 	</head>
 	<body>
+		<%@ include file="/views/components/headerComp.jsp"%>
+		
 		<div class="layout">
 			<!-- 사이드바 -->
 			<aside class="sidebar">
-				<div class="logo">Cook<span class="accent">Rep</span></div>
 				<div class="profile-box">
 					<img src="https://via.placeholder.com/100" alt="profile" class="profile-img">
 					<h3>${user.nickname}</h3>
@@ -105,10 +107,7 @@
 			</main>
 		</div>
 		
-		<footer class="footer">
-			<p>© 2025 CookRep. All rights reserved.</p>
-		</footer>
-		
+		<%@ include file="/views/components/footerComp.jsp"%>
 		<script>
             // 재료 삭제 (폼 전송 방식)
             function deleteIngredient(userId, ingredientId) {

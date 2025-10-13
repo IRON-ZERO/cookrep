@@ -135,6 +135,7 @@ public class UserController extends HttpServlet {
         int[] ingredientIds = Arrays.stream(req.getParameter("ingredientIds").trim().split(","))
                                     .mapToInt(Integer::parseInt)
                                     .toArray();
+        System.out.println(ingredientIds[0]);
 //        위의 코드는 언어수준 7에선 사용 못하는 문법. java 8 미만에서 사용한다면 아래 코드로
 //        String[] stringIngredientIds = req.getParameter("ingredientIds").replaceAll(" ","").split(",");
 //        int[] ingredientIds = new int[stringIngredientIds.length];
