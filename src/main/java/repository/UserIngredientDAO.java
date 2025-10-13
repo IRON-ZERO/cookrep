@@ -21,7 +21,7 @@ public class UserIngredientDAO {
     }
 
     public void addUserIngredient(String userId, int ingredientId) throws SQLException {
-        // 1 -> user_id  2 -> ingredeint_id
+        // 1 -> user_id  2 -> ingredient_id
         String sql = "INSERT INTO userIngredient VALUES (?, ?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);

@@ -54,6 +54,8 @@
 		</style>
 	</head>
 	<body>
+		<%@ include file="/views/components/headerComp.jsp"%>
+		
 		<div class="layout">
 			<!-- 사이드바 -->
 			<aside class="sidebar">
