@@ -33,6 +33,13 @@
 
 
 <script>
+    // JSP 세션에서 userId 가져오기
+    const userId = "<%= (String)session.getAttribute("userId") %>";
+    if (!userId || userId === "null") {
+        alert("로그인이 필요합니다.");
+        window.location.href = "/login";
+    }
+
     let stepCount = 0;
 
     function addStep() {
@@ -52,7 +59,7 @@
     async function submitRecipe() {
         const fileNames = [];
 
-        const userId = "u001"; // 예시: 세션에서 가져올 수 있음
+        // const userId = "u001"; // 예시: 세션에서 가져올 수 있음
         const now = Date.now(); // 밀리초 단위로 유니크 값 생성
 
         // 메인 이미지

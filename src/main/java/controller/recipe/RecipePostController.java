@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +50,20 @@ public class RecipePostController extends HttpServlet {
             String recipeId = UUID.randomUUID().toString();
 
             // ---------------- JSON → 변수 변환 ----------------
-            String userId = root.has("userId") ? root.get("userId").asText() : "u001"; // 임시
+//            String userId = root.has("userId") ? root.get("userId").asText() : "u001"; // 임시
+            // ---------------- 세션에서 userId 가져오기 ----------------
+            HttpSession session = req.getSession(false); // 세션이 없으면 null 반환
+            String userId = null;
+            if (session != null) {
+                userId = (String) session.getAttribute("userId"); // LoginController에서 설정한 key와 동일
+            }
+
+            if (userId == null || userId.isEmpty()) {
+                resp.setStatus(401); // Unauthorized
+                resp.getWriter().write("{\"status\":\"error\",\"message\":\"로그인이 필요합니다.\"}");
+                return;
+            }
+
             String title = root.has("title") ? root.get("title").asText() : "";
             String mainImageUrl = root.has("mainImageUrl") ? root.get("mainImageUrl").asText() : "";
             int peopleCount = root.has("peopleCount") ? root.get("peopleCount").asInt() : 0;

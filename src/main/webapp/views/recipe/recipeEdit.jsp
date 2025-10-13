@@ -63,6 +63,14 @@
 </div>
 
 <script type="module">
+
+    // JSP 세션에서 userId 가져오기
+    const userId = "<%= (String)session.getAttribute("userId") %>";
+    if (!userId || userId === "null") {
+        alert("로그인이 필요합니다.");
+        window.location.href = "/login";
+    }
+
     // 단계 삭제
     function deleteStep(stepElement) {
         stepElement.remove();
@@ -97,7 +105,7 @@
             const recipeId = formData.get("recipe_id");
             const now = Date.now();
             // const userId = document.getElementById("userId").value; // hidden input 등에서 가져오기
-            const userId = "u001";
+            // const userId = "u001";
             // const now = new Date().toISOString().replace(/[:.-]/g, ""); // 예: 20251004T2130
 
             // -----------------------------

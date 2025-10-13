@@ -25,11 +25,11 @@ public class RecipeDAO {
         try (Connection con = db.open()) {
             con.setAutoCommit(false); // 트랜잭션 시작
 
-            String userId = "u001";
+//            String userId = "u001";
             // Recipe 테이블 저장
             try (PreparedStatement recipeStmt = con.prepareStatement(recipeSql)) {
                 recipeStmt.setString(1, recipe.getRecipe_id());
-                recipeStmt.setString(2, userId); // Session에서 가져온 userId
+                recipeStmt.setString(2, recipe.getUser_id()); // Session에서 가져온 userId
                 recipeStmt.setString(3, recipe.getTitle());
                 recipeStmt.setString(4, recipe.getThumbnail_image_url()); // 메인 이미지 URL
                 recipeStmt.setInt(5, recipe.getViews());

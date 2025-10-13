@@ -26,7 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/mypage/recipe")
+@WebServlet("/mypage/recipe/*")
 public class RecipeController extends HttpServlet {
     private S3Client s3Client;
 
@@ -57,13 +57,28 @@ public class RecipeController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.setCharacterEncoding("utf-8");
+
+        // 1️⃣ action 파라미터 먼저 체크
         String action = req.getParameter("action");
-        if (action == null || action.isEmpty()) action = "list";
+
+        // 2️⃣ action 파라미터 없으면 pathInfo 기반으로 판단
+        if (action == null || action.isEmpty()) {
+            String pathInfo = req.getPathInfo(); // 예: "/upload"
+            if (pathInfo != null && pathInfo.length() > 1) {
+                action = pathInfo.substring(1); // "/upload" -> "upload"
+            } else {
+                action = "list";
+            }
+        }
 
         String path = "/views/recipe";
         String view;
 
+        // 3️⃣ action 기반 분기
         switch (action) {
+            case "upload":
+                view = uploadRecipe(req, resp);
+                break;
             case "list":
                 view = list(req, resp);
                 break;
@@ -71,7 +86,7 @@ public class RecipeController extends HttpServlet {
                 view = getRecipe(req, resp);
                 break;
             case "delRecipe":
-                view = delRecipe(req, resp); // POST 요청도 여기서 처리
+                view = delRecipe(req, resp);
                 break;
             case "edit":
                 view = editRecipe(req, resp);
@@ -80,12 +95,27 @@ public class RecipeController extends HttpServlet {
                 view = list(req, resp);
         }
 
-
-        if (view.startsWith("redirect:/")) {
-            resp.sendRedirect(view.substring("redirect:".length()));
-        } else {
-            req.getRequestDispatcher(path + view).forward(req, resp);
+        // 4️⃣ view 반환
+        if (view != null) {
+            if (view.startsWith("redirect:/")) {
+                resp.sendRedirect(view.substring("redirect:".length()));
+            } else {
+                req.getRequestDispatcher(path + view).forward(req, resp);
+            }
         }
+    }
+
+
+    // ---------------- 레시피 업로드 페이지 ----------------
+    private String uploadRecipe(HttpServletRequest req, HttpServletResponse resp) {
+        HttpSession session = req.getSession();
+        String userId = (String) session.getAttribute("userId");
+
+        if (userId == null || userId.isEmpty()) {
+            return "redirect:/login"; // 로그인 필요 시
+        }
+
+        return "/upload.jsp"; // 업로드 페이지 JSP
     }
 
     // 내 레시피 수정
@@ -127,8 +157,8 @@ public class RecipeController extends HttpServlet {
     private String list(HttpServletRequest req, HttpServletResponse resp) {
         try {
             HttpSession session = req.getSession();
-            String userId = (String) session.getAttribute("user_id");
-            if (userId == null) userId = "u001"; // 임시
+            String userId = (String) session.getAttribute("userId");
+//            if (userId == null) userId = "u001"; // 임시
 
             List<RecipeDTO> recipes = recipeDAO.getRecipesByUser(userId);
 
