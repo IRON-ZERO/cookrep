@@ -1,0 +1,116 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f1f1f1;
+    padding: 40px;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+form {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h3 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #444;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+input[type="file"] {
+    margin-top: 8px;
+}
+
+button {
+    cursor: pointer !important;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+/* ✅ 주황색 버튼 */
+button[type="button"] {
+    background-color: #ff7f32; /* 밝은 주황 */
+    color: white;
+    transition: 0.2s;
+}
+
+button[type="button"]:hover {
+    background-color: #e56b1f; /* hover 시 진한 주황 */
+}
+
+#steps {
+    margin-top: 20px;
+}
+
+.step {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fafafa;
+    margin-bottom: 20px;
+}
+
+.step h4 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.step textarea {
+    height: 80px;
+}
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.btn-secondary {
+    background-color: #ff9a3d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #e57c1f;
+}
+
+.submit-btn {
+    display: block;
+    width: 100%;
+    background-color: #ff7f32;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 14px 0;
+    margin-top: 30px;
+}
+
+.submit-btn:hover {
+    background-color: #e56b1f;
+}

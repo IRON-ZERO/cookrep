@@ -5,13 +5,8 @@
 <html>
 <head>
     <title>레시피 수정</title>
-    <style>
-        .recipe-container { max-width: 800px; margin: auto; }
-        .step { margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 8px; }
-        .step img { max-width: 300px; display: block; margin-top: 10px; }
-        .delete-btn { color: red; cursor: pointer; margin-left: 10px; }
-        .btn { padding: 10px 20px; margin: 5px; cursor: pointer; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/assets/css/recipe/recipeEdit.css">
+<%--    <link rel="stylesheet" href="/assets/css/style.css"/>--%>
 </head>
 <body>
 <%
@@ -20,7 +15,7 @@
 %>
 <p>Recipe not found.</p>
 <%
-    } else {
+} else {
 %>
 <div class="recipe-container">
     <h1>레시피 수정</h1>
@@ -46,7 +41,7 @@
                 <h3>Step <%= step.getStepOrder() %></h3>
                 <textarea name="step_content_<%= step.getStepOrder() %>"><%= step.getContents() %></textarea><br>
                 <% if (step.getImageUrl() != null && !step.getImageUrl().isEmpty()) { %>
-                    <img src="<%= step.getImageUrl() %>" alt="Step Image">
+                <img src="<%= step.getImageUrl() %>" alt="Step Image">
                 <% } %>
                 <input type="file" name="step_image_<%= step.getStepOrder() %>">
                 <span class="delete-btn">삭제</span>

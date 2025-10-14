@@ -4,125 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Recipe Upload</title>
-    <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f8f9fa;
-            padding: 40px;
-            color: #333;
-        }
+    <!-- 외부 CSS 연결 -->
+<%--    <link rel="stylesheet" href="/assets/css/style.css"/>--%>
+    <link rel="stylesheet" type="text/css" href="/assets/css/recipe/recipeUpload.css">
 
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        form {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        h3 {
-            margin-top: 30px;
-            margin-bottom: 10px;
-            font-size: 18px;
-            color: #444;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 15px;
-            box-sizing: border-box;
-        }
-
-        textarea {
-            height: 100px;
-            resize: none;
-        }
-
-        input[type="file"] {
-            margin-top: 8px;
-        }
-
-        button {
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 16px;
-            font-size: 14px;
-        }
-
-        button[type="button"] {
-            background-color: #007bff;
-            color: white;
-            transition: 0.2s;
-        }
-
-        button[type="button"]:hover {
-            background-color: #0056b3;
-        }
-
-        #steps {
-            margin-top: 20px;
-        }
-
-        .step {
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            background-color: #fafafa;
-            margin-bottom: 20px;
-        }
-
-        .step h4 {
-            color: #333;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        .step textarea {
-            height: 80px;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            color: #fff;
-        }
-
-        .btn-secondary:hover {
-            background-color: #565e64;
-        }
-
-        .submit-btn {
-            display: block;
-            width: 100%;
-            background-color: #28a745;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            padding: 14px 0;
-            margin-top: 30px;
-        }
-
-        .submit-btn:hover {
-            background-color: #218838;
-        }
-    </style>
 </head>
-<%@ include file="/views/components/headerComp.jsp"%>
+
+
 
 <body>
 <h2>레시피 작성</h2>
