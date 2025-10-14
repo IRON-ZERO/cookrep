@@ -1,8 +1,11 @@
 package controller;
 
+import dto.recipe.RecipeDTO;
 import dto.user.UserDTO;
 import org.apache.commons.beanutils.BeanUtils;
 import service.IngredientService;
+import service.RecipeService;
+import service.ScrapService;
 import service.UserService;
 
 import javax.servlet.ServletException;
@@ -15,6 +18,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(urlPatterns = {"/mypage","/mypage/fridge","/mypage/scrap"})
 public class UserController extends HttpServlet {
@@ -152,20 +158,46 @@ public class UserController extends HttpServlet {
 
     private String getIngredients(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
+        RecipeService recipeService = new RecipeService();
+        ScrapService scrapService = new ScrapService();
         UserDTO user = null;
 
         HttpSession session = req.getSession(false);
-        String userId = (String)session.getAttribute("userId");
+        String userId = (String) session.getAttribute("userId");
 
         try {
+            // 1️⃣ 사용자 프로필 및 재료 목록 조회
             user = userService.getProfile(userId);
-            req.setAttribute("status","200");
-            req.setAttribute("message","재료 조회에 성공했습니다.");
+            req.setAttribute("user", user);
+
+            // 2️⃣ 냉장고 재료 이름 리스트 추출
+            List<String> ingredientNames = user.getIngredients().stream()
+                                               .map(ui -> ui.getIngredient().getName())
+                                               .toList();
+
+            // 3️⃣ 추천 레시피 + 일치 재료 개수 조회 (DAO에서 count 계산됨)
+            Map<RecipeDTO, Integer> recommendMap = recipeService.recommendWithMatchCount(ingredientNames);
+
+            // 4️⃣ 스크랩 상태 Map (key = recipe_id, value = true/false)
+            Map<String, Boolean> scrapStatusMap = new HashMap<>();
+            List<String> scrappedIds = scrapService.getScrappedRecipeIdsByUser(userId);
+
+            for (RecipeDTO recipe : recommendMap.keySet()) {
+                scrapStatusMap.put(recipe.getRecipe_id(),
+                    scrappedIds.contains(recipe.getRecipe_id()));
+            }
+
+            // 4️⃣ JSP로 전달
+            req.setAttribute("recommendMap", recommendMap);
+            req.setAttribute("scrapStatusMap", scrapStatusMap);
+            req.setAttribute("status", "200");
+            req.setAttribute("message", "냉장고 기반 추천 레시피 조회 성공");
+
         } catch (SQLException e) {
-            req.setAttribute("status","500");
-            req.setAttribute("message","DB 처리 중 오류가 발생했습니다.\n"+e.getMessage());
+            req.setAttribute("status", "500");
+            req.setAttribute("message", "DB 오류: " + e.getMessage());
         }
-        req.setAttribute("user",user);
+
         return "/views/mypage/myfridge.jsp";
     }
 }

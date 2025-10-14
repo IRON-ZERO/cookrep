@@ -52,126 +52,110 @@
 			<section class="mypage__content">
 				<div class="content-header">
 					<h3>${user.nickname}님의 냉장고</h3>
-				</div>
-				<div class="user-info">
-					<div class="ingredient-info">
-						<button class="edit-button" type="button" ></button>
-						<div class="title-input-wrapper">
-							<h3>${user.nickname}님이 가지고 있는 재료들이에요.</h3>
-							<div>
-								<div class="add-box">
-									<input type="text" id="ingredientInput" placeholder="예) 당근,시금치">
-									<button onclick="addIngredients('${user.id}')">추가</button>
+					<div class="user-info">
+						<div class="ingredient-info">
+							<button class="edit-button" type="button" ></button>
+							<div class="title-input-wrapper">
+								<h3>${user.nickname}님이 가지고 있는 재료들이에요.</h3>
+								<div>
+									<div class="add-box">
+										<input type="text" id="ingredientInput" placeholder="예) 당근,시금치">
+										<button onclick="addIngredients('${user.id}')">추가</button>
+									</div>
 								</div>
 							</div>
-						</div>
-						<p>가지고 있는 재료를 누르면 메뉴를 추천해드려요.</p>
-						<div class="ingredients-box" id="ingredientsBox">
-						<c:forEach var="ui" items="${user.ingredients}">
-		                    <span class="ingredient-tag" data-ingredient-id="${ui.ingredientId}">
-		                        ${ui.ingredient.name}
-			                    
-			                    <!-- 삭제 버튼 -->
-		                        <button class="delete-btn"
-		                                data-user-id="${user.id}"
-		                                data-ingredient-id="${ui.ingredientId}">×</button>
-		                    </span>
-						</c:forEach>
+							<p>가지고 있는 재료를 누르면 메뉴를 추천해드려요.</p>
+							<div class="ingredients-box" id="ingredientsBox">
+							<c:forEach var="ui" items="${user.ingredients}">
+			                    <span class="ingredient-tag" data-ingredient-id="${ui.ingredientId}">
+			                        ${ui.ingredient.name}
+				                    
+				                    <!-- 삭제 버튼 -->
+			                        <button class="delete-btn"
+			                                data-user-id="${user.id}"
+			                                data-ingredient-id="${ui.ingredientId}">×</button>
+			                    </span>
+							</c:forEach>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="user-info recipe">
 					<h3>CookRep이 추천하는 레시피에요.</h3>
 					<div class="recipe-grid">
-						<div class="recipe-card">
-							<img src="/assets/images/recipe1.jpg" alt="레시피 썸네일" />
-							<div class="card-overlay">
-								<span class="difficulty normal">보통</span>
-								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">
-									<i class="bookmark-icon"></i>
-								</button>
-								<h4>두부를 이용한 미친 스테이크 맛있겠다</h4>
-							</div>
-						</div>
-						
-						<div class="recipe-card">
-							<img src="/assets/images/recipe2.jpg" alt="레시피 썸네일" />
-							<div class="card-overlay">
-								<span class="difficulty easy">쉬움</span>
-								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">
-									<i class="bookmark-icon"></i>
-								</button>
-								<h4>무지 쉬운 라면으로 만드는 초간단 요리</h4>
-							</div>
-						</div>
-						<div class="recipe-card">
-							<img src="/assets/images/recipe2.jpg" alt="레시피 썸네일" />
-							<div class="card-overlay">
-								<span class="difficulty easy">쉬움</span>
-								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">
-									<i class="bookmark-icon"></i>
-								</button>
-								<h4>무지 쉬운 라면으로 만드는 초간단 요리</h4>
-							</div>
-						</div>
-						<div class="recipe-card">
-							<img src="/assets/images/recipe2.jpg" alt="레시피 썸네일" />
-							<div class="card-overlay">
-								<span class="difficulty easy">쉬움</span>
-								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">
-									<i class="bookmark-icon"></i>
-								</button>
-								<h4>무지 쉬운 라면으로 만드는 초간단 요리</h4>
-							</div>
-						</div>
-						<div class="recipe-card">
-							<img src="/assets/images/recipe2.jpg" alt="레시피 썸네일" />
-							<div class="card-overlay">
-								<span class="difficulty easy">쉬움</span>
-								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">
-									<i class="bookmark-icon"></i>
-								</button>
-								<h4>무지 쉬운 라면으로 만드는 초간단 요리</h4>
-							</div>
-						</div>
-						<div class="recipe-card">
-							<img src="/assets/images/recipe2.jpg" alt="레시피 썸네일" />
-							<div class="card-overlay">
-								<span class="difficulty easy">쉬움</span>
-								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">
-									<i class="bookmark-icon"></i>
-								</button>
-								<h4>무지 쉬운 라면으로 만드는 초간단 요리</h4>
-							</div>
-						</div>
-						<div class="recipe-card">
-							<img src="/assets/images/recipe2.jpg" alt="레시피 썸네일" />
-							<div class="card-overlay">
-								<span class="difficulty easy">쉬움</span>
-								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">
-									<i class="bookmark-icon"></i>
-								</button>
-								<h4>무지 쉬운 라면으로 만드는 초간단 요리</h4>
-							</div>
-						</div>
-						
+						<c:choose>
+							<c:when test="${not empty recommendMap}">
+								<c:forEach var="entry" items="${recommendMap}">
+									<div class="recipe-card">
+										<img src="${entry.key.thumbnail_image_url}" alt="${entry.key.title}" />
+										<div class="card-overlay">
+											<!-- 난이도 -->
+											<c:choose>
+												<c:when test="${not empty entry.key.difficulty}">
+													<c:choose>
+														<c:when test="${entry.key.difficulty eq 'easy'}">
+															<span class="difficulty easy">쉬움</span>
+														</c:when>
+														<c:when test="${entry.key.difficulty eq 'normal'}">
+															<span class="difficulty normal">보통</span>
+														</c:when>
+														<c:when test="${entry.key.difficulty eq 'hard'}">
+															<span class="difficulty hard">어려움</span>
+														</c:when>
+													</c:choose>
+												</c:when>
+											</c:choose>
+											
+											<!-- 스크랩 버튼 -->
+											<button class="scrap-btn ${scrapStatusMap[entry.key.recipe_id] ? 'active' : ''}"
+											        data-recipe-id="${entry.key.recipe_id}">
+												<i class="bookmark-icon"></i>
+											</button>
+											
+											
+											<!-- 제목 & 일치 재료 -->
+											<h4>${entry.key.title}</h4>
+											<p class="match">냉장고 재료 일치: ${entry.value}개</p>
+										</div>
+									</div>
+								</c:forEach>
+							</c:when>
+							
+							<c:otherwise>
+								<p class="no-recipes">아직 추천할 레시피가 없어요 😅</p>
+							</c:otherwise>
+						</c:choose>
 					</div>
+				
 				</div>
-			</section>
-<%--			레시피 카드 반복문--%>
-<%--			<div class="recipe-grid">--%>
-<%--				<c:forEach var="recipe" items="${recommendList}">--%>
-<%--					<div class="recipe-card">--%>
-<%--						<img src="${recipe.thumbnailUrl}" alt="${recipe.title}" />--%>
-<%--						<div class="card-overlay">--%>
-<%--        <span class="difficulty ${recipe.difficulty == '쉬움' ? 'easy' : 'normal'}">--%>
-<%--		        ${recipe.difficulty}--%>
-<%--        </span>--%>
-<%--							<h3>${recipe.title}</h3>--%>
+<%--				<div class="user-info recipe">--%>
+<%--					<h3>CookRep이 추천하는 레시피에요.</h3>--%>
+<%--					<div class="recipe-grid">--%>
+<%--						<div class="recipe-card">--%>
+<%--							<img src="/assets/images/recipe1.jpg" alt="레시피 썸네일" />--%>
+<%--							<div class="card-overlay">--%>
+<%--								<span class="difficulty normal">보통</span>--%>
+<%--								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">--%>
+<%--									<i class="bookmark-icon"></i>--%>
+<%--								</button>--%>
+<%--								<h4>두부를 이용한 미친 스테이크 맛있겠다</h4>--%>
+<%--							</div>--%>
+<%--						</div>--%>
+<%--						--%>
+<%--						<div class="recipe-card">--%>
+<%--							<img src="/assets/images/recipe2.jpg" alt="레시피 썸네일" />--%>
+<%--							<div class="card-overlay">--%>
+<%--								<span class="difficulty easy">쉬움</span>--%>
+<%--								<button class="scrap-btn ${recipe.scrapped ? 'active' : ''}">--%>
+<%--									<i class="bookmark-icon"></i>--%>
+<%--								</button>--%>
+<%--								<h4>무지 쉬운 라면으로 만드는 초간단 요리</h4>--%>
+<%--							</div>--%>
 <%--						</div>--%>
 <%--					</div>--%>
-<%--				</c:forEach>--%>
-<%--			</div>--%>
+<%--				</div>--%>
+			</section>
+
 			
 		</div>
 		
@@ -179,22 +163,30 @@
 		<%@ include file="/views/components/footerComp.jsp"%>
 		
 		<script>
-			// 스크랩 버튼 클릭시 토글 동작
+			// 스크랩 버튼 클릭시 "active" 토글 및 동작
             document.querySelectorAll(".scrap-btn").forEach((btn) => {
                 btn.addEventListener("click", (e) => {
-                    e.stopPropagation(); // 카드 클릭과 구분
-                    btn.classList.toggle("active");
-			
+                    e.stopPropagation();
+
                     const recipeId = btn.dataset.recipeId;
-                    const isScrapped = btn.classList.contains("active");
-			
-                    // 백엔드에 AJAX 요청
-                <%--    fetch(`/scrap?action=${isScrapped ? 'add' : 'remove'}&id=${recipeId}`)--%>
-                <%--        .then((res) => res.json())--%>
-                <%--        .then((data) => console.log(data)--%>
-                <%--        );--%>
+                    const isActive = btn.classList.toggle("active");
+
+                    fetch(`/scrap`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({
+                            action: isActive ? "add" : "remove",
+                            recipeId: recipeId
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log("Scrap result:", data);
+                        })
+                        .catch(err => console.error("Scrap error:", err));
                 });
             });
+
 
             // 재료 클릭 시 토글 동작
             document.querySelectorAll('.ingredient-tag').forEach(tag => {
