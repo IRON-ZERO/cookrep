@@ -209,7 +209,7 @@
                 form.action = "/deleteAccount";
 
                 form.innerHTML =
-                    '<input type="hidden" name="userId" value="'+userId+'">';
+                    '<input type="hidden" name="userId" value="'+${user.id}+'">';
 
                 document.body.appendChild(form);
                 form.submit();
