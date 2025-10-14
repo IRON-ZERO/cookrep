@@ -210,17 +210,18 @@ public class RecipeDAO {
         // IN (?, ?, ?) 플레이스홀더 생성
         String placeholders = String.join(",", Collections.nCopies(ingredients.size(), "?"));
 
-        String sql = """
+        String sql = String.format("""
             SELECT r.recipe_id, r.user_id, r.title, r.thumbnail_image_url,
                    r.views, r.people_count, r.prep_time, r.cook_time, r.`like`, r.kcal,
                    COUNT(i.ingredient_id) AS match_count
             FROM Recipe r
             JOIN RecipeIngredient ri ON r.recipe_id = ri.recipe_id
             JOIN Ingredient i ON ri.ingredient_id = i.ingredient_id
-            WHERE i.name IN (""" + placeholders + ") " +
-            "GROUP BY r.recipe_id " +
-            "ORDER BY match_count DESC, r.views DESC " +
-            "LIMIT 30";
+            WHERE i.name IN (%s)
+            GROUP BY r.recipe_id
+            ORDER BY match_count DESC, r.views DESC
+            LIMIT 30
+            """, placeholders);
 
         try (Connection con = db.open();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
