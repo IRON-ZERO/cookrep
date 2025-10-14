@@ -6,7 +6,8 @@
 
 .mypage__layout h3{
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
+    margin-bottom: 0 !important;
 }
 
 /* sidebar */
@@ -69,7 +70,8 @@
     color: white;
 }
 .logout {
-    margin-top: auto;
+    margin-top: 100px;
+    font-size: 15px;
     padding-bottom: 1rem;
 }
 
@@ -79,12 +81,12 @@
     display: flex;
     padding: 100px;
     flex-direction: column;
+    gap: 30px;
 }
 .mypage__content > span{
     font-size: 24px;
 }
 .content-header{
-    margin-bottom: 20px;
 }
 .user-info{
     border-radius: 15px;
@@ -93,12 +95,8 @@
 }
 
 .info-header{
-    position: relative;
-}
-.info-header a {
-    position: absolute;
-    top: 0px;
-    right: 0px;
+    display: flex;
+    justify-content: end;
 }
 .info-body{
     display: flex;
@@ -120,6 +118,9 @@
     display: flex;
     flex-direction: column;
 }
+.info-view-context span{
+    font-size: 15px;
+}
 .detail-info-wrapper{
     display: flex;
     gap: 70px;
@@ -128,30 +129,136 @@
     flex: 1;
 }
 .detail-info-header{
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 .detail-info-body{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 20px;
 }
 .body-item{
     display: flex;
     flex-direction: column;
 }
 
+.body-item label{
+    color: #666666;
+    margin-bottom: 5px;
+}
 
-/* ingredient tags */
+.profile-edit-mode{
+    display: none;
+}
+
+.info-edit-form{
+    display: flex;
+    flex-direction: column;
+}
+.submit-wrapper{
+    display: flex;
+    justify-content: right;
+}
+
+
+/*회원 탈퇴*/
+.delete-account-wrapper {
+    margin-top: 40px;
+    text-align: right;
+    justify-self: flex-end;
+}
+
+.delete-account-btn {
+    background-color: #ff4d4f; /* 선명한 빨강 */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.delete-account-btn:hover {
+    background-color: #d9363e; /* hover 시 어두운 빨강 */
+}
+
+.delete-account-btn:active {
+    background-color: #b52a31; /* 클릭 시 더 어두운 빨강 */
+}
+
+
+/* ingredient(fridge) */
+.ingredient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.ingredient-info p {
+    font-size: 14px;
+}
+.title-input-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
 .ingredients-box {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 .ingredient-tag {
-    background: #eee;
-    border-radius: 20px;
-    padding: 8px 15px;
-    margin: 5px;
+    cursor: pointer;
     display: inline-block;
+    background: #D9D9D9;
+    border-radius: 20px;
+    padding: 6px 12px;
+    margin: 5px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+.ingredient-tag:hover {
+    background: #bfbfbf;
+    color: #fff;
+}
+.ingredient-tag.active {
+    background: #434343;
+    color: #EFEFEF;
+}
+.ingredient-tag.active:hover {
+    background: #a4a4a4;          /* active보다 조금 밝게 */
+    color: #d9d9d9;               /* 약간 흐린 회색 글씨 */
+}
+.ingredient-tag:hover .delete-btn {
+    display: block;
+}
+.delete-btn {
+    display: none;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    padding-top: 1px;
+    padding-left: 9px;
+}
+.add-box {
+}
+.add-box input {
+    width: 220px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.add-box button {
+    padding: 6px 10px;
+    margin-left: 5px;
+    cursor: pointer;
 }
 
 

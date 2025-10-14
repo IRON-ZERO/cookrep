@@ -73,7 +73,7 @@
             const stepFile = document.getElementById(`stepImage${i}`).files[0];
             if (stepFile) {
                 fileNames.push(
-                    `users/${userId}/recipes/${now}/steps/${String(i).padStart(2,'0')}_${stepFile.name}`
+                    `users/${userId}/recipes/${now}/steps/\${String(i).padStart(2,'0')}_${stepFile.name}`
                 );
             }
         }
@@ -115,7 +115,7 @@
             if (stepFile) {
                 recipeData.steps.push({
                     content,
-                    imageUrl: `users/${userId}/recipes/${now}/steps/${String(i).padStart(2,'0')}_${stepFile.name}`
+                    imageUrl: `users/${userId}/recipes/${now}/steps/\${String(i).padStart(2,'0')}_${stepFile.name}`
                 });
             } else {
                 recipeData.steps.push({ content, imageUrl: null });

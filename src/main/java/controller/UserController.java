@@ -1,8 +1,8 @@
 package controller;
 
 import dto.user.UserDTO;
-import model.UserIngredient;
 import org.apache.commons.beanutils.BeanUtils;
+import service.IngredientService;
 import service.UserService;
 
 import javax.servlet.ServletException;
@@ -14,9 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @WebServlet(urlPatterns = {"/mypage","/mypage/fridge","/mypage/scrap"})
 public class UserController extends HttpServlet {
@@ -130,23 +128,19 @@ public class UserController extends HttpServlet {
         return getIngredients(req,resp);
     }
     private String addIngredient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService userService = new UserService();
+        IngredientService ingredientService = new IngredientService();
 
-        int[] ingredientIds = Arrays.stream(req.getParameter("ingredientIds").trim().split(","))
-                                    .mapToInt(Integer::parseInt)
-                                    .toArray();
-//        위의 코드는 언어수준 7에선 사용 못하는 문법. java 8 미만에서 사용한다면 아래 코드로
-//        String[] stringIngredientIds = req.getParameter("ingredientIds").replaceAll(" ","").split(",");
-//        int[] ingredientIds = new int[stringIngredientIds.length];
-//        for(int i = 0; i < stringIngredientIds.length; i++){
-//            ingredientIds[i] = Integer.parseInt(stringIngredientIds[i]);
-//        }
+        String[] ingredients = Arrays.stream(req.getParameter("ingredients").trim().split(","))
+                                     .map(String::trim)               // 공백 제거
+                                     .filter(s -> !s.isEmpty()) // 빈 문자열 제거
+                                     .toArray(String[]::new);
+
 
         HttpSession session = req.getSession(false);
         String userId = (String)session.getAttribute("userId");
 
         try {
-            userService.addIngredient(userId,ingredientIds);
+            ingredientService.addIngredientsForUser(userId,ingredients);
             req.setAttribute("status","200");
             req.setAttribute("message","재료 추가에 성공했습니다.");
         } catch (SQLException e) {

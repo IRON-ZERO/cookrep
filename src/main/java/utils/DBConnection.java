@@ -19,7 +19,7 @@ public class DBConnection {
         try {
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(JDBC_URL, "root", "1111");
-            System.out.println("DB 연결 성공!");
+//            System.out.println("DB 연결 성공!");
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC 드라이버 로드 실패: " + e.getMessage());
             e.printStackTrace();
