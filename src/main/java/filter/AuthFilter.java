@@ -16,11 +16,34 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 	private static final Set<String> NOT_LOGIN_PAGES = Set.of("/", "/login", "/join");
-	private static final Set<String> LOGIN_PAGES = Set.of("/", "/rank", "/search", "/new-recipe", "/mypage", "/logout");
-	private static final Set<String> START_WITH_STATIC_RESOURCE = Set.of("/assets", "/js/", "/images/");
+    private static final Set<String> LOGIN_PAGES = Set.of(
+            "/", "/rank", "/search", "/mypage", "/mypage/fridge", "/new-recipe", "/logout",
+            "/recipes", "/mypage/recipe", "/mypage/recipe/upload", "/mypage/recipe/list",
+            "/mypage/recipe/detail", "/mypage/recipe/delRecipe", "/mypage/recipe/edit",
+            "/recipe/register", "/recipe/s3/postrecipe", "/recipe/update" // 추가
+    );	private static final Set<String> START_WITH_STATIC_RESOURCE = Set.of("/assets", "/js/", "/images/");
 	private static final Set<String> END_WITH_STATIC_RESOURCE = Set.of(".css", ".js", ".png");
 
-	@Override
+    private static final Set<String> PUBLIC_API_PATHS = Set.of("/recipe/s3/postrecipe");
+
+
+
+
+    private boolean isStaticResource(String path) {
+        return path.startsWith("/assets/")
+            || path.startsWith("/js/")
+            || path.startsWith("/images/")
+            || path.endsWith(".css")
+            || path.endsWith(".js")
+            || path.endsWith(".png")
+            || path.endsWith(".jpg")
+            || path.endsWith(".jpeg")
+            || path.endsWith(".ico")
+            || path.endsWith(".json")
+            || path.endsWith(".svg");
+    }
+
+    @Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
@@ -28,11 +51,12 @@ public class AuthFilter implements Filter {
 		HttpSession session = req.getSession();
 		Object userId = session.getAttribute("userId");
 		String path = req.getRequestURI();
-		if (START_WITH_STATIC_RESOURCE.contains(path) || END_WITH_STATIC_RESOURCE.contains(path)) {
+		if (isStaticResource(path) || PUBLIC_API_PATHS.contains(path)) {
 			chain.doFilter(request, response);
 			return;
 		}
-		// 로그인 안된 사용자 
+
+		// 로그인 안된 사용자
 		if (userId == null) {
 			if (NOT_LOGIN_PAGES.contains(path)) {
 				chain.doFilter(request, response);

@@ -19,9 +19,22 @@ public class UserIngredientDAO {
         dbConnection.open();
         this.conn = dbConnection.getConnection();
     }
-
+    public UserIngredientDAO(Connection conn){
+        this.conn = conn;
+    }
+    public void addIngredientsBatch(String userId, int[] ingredientIds) throws SQLException {
+        String sql = "INSERT INTO UserIngredient (user_id, ingredient_id) VALUES (?, ?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            for (int id : ingredientIds) {
+                ps.setString(1, userId);
+                ps.setInt(2, id);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        }
+    }
     public void addUserIngredient(String userId, int ingredientId) throws SQLException {
-        // 1 -> user_id  2 -> ingredeint_id
+        // 1 -> user_id  2 -> ingredient_id
         String sql = "INSERT INTO userIngredient VALUES (?, ?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
