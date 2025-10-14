@@ -2,74 +2,57 @@
 <%@ page import="dto.recipe.RecipeDTO" %>
 <%@ page import="dto.recipe.RecipeDTO.Step" %>
 <%@ page import="java.util.List" %>
+
 <html>
 <head>
     <title>Recipe Detail</title>
-    <style>
-        .recipe-container {
-            max-width: 800px;
-            margin: auto;
-        }
-        .main-image {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        .recipe-info {
-            margin-top: 20px;
-        }
-        .steps {
-            margin-top: 30px;
-        }
-        .step {
-            margin-bottom: 20px;
-        }
-        .step img {
-            width: 100%;
-            max-height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        .back-btn {
-            margin-top: 20px;
-        }
-    </style>
+    <!-- 외부 CSS 파일 -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/recipe/recipeDetail.css">
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+
 </head>
-<body>
+<body class="recipe-body">
+<%@ include file="/views/components/headerComp.jsp"%>
 <%
     RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
     if (recipe == null) {
 %>
-<p>Recipe not found.</p>
+<p style="text-align:center; color:#888;">Recipe not found.</p>
 <%
 } else {
 %>
+
 <div class="recipe-container">
-    <h1><%= recipe.getTitle() %></h1>
-    <img class="main-image" src="<%= recipe.getThumbnail_image_url() %>" alt="Main Image">
+    <h1 class="recipe-title"><%= recipe.getTitle() %></h1>
+    <img class="recipe-main-image" src="<%= recipe.getThumbnail_image_url() %>" alt="Main Image">
 
     <div class="recipe-info">
-        <p>Servings: <%= recipe.getPeople_count() %></p>
-        <p>Prep Time: <%= recipe.getPrep_time() %> mins</p>
-        <p>Cook Time: <%= recipe.getCook_time() %> mins</p>
-        <p>Views: <%= recipe.getViews() %> | Likes: <%= recipe.getLike() %> | Calories: <%= recipe.getKcal() %></p>
+        <p><strong>👥 인원:</strong> <%= recipe.getPeople_count() %>명</p>
+        <p><strong>⏱ 준비 시간:</strong> <%= recipe.getPrep_time() %>분</p>
+        <p><strong>🍳 조리 시간:</strong> <%= recipe.getCook_time() %>분</p>
+        <p><strong>🔥 조회수:</strong> <%= recipe.getViews() %>회 |
+            <strong>❤️ 좋아요:</strong> <%= recipe.getLike() %> |
+            <strong>🍽 칼로리:</strong> <%= recipe.getKcal() %> kcal</p>
     </div>
 
-    <div class="steps">
-        <h2>Steps</h2>
+    <div class="recipe-steps">
+        <h2>조리순서 <span>Steps</span></h2>
         <%
             List<Step> steps = recipe.getSteps();
             if (steps != null) {
                 for (Step step : steps) {
         %>
-        <div class="step">
-            <h3>Step <%= step.getStepOrder() %></h3>
-            <p><%= step.getContents() %></p>
+        <div class="recipe-step">
+            <div class="recipe-step-left">
+                <div class="recipe-step-number"><%= step.getStepOrder() %></div>
+                <div class="recipe-step-text"><%= step.getContents() %></div>
+            </div>
             <%
                 if (step.getImageUrl() != null && !step.getImageUrl().isEmpty()) {
             %>
-            <img src="<%= step.getImageUrl() %>" alt="Step Image">
+            <div class="recipe-step-right">
+                <img src="<%= step.getImageUrl() %>" alt="Step Image">
+            </div>
             <%
                 }
             %>
@@ -80,9 +63,8 @@
         %>
     </div>
 
-    <!-- Back / Edit / Delete 버튼 -->
-    <div class="back-btn">
-        <button onclick="location.href='/mypage/recipe?action=list'">Back to List</button>
+    <div class="recipe-back-btn">
+        <button onclick="location.href='/mypage/recipe?action=list'">목록으로</button>
         <button onclick="location.href='/mypage/recipe?action=edit&recipe_id=<%= recipe.getRecipe_id() %>'">수정</button>
         <button onclick="deleteRecipe('<%= recipe.getRecipe_id() %>')">삭제</button>
     </div>
@@ -113,5 +95,6 @@
 <%
     }
 %>
+<%@ include file="/views/components/footerComp.jsp"%>
 </body>
 </html>
