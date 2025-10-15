@@ -1,6 +1,16 @@
 use cookrep;
 SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- 기존 테이블 삭제 (참조 순서 고려)
+DROP TABLE IF EXISTS Scrap;
+DROP TABLE IF EXISTS Comment;
+DROP TABLE IF EXISTS RecipeIngredient;
+DROP TABLE IF EXISTS RecipeSteps;
+DROP TABLE IF EXISTS Recipe;
+DROP TABLE IF EXISTS userIngredient;
+DROP TABLE IF EXISTS Ingredient;
+DROP TABLE IF EXISTS User;
+
 -- 사용자 테이블
 CREATE TABLE User (
                       user_id VARCHAR(36) PRIMARY KEY,
@@ -28,8 +38,8 @@ CREATE TABLE userIngredient (
                                 user_id VARCHAR(36) NOT NULL,                   -- users.user_id와 타입 맞춤
                                 ingredient_id INT NOT NULL,                      -- ingredient_id와 타입 맞춤
                                 PRIMARY KEY (user_id, ingredient_id),
-                                FOREIGN KEY (user_id) REFERENCES User(user_id),
-                                FOREIGN KEY (ingredient_id) REFERENCES Ingredient(ingredient_id)
+                                FOREIGN KEY (user_id) REFERENCES User(user_id) on delete cascade ,
+                                FOREIGN KEY (ingredient_id) REFERENCES Ingredient(ingredient_id) on delete cascade
 );
 
 -- 레시피 테이블

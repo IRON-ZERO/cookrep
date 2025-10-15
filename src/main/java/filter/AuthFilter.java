@@ -20,7 +20,7 @@ public class AuthFilter implements Filter {
             "/", "/rank", "/search", "/mypage", "/mypage/fridge", "/new-recipe", "/logout",
             "/recipes", "/mypage/recipe", "/mypage/recipe/upload", "/mypage/recipe/list",
             "/mypage/recipe/detail", "/mypage/recipe/delRecipe", "/mypage/recipe/edit",
-            "/recipe/register", "/recipe/s3/postrecipe", "/recipe/update" // 추가
+            "/recipe/register", "/recipe/s3/postrecipe", "/recipe/update", "/deleteAccount" // 추가
     );	private static final Set<String> START_WITH_STATIC_RESOURCE = Set.of("/assets", "/js/", "/images/");
 	private static final Set<String> END_WITH_STATIC_RESOURCE = Set.of(".css", ".js", ".png");
 

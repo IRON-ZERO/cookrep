@@ -19,7 +19,7 @@
 					<div class="user-info">
 						<div class="profile-view-mode">
 							<div class="info-header">
-								<button class="edit-button" type="button" onclick="toggleEdit(this)">edit✏️</button>
+								<button class="edit-button" type="button">edit✏️</button>
 							</div>
 							<div class="info-body">
 								<div class="info-view-wrapper">
@@ -115,14 +115,14 @@
 									</div>
 									<div class="submit-wrapper">
 										<button type="submit">수정</button>
-										<button onclick="toggleEdit(this)">취소</button>
+										<button class="edit-button">취소</button>
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
 				<div class="delete-account-wrapper">
-					<button type="button" class="delete-account-btn" onclick="confirmDelete()">회원 탈퇴</button>
+					<button type="button" class="delete-account-btn">회원 탈퇴</button>
 				</div>
 			</section>
 			
@@ -130,38 +130,65 @@
 		
 		<%@ include file="/views/components/footerComp.jsp"%>
 		<script>
-            window.toggleEdit = function(button) {
-                const card = button.closest('.user-info');
-                const view = card.querySelector('.profile-view-mode');
-                const edit = card.querySelector('.profile-edit-mode');
+            document.addEventListener("DOMContentLoaded", () => {
+                document.addEventListener("click", (e) => {
+                    // edit 버튼 클릭 처리
+                    if (e.target.closest(".edit-button")) {
+                        const button = e.target.closest(".edit-button");
+                        const card = button.closest(".user-info");
+                        const view = card.querySelector(".profile-view-mode");
+                        const edit = card.querySelector(".profile-edit-mode");
 
-                if (view.style.display === "none") {
-                    // 편집모드 종료
-                    view.style.display = "block";
-                    edit.style.display = "none";
-                } else {
-                    // 편집모드 시작
-                    view.style.display = "none";
-                    edit.style.display = "block";
-                }
-            }
-            
+                        const isEditing = view.style.display === "none";
+                        view.style.display = isEditing ? "block" : "none";
+                        edit.style.display = isEditing ? "none" : "block";
+                    }
+
+                    // 회원 탈퇴 버튼 클릭 처리
+                    if (e.target.closest(".delete-account-btn")) {
+                        if (!confirm("정말 삭제하시겠습니까?")) return;
+
+                        const form = document.createElement("form");
+                        form.method = "post";
+                        form.action = "/deleteAccount";
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
+            });
             function format(str, ...args) {
                 return str.replace(/{(\d+)}/g, (match, index) => args[index]);
             }
-            function confirmDelete() {
-                if (!confirm("정말 삭제하시겠습니까?")) return;
 
-                const form = document.createElement("form");
-                form.method = "post";
-                form.action = "/deleteAccount";
-
-                form.innerHTML =
-	                format('<input type="hidden" name="userId" value="{0}">',${user.id});
-
-                document.body.appendChild(form);
-                form.submit();
-            }
+            <%--function toggleEdit(button) {--%>
+            <%--    const card = button.closest('.user-info');--%>
+            <%--    const view = card.querySelector('.profile-view-mode');--%>
+            <%--    const edit = card.querySelector('.profile-edit-mode');--%>
+			
+            <%--    if (view.style.display === "none") {--%>
+            <%--        // 편집모드 종료--%>
+            <%--        view.style.display = "block";--%>
+            <%--        edit.style.display = "none";--%>
+            <%--    } else {--%>
+            <%--        // 편집모드 시작--%>
+            <%--        view.style.display = "none";--%>
+            <%--        edit.style.display = "block";--%>
+            <%--    }--%>
+            <%--}--%>
+            
+            <%--function confirmDelete() {--%>
+            <%--    if (!confirm("정말 삭제하시겠습니까?")) return;--%>
+			
+            <%--    const form = document.createElement("form");--%>
+            <%--    form.method = "post";--%>
+            <%--    form.action = "/deleteAccount";--%>
+			
+            <%--    form.innerHTML =--%>
+	        <%--        format('<input type="hidden" name="userId" value="{0}">',${user.id});--%>
+			
+                // document.body.appendChild(form);
+            <%--    form.submit();--%>
+            <%--}--%>
             
 		</script>
 	</body>
