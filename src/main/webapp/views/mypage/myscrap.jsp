@@ -15,114 +15,55 @@
 			
 			<!-- 메인 영역 -->
 			<section class="mypage__content">
-				<span class="content-header">${user.nickname}님의 Profile</span>
-				<div class="user-info">
-					<div class="profile-view-mode">
-						<div class="info-header">
-							<button class="edit-button" type="button" onclick="toggleEdit(this)">edit✏️</button>
-						</div>
-						<div class="info-body">
-							<div class="info-view-wrapper">
-								<div class="info-view-image">
-									<img src="/assets/images/icons/user-icon-1.png" alt="profile_picture">
-								</div>
-								<div class="info-view-context">
-									<h3>${user.nickname}</h3>
-									<span>${user.email}</span>
-								</div>
-							</div>
-							<div class="detail-info-wrapper">
-								<div class="detail-info">
-									<div class="detail-info-header">Personal Information</div>
-									<div class="detail-info-body">
-										<div class="body-item">
-											<label for="firstName">이름(성)</label>
-											<span id="firstName">${user.firstName}</span>
-										</div>
-										<div class="body-item">
-											<label for="lastName">이름</label>
-											<span id="lastName">${user.lastName}</span>
-										</div>
-										<div class="body-item">
-											<label for="email">이메일</label>
-											<span id="email">${user.email}</span>
-										</div>
-									</div>
-								</div>
-								<div class="detail-info">
-									<div class="detail-info-header">Address</div>
-									<div class="detail-info-body">
-										<div class="body-item">
-											<label for="country">Country</label>
-											<span id="country">${user.country}</span>
-										</div>
-										<div class="body-item">
-											<label for="city">City</label>
-											<span id="city">${user.city}</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="profile-edit-mode">
-						<div class="info-header">
-							<button class="edit-button" type="button" onclick="toggleEdit(this)">✏️</button>
-						</div>
-						<div class="info-body">
-							<div class="info-view-wrapper">
-								<div class="info-view-image">
-									<img src="/assets/images/icons/user-icon-1.png" alt="profile_picture">
-								</div>
-								<div class="info-view-context">
-									<h3>${user.nickname}</h3>
-									<span>${user.email}</span>
-								</div>
-							</div>
-							<form method="post" action="/mypage?action=updateprofile" class="info-edit-form">
-								<div class="detail-info-wrapper">
-									<div class="detail-info">
-										<div class="detail-info-header">Personal Information</div>
-										<div class="detail-info-body">
+				<span class="content-header">${user.nickname}님의 냉장고</span>
+				<div class="user-info recipe">
+					<h3>${user.nickname}님이 스크랩한 레시피들이에요.</h3>
+					<div class="recipe-grid">
+						<c:choose>
+							<c:when test="${not empty scrapedRecipes}">
+								<c:forEach var="recipe" items="${scrapedRecipes}">
+									<div class="recipe-card">
+										<img src="${recipe.thumbnail_image_url}" alt="${recipe.title}" />
+										<div class="card-overlay">
 											
-											<div class="body-item">
-												<label for="firstName">이름(성)</label>
-												<input id="firstName" name="firstName" placeholder="${user.firstName}"></input>
-											</div>
-											<div class="body-item">
-												<label for="lastName">이름</label>
-												<input id="lastName" name="lastName" placeholder="${user.lastName}"></input>
-											</div>
-											<div class="body-item">
-												<label for="email">이메일</label>
-												<span id="email">${user.email}</span>
+											<!-- 난이도 (선택적으로 표시, 없을 수도 있음) -->
+<%--											<c:if test="${not empty recipe.difficulty}">--%>
+<%--												<c:choose>--%>
+<%--													<c:when test="${recipe.difficulty eq 'easy'}">--%>
+<%--														<span class="difficulty easy">쉬움</span>--%>
+<%--													</c:when>--%>
+<%--													<c:when test="${recipe.difficulty eq 'normal'}">--%>
+<%--														<span class="difficulty normal">보통</span>--%>
+<%--													</c:when>--%>
+<%--													<c:when test="${recipe.difficulty eq 'hard'}">--%>
+<%--														<span class="difficulty hard">어려움</span>--%>
+<%--													</c:when>--%>
+<%--												</c:choose>--%>
+<%--											</c:if>--%>
+											
+											<!-- 스크랩 버튼 -->
+											<button class="scrap-btn active" data-recipe-id="${recipe.recipe_id}">
+												<i class="bookmark-icon"></i>
+											</button>
+											
+											<!-- 제목 -->
+											<h4>${recipe.title}</h4>
+											
+											<!-- 작성자 / 조회수 / 좋아요 등 필요하면 추가 -->
+											<div class="meta">
+												<span class="views">조회수 ${recipe.views}</span>
+												<span class="likes">좋아요 ${recipe.like}</span>
 											</div>
 										</div>
 									</div>
-									<div class="detail-info">
-										<div class="detail-info-header">Address</div>
-										<div class="detail-info-body">
-											<div class="body-item">
-												<label for="country">Country</label>
-												<input id="country" name="country" placeholder="${user.country}"></input>
-											</div>
-											<div class="body-item">
-												<label for="city">City</label>
-												<input id="city" name="city" placeholder="${user.city}"></input>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="submit-wrapper">
-									<button type="submit">수정</button>
-									<button onclick="toggleEdit(this)">취소</button>
-								</div>
-							</form>
-						</div>
+								</c:forEach>
+							</c:when>
+							
+							<c:otherwise>
+								<p class="no-recipes">아직 스크랩한 레시피가 없어요 😅</p>
+							</c:otherwise>
+						</c:choose>
 					</div>
-				</div>
-				<div class="delete-account-wrapper">
-					<button type="button" class="delete-account-btn" onclick="confirmDelete()">회원 탈퇴</button>
 				</div>
 			</section>
 		
@@ -130,56 +71,29 @@
 		
 		<%@ include file="/views/components/footerComp.jsp"%>
 		<script>
-            function toggleEdit(button) {
-                const card = button.closest('.user-info');
-                const view = card.querySelector('.profile-view-mode');
-                const edit = card.querySelector('.profile-edit-mode');
+            // 스크랩 버튼 클릭시 "active" 토글 및 동작
+            document.querySelectorAll(".scrap-btn").forEach((btn) => {
+                btn.addEventListener("click", (e) => {
+                    e.stopPropagation();
 
-                if (view.style.display === "none") {
-                    // 편집모드 종료
-                    view.style.display = "block";
-                    edit.style.display = "none";
-                } else {
-                    // 편집모드 시작
-                    view.style.display = "none";
-                    edit.style.display = "block";
-                }
-            }
+                    const recipeId = btn.dataset.recipeId;
+                    const isActive = btn.classList.toggle("active");
 
-            // function confirmDelete() {
-            //     if (confirm("정말로 회원 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
-            //
-            //         fetch("/deleteAccount", {
-            //             method: "POST"
-            //         })
-            //         .then(response => {
-            //             if (response.ok) {
-            //                 alert("회원 탈퇴가 완료되었습니다.");
-            //                 window.location.href = "/logout";
-            //             } else {
-            //                 alert("회원 탈퇴 중 오류가 발생했습니다.");
-            //             }
-            //         })
-            //         .catch(error => {
-            //             console.error("Error:", error);
-            //             alert("서버 통신 중 문제가 발생했습니다.");
-            //         });
-            //     }
-            // }
-            function confirmDelete() {
-                if (!confirm("정말 삭제하시겠습니까?")) return;
-
-                const form = document.createElement("form");
-                form.method = "post";
-                form.action = "/deleteAccount";
-
-                form.innerHTML =
-                    '<input type="hidden" name="userId" value="'+${user.id}+'">';
-
-                document.body.appendChild(form);
-                form.submit();
-            }
-            
+                    fetch(`/scrap`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams({
+                            action: isActive ? "add" : "remove",
+                            recipeId: recipeId
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log("Scrap result:", data);
+                        })
+                        .catch(err => console.error("Scrap error:", err));
+                });
+            });
 		</script>
 	</body>
 </html>
