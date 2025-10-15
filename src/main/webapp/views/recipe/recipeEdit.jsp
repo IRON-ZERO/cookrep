@@ -43,6 +43,36 @@
             </div>
 
             <div>
+                <label for="peopleCount">인원 수 / 준비시간 / 조리시간</label>
+                <input
+                    class="recipe-edit-input"
+                    type="number"
+                    id="peopleCount"
+                    name="peopleCount"
+                    placeholder="인원 수"
+                    value="<%= recipe.getPeople_count() %>"
+                >
+                <input
+                    class="recipe-edit-input"
+                    type="number"
+                    id="prepTime"
+                    name="prepTime"
+                    placeholder="준비 시간 (분)"
+                    value="<%= recipe.getPrep_time() %>"
+                >
+                <input
+                    class="recipe-edit-input"
+                    type="number"
+                    id="cookTime"
+                    name="cookTime"
+                    placeholder="조리 시간 (분)"
+                    value="<%= recipe.getCook_time() %>"
+                >
+            </div>
+
+
+            <div>
+
             <h3>조리 단계</h3>
             <div id="stepContainer">
                             <%
@@ -185,8 +215,12 @@
                 recipe_id: recipeId,
                 title: formData.get("title"),
                 thumbnail_url,
+                peopleCount: parseInt(formData.get("peopleCount")) || 0,
+                prepTime: parseInt(formData.get("prepTime")) || 0,
+                cookTime: parseInt(formData.get("cookTime")) || 0,
                 steps: stepsData
             };
+
 
             console.log("최종 updateData:", updateData);
 

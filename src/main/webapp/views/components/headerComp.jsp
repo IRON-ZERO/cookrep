@@ -19,7 +19,7 @@
           <a href="/rank">Rank</a>
         </li>
         <li>
-          <a href="/new-recipe">레시피 생성</a>
+          <a href="/mypage/recipe/upload">레시피 생성</a>
         </li>
       </ul>
     </nav>
