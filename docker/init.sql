@@ -39,7 +39,7 @@ CREATE TABLE Recipe (
                         title VARCHAR(100),
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        thumbnail_image_url VARCHAR(100),  -- S3 업로드 경로 (썸네일용 완성 이미지)
+                        thumbnail_image_url VARCHAR(500),  -- S3 업로드 경로 (썸네일용 완성 이미지)
                         views INT DEFAULT 0,
                         people_count INT DEFAULT 0,
                         prep_time INT DEFAULT 0,
@@ -55,7 +55,7 @@ CREATE TABLE RecipeSteps (
                              recipe_id VARCHAR(50) NOT NULL,
                              step_order INT NOT NULL,  -- 단계 순서
                              contents TEXT,    -- 긴 글 저장
-                             image_url VARCHAR(100),  -- S3 업로드 경로
+                             image_url VARCHAR(500),  -- S3 업로드 경로
                              FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id)
 );
 
