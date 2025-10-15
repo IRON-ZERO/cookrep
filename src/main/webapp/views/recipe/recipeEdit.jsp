@@ -4,11 +4,19 @@
 <%@ page import="java.util.List" %>
 <html>
 <head>
-    <title>레시피 수정</title>
+    <title>Recipe Edit</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/recipe/recipeEdit.css">
-<%--    <link rel="stylesheet" href="/assets/css/style.css"/>--%>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" href="/assets/css/style.css"/>
 </head>
 <body>
+<jsp:include page="/views/components/headerComp.jsp" />
+
 <%
     RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
     if (recipe == null) {
@@ -17,48 +25,55 @@
 <%
 } else {
 %>
-<div class="recipe-container">
-    <h1>레시피 수정</h1>
-    <form id="editRecipeForm">
-        <!-- hidden id -->
-        <input type="hidden" name="recipe_id" value="<%= recipe.getRecipe_id() %>">
+<main>
+    <div class="cont recipe-edit__cont">
+        <h2>레시피 수정</h2>
+        <form id="editRecipeForm">
+            <input type="hidden" name="recipe_id" value="<%= recipe.getRecipe_id() %>">
 
-        <label>제목</label><br>
-        <input type="text" name="title" value="<%= recipe.getTitle() %>"><br><br>
-
-        <label>대표 이미지</label><br>
-        <img src="<%= recipe.getThumbnail_image_url() %>" alt="대표 이미지" style="max-width:200px;"><br>
-        <input type="file" name="thumbnail"><br><br>
-
-        <h2>조리 단계</h2>
-        <div id="stepContainer">
-            <%
-                List<Step> steps = recipe.getSteps();
-                if (steps != null) {
-                    for (Step step : steps) {
-            %>
-            <div class="step">
-                <h3>Step <%= step.getStepOrder() %></h3>
-                <textarea name="step_content_<%= step.getStepOrder() %>"><%= step.getContents() %></textarea><br>
-                <% if (step.getImageUrl() != null && !step.getImageUrl().isEmpty()) { %>
-                <img src="<%= step.getImageUrl() %>" alt="Step Image">
-                <% } %>
-                <input type="file" name="step_image_<%= step.getStepOrder() %>">
-                <span class="delete-btn">삭제</span>
+            <div class="recipe-edit-form-section">
+                <label for="recipeTitle" >레시피 제목</label>
+                <input class="recipe-edit-input" type="text" name="title" value="<%= recipe.getTitle() %>">
             </div>
-            <%
-                    }
-                }
-            %>
-        </div>
 
-        <button type="button" id="addStepBtn" class="btn">단계 추가</button>
-        <button type="button" id="editRecipeBtn" class="btn">레시피 수정</button>
-    </form>
-</div>
+            <div>
+                <label class="recipe-edit-label">대표 이미지 (필수)</label>
+                <img class="recipe-edit-img" src="<%= recipe.getThumbnail_image_url() %>" alt="대표 이미지">
+                <input class="recipe-edit-input" type="file" name="thumbnail">
+            </div>
+
+            <div>
+            <h3>조리 단계</h3>
+            <div id="stepContainer">
+                            <%
+                                List<Step> steps = recipe.getSteps();
+                                if (steps != null) {
+                                    for (Step step : steps) {
+                            %>
+                            <div class="recipe-edit-step">
+                                <h3>Step <%= step.getStepOrder() %></h3>
+                                <textarea class="recipe-edit-textarea" name="step_content_<%= step.getStepOrder() %>"><%= step.getContents() %></textarea>
+                                <% if (step.getImageUrl() != null && !step.getImageUrl().isEmpty()) { %>
+                                <img class="recipe-edit-img" src="<%= step.getImageUrl() %>" alt="Step Image">
+                                <% } %>
+                                <input class="recipe-edit-input" type="file" name="step_image_<%= step.getStepOrder() %>">
+                                <span class="recipe-edit-delete-btn">삭제</span>
+                            </div>
+                            <%
+                                    }
+                                }
+                            %>
+                        </div>
+            <button type="button" id="addStepBtn" class="recipe-edit-button recipe-edit-btn-secondary">단계 추가</button>
+            </div>
+            <button type="button" id="editRecipeBtn" class="recipe-edit-button recipe-edit-submit-btn">레시피 수정</button>
+        </form>
+    </div>
+</main>
+
+<jsp:include page="/views/components/footerComp.jsp" />
 
 <script type="module">
-
     // JSP 세션에서 userId 가져오기
     const userId = "<%= (String)session.getAttribute("userId") %>";
     if (!userId || userId === "null") {
@@ -74,18 +89,18 @@
     // 단계 추가
     function addStep() {
         const stepContainer = document.getElementById("stepContainer");
-        const stepCount = stepContainer.querySelectorAll(".step").length + 1;
+        const stepCount = stepContainer.querySelectorAll(".recipe-edit-step").length + 1;
 
         const newStep = document.createElement("div");
-        newStep.className = "step";
+        newStep.className = "recipe-edit-step";
         newStep.innerHTML = `
             <h3>Step ${stepCount}</h3>
-            <textarea name="step_content_${stepCount}" placeholder="조리 단계 설명"></textarea><br>
-            <input type="file" name="step_image_${stepCount}">
-            <span class="delete-btn">삭제</span>
+            <textarea class="recipe-edit-textarea" name="step_content_${stepCount}" placeholder="조리 단계 설명"></textarea>
+            <input class="recipe-edit-input" type="file" name="step_image_${stepCount}">
+            <span class="recipe-edit-delete-btn">삭제</span>
         `;
 
-        newStep.querySelector(".delete-btn").addEventListener("click", () => {
+        newStep.querySelector(".recipe-edit-delete-btn").addEventListener("click", () => {
             deleteStep(newStep);
         });
 
@@ -99,13 +114,7 @@
             const formData = new FormData(form);
             const recipeId = formData.get("recipe_id");
             const now = Date.now();
-            // const userId = document.getElementById("userId").value; // hidden input 등에서 가져오기
-            // const userId = "u001";
-            // const now = new Date().toISOString().replace(/[:.-]/g, ""); // 예: 20251004T2130
 
-            // -----------------------------
-            // 1) 업로드할 파일 준비
-            // -----------------------------
             const fileNames = [];
             const stepFiles = [];
 
@@ -127,9 +136,7 @@
                 }
             });
 
-            // -----------------------------
-            // 2) presigned URL 요청
-            // -----------------------------
+            // presigned URL 요청
             const presignResp = await fetch("/recipe/s3/postrecipe", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -137,9 +144,7 @@
             });
             const presignData = await presignResp.json();
 
-            // -----------------------------
-            // 3) S3 업로드
-            // -----------------------------
+            // S3 업로드
             if (mainFile && mainFile.size > 0) {
                 const mainUrlObj = presignData.urls.find(u => u.fileName.includes("main"));
                 if (mainUrlObj) await fetch(mainUrlObj.uploadUrl, { method: "PUT", body: mainFile });
@@ -150,12 +155,9 @@
                 if (urlObj) await fetch(urlObj.uploadUrl, { method: "PUT", body: sf.file });
             }
 
-            // -----------------------------
-            // 4) DB 업데이트용 데이터 생성
-            // -----------------------------
+            // DB 업데이트 데이터
             const stepsData = [];
-            const stepContainer = document.getElementById("stepContainer");
-            const stepElements = stepContainer.querySelectorAll(".step");
+            const stepElements = document.querySelectorAll(".recipe-edit-step");
 
             stepElements.forEach((stepEl, idx) => {
                 const content = stepEl.querySelector("textarea").value;
@@ -166,7 +168,6 @@
                     const stepNum = String(idx + 1).padStart(2, "0");
                     imageUrl = `users/${userId}/recipes/${now}/steps/${stepNum}_${fileInput.files[0].name}`;
                 } else if (stepEl.querySelector("img")) {
-                    // 기존 이미지 유지
                     imageUrl = stepEl.querySelector("img").src;
                 }
 
@@ -177,21 +178,18 @@
             if (mainFile && mainFile.size > 0) {
                 thumbnail_url = `users/${userId}/recipes/${now}/main/${mainFile.name}`;
             } else {
-                thumbnail_url = form.querySelector("img")?.src || null;
+                thumbnail_url = form.querySelector(".recipe-edit-img")?.src || null;
             }
 
             const updateData = {
                 recipe_id: recipeId,
                 title: formData.get("title"),
-                thumbnail_url,  // 서버 DB 컬럼명과 일치
+                thumbnail_url,
                 steps: stepsData
             };
 
             console.log("최종 updateData:", updateData);
 
-            // -----------------------------
-            // 5) DB 업데이트 요청
-            // -----------------------------
             await fetch("/recipe/update", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -207,21 +205,19 @@
         }
     }
 
-
-
-
-    // 이벤트 리스너 연결
+    // 이벤트 연결
     document.getElementById("addStepBtn").addEventListener("click", addStep);
     document.getElementById("editRecipeBtn").addEventListener("click", submitEditRecipe);
 
-    // 기존 단계의 삭제 버튼에도 이벤트 리스너 연결
-    document.querySelectorAll(".step .delete-btn").forEach(btn => {
+    // 기존 단계 삭제 버튼 이벤트
+    document.querySelectorAll(".recipe-edit-delete-btn").forEach(btn => {
         btn.addEventListener("click", (e) => {
-            deleteStep(e.target.closest(".step"));
+            deleteStep(e.target.closest(".recipe-edit-step"));
         });
     });
 </script>
 
 <% } %>
+<script src="/assets/js/header.js"></script>
 </body>
 </html>

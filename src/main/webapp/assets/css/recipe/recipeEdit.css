@@ -1,11 +1,42 @@
-body {
+.recipe-edit-body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #f1f1f1;
     padding: 40px;
     color: #333;
 }
+.recipe-edit__cont{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+.recipe-edit__cont h2{
+    font-size: 40px;
+    font-weight: 600;
+}
+.recipe-edit__cont form{
+    max-width: 800px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+}
+.recipe-edit__cont form > div{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+}
+.recipe-edit__cont form > div > label{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
 
-.recipe-container {
+/* 전체 컨테이너 */
+.recipe-edit-container {
     max-width: 800px;
     margin: 0 auto;
     background: #fff;
@@ -14,24 +45,27 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.recipe-container h1 {
+.recipe-edit-container h1 {
     text-align: center;
     margin-bottom: 30px;
 }
 
-.form-section {
+/* 섹션 */
+.recipe-edit-form-section {
     margin-bottom: 30px;
 }
 
-label {
+/* 라벨 */
+.recipe-edit-label {
     font-weight: 500;
     display: block;
     margin-bottom: 6px;
 }
 
-input[type="text"],
-input[type="number"],
-textarea {
+/* 입력창 */
+.recipe-edit-input[type="text"],
+.recipe-edit-input[type="number"],
+.recipe-edit-textarea {
     width: 100%;
     padding: 10px 14px;
     border: 1px solid #ccc;
@@ -40,16 +74,19 @@ textarea {
     box-sizing: border-box;
 }
 
-textarea {
+/* 텍스트 영역 */
+.recipe-edit-textarea {
     height: 100px;
     resize: none;
 }
 
-input[type="file"] {
+/* 파일 업로드 */
+.recipe-edit-input[type="file"] {
     margin-top: 8px;
 }
 
-.step {
+/* 단계 */
+.recipe-edit-step {
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     padding: 20px;
@@ -57,20 +94,22 @@ input[type="file"] {
     margin-bottom: 20px;
 }
 
-.step h3 {
+.recipe-edit-step h3 {
     font-size: 16px;
     color: #333;
     margin-bottom: 10px;
 }
 
-.delete-btn {
+/* 삭제 버튼 */
+.recipe-edit-delete-btn {
     color: red;
     cursor: pointer;
     margin-top: 10px;
     display: inline-block;
 }
 
-button {
+/* 일반 버튼 */
+.recipe-edit-button {
     cursor: pointer !important;
     border: none;
     border-radius: 8px;
@@ -79,16 +118,18 @@ button {
     margin-top: 10px;
 }
 
-.btn-secondary {
+/* 보조 버튼 */
+.recipe-edit-btn-secondary {
     background-color: #ff9a3d;
     color: #fff;
 }
 
-.btn-secondary:hover {
+.recipe-edit-btn-secondary:hover {
     background-color: #e57c1f;
 }
 
-.submit-btn {
+/* 제출 버튼 */
+.recipe-edit-submit-btn {
     display: block;
     width: 100%;
     background-color: #ff7f32;
@@ -99,11 +140,12 @@ button {
     margin-top: 30px;
 }
 
-.submit-btn:hover {
+.recipe-edit-submit-btn:hover {
     background-color: #e56b1f;
 }
 
-img {
+/* 이미지 미리보기 */
+.recipe-edit-img {
     max-width: 300px;
     display: block;
     margin-top: 10px;

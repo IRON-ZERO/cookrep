@@ -1,4 +1,3 @@
-/* Recipe Page Styles (네임스페이스 적용) */
 .recipe-body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #f1f1f1;
@@ -73,13 +72,14 @@
     margin-bottom: 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid #f0f0f0;
-    flex-wrap: wrap; /* 이미지가 너무 크면 줄 바꿈 */
+    flex-wrap: nowrap; /* wrap 제거: 한 줄로 유지 */
 }
 
 .recipe-step-left {
     display: flex;
     align-items: flex-start;
-    flex: 1 1 60%; /* 최소 60% 이상 차지 */
+    flex: 1 1 auto; /* 남는 공간을 채우도록 */
+    min-width: 0;   /* 텍스트 넘침 방지 */
 }
 
 .recipe-step-number {
@@ -99,17 +99,22 @@
 
 .recipe-step-text {
     line-height: 1.7;
-    font-size: 15px;
+    font-size: 16px;
+    word-break: keep-all;
     flex: 1;
 }
 
+.recipe-step-right {
+    flex-shrink: 0;
+    width: 250px; /* 원하는 너비로 조정 (예: 250px) */
+}
+
 .recipe-step-right img {
-    flex: 1 1 40%; /* 최소 35% 공간 */
-    max-width: 100%;
+    width: 100%;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .recipe-back-btn {
