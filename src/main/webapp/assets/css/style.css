@@ -21,6 +21,8 @@
 
 @import "./recipe/recipeDetail.css";
 
+@import "./recipe/recipeUpload.css";
+
 
 
 /* Global Style */
@@ -31,6 +33,7 @@
   --ck-green-dark: #277b40;
   --ck-red: #EC5228;
   --ck-red-dark: #da423a;
+  --ck-orange-pretty: #ff7f32;
   --ck-orange: #EF9651;
   --ck-orange-dark: #e27150;
   --ck-subTxt: #9d9d9d;

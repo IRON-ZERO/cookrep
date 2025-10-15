@@ -4,45 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Recipe Upload</title>
-    <!-- 외부 CSS 연결 -->
-<%--    <link rel="stylesheet" href="/assets/css/style.css"/>--%>
-    <link rel="stylesheet" type="text/css" href="/assets/css/recipe/recipeUpload.css">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
+            rel="stylesheet"
+    >
+    <link rel="stylesheet" href="/assets/css/style.css"/>
 </head>
-
-
-
 <body>
-<h2>레시피 작성</h2>
+<jsp:include page="/views/components/headerComp.jsp" />
+<main>
+    <div class="cont recipe-upload__cont">
+        <h2>레시피 작성</h2>
+        <form id="recipeForm">
+            <div>
+                <label for="recipeTitle" >레시피 제목</label>
+                <input type="text" id="recipeTitle"  placeholder="제목을 입력해주세요"/>
+            </div>
 
-<form id="recipeForm">
-    <div class="form-section">
-        <h3>레시피 제목</h3>
-        <input type="text" id="recipeTitle" placeholder="제목을 입력해주세요">
+            <div>
+                <label for="mainImage" >메인 이미지 (필수)</label>
+                <input type="file" id="mainImage" name="mainImage">
+            </div>
+
+            <div>
+                <label for="peopleCount" >인원 수 / 준비시간 / 조리시간</label>
+                <input type="number" id="peopleCount"  placeholder="인원 수">
+                <input type="number" id="prepTime"  placeholder="준비 시간 (분)">
+                <input type="number" id="cookTime"  placeholder="조리 시간 (분)">
+            </div>
+
+            <div>
+                <h3>조리 단계</h3>
+                <div id="steps"></div>
+                <button type="button" onclick="addStep()">+ 단계 추가</button>
+            </div>
+
+            <button type="button" onclick="submitRecipe()">레시피 저장</button>
+        </form>
     </div>
 
-    <div class="form-section">
-        <h3>메인 이미지 (필수)</h3>
-        <input type="file" id="mainImage" name="mainImage">
-    </div>
+</main>
 
-    <div class="form-section">
-        <h3>인원 수 / 준비시간 / 조리시간</h3>
-        <input type="number" id="peopleCount" placeholder="인원 수">
-        <br><br>
-        <input type="number" id="prepTime" placeholder="준비 시간 (분)">
-        <br><br>
-        <input type="number" id="cookTime" placeholder="조리 시간 (분)">
-    </div>
-
-    <div class="form-section">
-        <h3>조리 단계</h3>
-        <div id="steps"></div>
-        <button type="button" class="btn-secondary" onclick="addStep()">+ 단계 추가</button>
-    </div>
-
-    <button type="button" class="submit-btn" onclick="submitRecipe()">레시피 저장</button>
-</form>
+<jsp:include page="/views/components/footerComp.jsp" />
 
 <script>
     const userId = "<%= (String)session.getAttribute("userId") %>";
@@ -61,10 +66,10 @@
         stepDiv.className = "step";
         stepDiv.innerHTML = `
             <h4>Step ${stepCount}</h4>
-            <label>내용</label><br>
-            <textarea placeholder="조리 내용을 입력하세요" id="stepContent${stepCount}"></textarea><br><br>
-            <label>이미지 (선택)</label><br>
-            <input type="file" id="stepImage${stepCount}"><br>
+            <label for="stepContent${stepCount}">내용</label>
+            <textarea placeholder="조리 내용을 입력하세요" id="stepContent${stepCount}"></textarea>
+            <label for="stepImage${stepCount}">이미지(선택)</label>
+            <input type="file" id="stepImage${stepCount}">
         `;
         container.appendChild(stepDiv);
     }
@@ -148,8 +153,6 @@
     }
 </script>
 
-<script src="/assets/js/header.js">
-
-</script>
+<script src="/assets/js/header.js"></script>
 </body>
 </html>

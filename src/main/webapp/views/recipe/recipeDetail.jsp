@@ -2,29 +2,34 @@
 <%@ page import="dto.recipe.RecipeDTO" %>
 <%@ page import="dto.recipe.RecipeDTO.Step" %>
 <%@ page import="java.util.List" %>
-
 <html>
 <head>
     <title>Recipe Detail</title>
-    <!-- 외부 CSS 파일 -->
     <link rel="stylesheet" type="text/css" href="/assets/css/recipe/recipeDetail.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
+            rel="stylesheet"
+    >
     <link rel="stylesheet" href="/assets/css/style.css"/>
 
 </head>
-<body class="recipe-body">
-<%@ include file="/views/components/headerComp.jsp"%>
+<body>
+<jsp:include page="/views/components/headerComp.jsp" />
+
 <%
     RecipeDTO recipe = (RecipeDTO) request.getAttribute("recipe");
     if (recipe == null) {
 %>
-<p style="text-align:center; color:#888;">Recipe not found.</p>
+<p>Recipe not found.</p>
 <%
 } else {
 %>
 
 <div class="recipe-container">
-    <h1 class="recipe-title"><%= recipe.getTitle() %></h1>
-    <img class="recipe-main-image" src="<%= recipe.getThumbnail_image_url() %>" alt="Main Image">
+    <h1><%= recipe.getTitle() %></h1>
+    <img class="main-image" src="<%= recipe.getThumbnail_image_url() %>" alt="Main Image">
 
     <div class="recipe-info">
         <p><strong>👥 인원:</strong> <%= recipe.getPeople_count() %>명</p>
@@ -35,24 +40,20 @@
             <strong>🍽 칼로리:</strong> <%= recipe.getKcal() %> kcal</p>
     </div>
 
-    <div class="recipe-steps">
+    <div class="steps">
         <h2>조리순서 <span>Steps</span></h2>
         <%
             List<Step> steps = recipe.getSteps();
             if (steps != null) {
                 for (Step step : steps) {
         %>
-        <div class="recipe-step">
-            <div class="recipe-step-left">
-                <div class="recipe-step-number"><%= step.getStepOrder() %></div>
-                <div class="recipe-step-text"><%= step.getContents() %></div>
-            </div>
+        <div class="step">
+            <h3>Step <%= step.getStepOrder() %></h3>
+            <p><%= step.getContents() %></p>
             <%
                 if (step.getImageUrl() != null && !step.getImageUrl().isEmpty()) {
             %>
-            <div class="recipe-step-right">
-                <img src="<%= step.getImageUrl() %>" alt="Step Image">
-            </div>
+            <img src="<%= step.getImageUrl() %>" alt="Step Image">
             <%
                 }
             %>
@@ -63,12 +64,14 @@
         %>
     </div>
 
-    <div class="recipe-back-btn">
-        <button onclick="location.href='/mypage/recipe?action=list'">목록으로</button>
+    <!-- Back / Edit / Delete 버튼 -->
+    <div class="back-btn">
+        <button onclick="location.href='/mypage/recipe?action=list'">Back to List</button>
         <button onclick="location.href='/mypage/recipe?action=edit&recipe_id=<%= recipe.getRecipe_id() %>'">수정</button>
         <button onclick="deleteRecipe('<%= recipe.getRecipe_id() %>')">삭제</button>
     </div>
 </div>
+<jsp:include page="/views/components/footerComp.jsp" />
 
 <script>
     function deleteRecipe(recipeId) {
@@ -95,6 +98,7 @@
 <%
     }
 %>
-<%@ include file="/views/components/footerComp.jsp"%>
+
+<script src="/assets/js/header.js"></script>
 </body>
 </html>
