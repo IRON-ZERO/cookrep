@@ -29,7 +29,7 @@ CREATE TABLE User (
 -- 재료 테이블
 CREATE TABLE Ingredient (
                             ingredient_id INT AUTO_INCREMENT PRIMARY KEY,   -- INT로 통일
-                            name VARCHAR(50) NOT NULL,                       -- 이름 길이 여유 있게
+                            name VARCHAR(50) NOT NULL unique ,                       -- 이름 길이 여유 있게
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE userIngredient (
                                 user_id VARCHAR(36) NOT NULL,                   -- users.user_id와 타입 맞춤
                                 ingredient_id INT NOT NULL,                      -- ingredient_id와 타입 맞춤
                                 PRIMARY KEY (user_id, ingredient_id),
-                                FOREIGN KEY (user_id) REFERENCES User(user_id) on delete cascade ,
+                                FOREIGN KEY (user_id) REFERENCES User(user_id) on delete cascade,
                                 FOREIGN KEY (ingredient_id) REFERENCES Ingredient(ingredient_id) on delete cascade
 );
 
@@ -75,8 +75,8 @@ CREATE TABLE RecipeIngredient (
                                   ingredient_id INT,
                                   count VARCHAR(20), -- 사용한 수량(단위랑 합쳐서 문자열)
                                   PRIMARY KEY (recipe_id, ingredient_id),
-                                  FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id),
-                                  FOREIGN KEY (ingredient_id) REFERENCES Ingredient(ingredient_id)
+                                  FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id) on delete cascade,
+                                  FOREIGN KEY (ingredient_id) REFERENCES Ingredient(ingredient_id) on delete cascade
 );
 
 -- 댓글 테이블
@@ -97,6 +97,6 @@ CREATE TABLE Scrap (
                        user_id VARCHAR(36) NOT NULL,
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        PRIMARY KEY (recipe_id, user_id),
-                       FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id),
-                       FOREIGN KEY (user_id) REFERENCES User(user_id)
+                       FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id) on delete cascade,
+                       FOREIGN KEY (user_id) REFERENCES User(user_id) on delete cascade
 );

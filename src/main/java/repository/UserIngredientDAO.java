@@ -32,6 +32,7 @@ public class UserIngredientDAO {
             }
             ps.executeBatch();
         }
+        conn.close();
     }
     public void addUserIngredient(String userId, int ingredientId) throws SQLException {
         // 1 -> user_id  2 -> ingredient_id
@@ -41,6 +42,7 @@ public class UserIngredientDAO {
         pstmt.setString(1, userId);
         pstmt.setInt(2, ingredientId);
         pstmt.executeUpdate();
+        conn.close();
     }
     public void removeUserIngredient(String userId, int ingredientId) throws SQLException {
         String sql = "DELETE FROM userIngredient WHERE user_id = ? AND ingredient_id = ?";
@@ -49,6 +51,7 @@ public class UserIngredientDAO {
             pstmt.setInt(2, ingredientId);
             pstmt.executeUpdate();
         }
+        conn.close();
     }
 
     public List<UserIngredient> findByUserId(String userId) throws SQLException {
@@ -68,6 +71,7 @@ public class UserIngredientDAO {
                 ingredients.add(userIngredient);
             }
         }
+        conn.close();
         return ingredients;
     }
 
