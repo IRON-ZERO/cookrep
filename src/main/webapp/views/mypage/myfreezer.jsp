@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>${user.nickname}님의 냉장고 | CookRep</title>
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/mypage/style.css">
+		<link rel="stylesheet" href="/assets/css/mypage/style.css">
 		<link rel="stylesheet" href="/assets/css/style.css"/>
 		<style>
             .ingredient-tag {

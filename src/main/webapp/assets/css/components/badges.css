@@ -1,1 +1,65 @@
 @charset "UTF-8";
+
+.badge-level, .badge-pcount {
+  color: var(--ck-white);
+  padding: 3px 5px;
+  display: block;
+  border-radius: 10px;
+}
+
+.badge-level-EASY {
+  background-color: var(--ck-green);
+}
+
+.badge-level-NORMAL {
+  background-color: var(--ck-orange);
+}
+
+.badge-level-HARD {
+  background-color: var(--ck-red);
+}
+
+.badge-pcount[data-count="1"] {
+  background-color: rgb(247, 203, 132);
+}
+
+.badge-pcount[data-count="2"] {
+  background-color: #EF9A9A;
+}
+
+.badge-pcount[data-count="3"] {
+  background-color: #E57373;
+}
+
+.badge-pcount[data-count="4"] {
+  background-color: #EF5350;
+}
+
+.badge-pcount[data-count="5"] {
+  background-color: #F44336;
+}
+
+.badge-pcount[data-count="6"] {
+  background-color: #E53935;
+}
+
+.badge-pcount[data-count="7"] {
+  background-color: #D32F2F;
+}
+
+.badge-pcount[data-count="8"] {
+  background-color: #C62828;
+}
+
+.badge-pcount[data-count="9"] {
+  background-color: #B71C1C;
+}
+
+.badge-pcount[data-count="10"] {
+  background-color: #FF0000;
+}
+
+.badge-pcount[data-count]:not([data-count="1"]):not([data-count="1"]):not([data-count="1"]):not([data-count="1"]):not([data-count="1"]):not([data-count="1"]):not([data-count="1"]):not([data-count="1"]):not([data-count="1"]):not([data-count="1"])
+  {
+  background-color: rgb(246, 59, 158);
+}

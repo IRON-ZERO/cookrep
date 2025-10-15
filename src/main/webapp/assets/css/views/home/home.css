@@ -1,0 +1,126 @@
+@charset "UTF-8";
+
+.home-page__cont {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-page__cont h2 {
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.home-page__pick-list-cont {
+  width:100%;
+  overflow:hidden;
+}
+
+.home-page__pick-list {
+  display: grid;
+  grid-template-columns: repeat(20, minmax(500px, 1fr));
+  grid-auto-rows: 500px;
+  transition: transform ease-in-out 0.4s;
+}
+
+.home-page__pick-list article {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.home-page__pick-list li article>div {
+  transform: translateX(0%);
+  transition: transform ease-in-out 0.4s;
+}
+
+.home-page__pick-list li:hover article>div {
+  transform: translateX(100%);
+}
+
+.home-page__pick-list article>div * {
+  color: var(--ck-white);
+  transition: color ease-in-out 0.3s;
+}
+
+.home-page__pick-list li:hover article>div * {
+  color: var(--ck-txt);
+}
+
+.home-page__pick-list article>div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 11;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home-page__pick-list article>div h3 {
+  font-size: 40px;
+  font-weight: 700;
+  text-align: right;
+  margin: 10px 0px !important;
+}
+
+.home-page__pick-list article>div p {
+  display: flex;
+  gap: 15px;
+  font-size: 20px;
+  align-self: flex-end;
+}
+
+.home-page__pick-list article>div p span {
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+
+.home-page__pick-list article>div p span:first-child {
+  background-color: var(--ck-red);
+}
+
+.home-page__pick-list article>div p span:last-child {
+  background-color: var(--ck-green);
+}
+
+.home-page__pick-list article>div>span:nth-child(3) {
+  text-align: right;
+}
+
+.home-page__pick-list article>div>span:last-child {
+  display: block;
+  font-size: 400px;
+  font-weight: 700;
+  color: var(--ck-subTxt);
+  position: absolute;
+  left: -30px;
+  top: 200px;
+  transform: translateY(0%) skew(-20deg);
+  opacity: 1;
+  transition: opacity ease-in-out 0.3s, transform ease-in-out 0.3s;
+}
+
+.home-page__pick-list li:hover article>div>span:last-child {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.home-page__pick-list li article>img {
+  width: 500px;
+  height: 500px;
+  filter: brightness(50%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  transition: filter ease-in-out 0.3s;
+}
+
+.home-page__pick-list li:hover  article>img {
+  filter: brightness(100%);
+}

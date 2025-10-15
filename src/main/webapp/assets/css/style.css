@@ -8,7 +8,11 @@
 
 @import "./views/auth/joinPage.css";
 
+@import "./views/home/home.css";
+
 @import "./views/search/search.css";
+
+@import "./views/rank/rank.css";
 
 @import "./views/404.css";
 
@@ -20,6 +24,8 @@
 @import "./components/footer.css";
 
 @import "./components/grid-comp.css";
+
+@import "./components/badges.css";
 
 @import "./views/auth/authComponents.css";
 

@@ -15,11 +15,10 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 3px 3px 5px var(--ck-subTxt-dark);
-  z-index:1;
+  z-index: 1;
   transform: scale(1);
-  transition: z-index 0.2s ease-in-out, transform 0.2s ease-in-out, transform-origin 0.3s
-    ease-in-out;
-  
+  transition: z-index 0.2s ease-in-out, transform 0.2s ease-in-out,
+    transform-origin 0.2s ease-in-out;
 }
 
 .grid-cont li:hover {
@@ -34,3 +33,7 @@
 .grid-cont li:nth-child(4n):hover {
   transform-origin: right center;
 }
+
+
+
+

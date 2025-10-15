@@ -23,41 +23,39 @@
       <form action="" method="GET">
         <fieldset>
           <legend>레시피 검색</legend>
-          <input name="" placeholder="레시피를 검색해보세요."/>
+          <input name="" placeholder="레시피를 검색해보세요." />
           <button>검색</button>
         </fieldset>
       </form>
       <ul class="grid-cont">
-        <li style="background-color: red;"></li>
-        <li style="background-color: cornflowerblue;"></li>
-        <li style="background-color: teal;"></li>
-        <li style="background-color: orange;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li>
-        <li style="background-color: red;"></li> 
+        <c:forEach var="list" items="${defaultList}">
+          <li class="search-page__cont-listitem">
+            <a href="#" title="${list.title}">
+              <article>
+                <div>
+                  <h3>${list.title}</h3>
+                  <div>
+                    <span class="badge-pcount" data-count="${list.people_count}"> ${list.people_count} 인분</span>
+                    <span class="badge-level badge-level-${list.cookLevel}"> ${list.cookLevel}</span>
+                  </div>
+                  <div>
+                    <span> 조회수 ${list.views} </span>
+                    <span> 준비 ${list.prep_time} 분</span>
+                    <span> 요리 ${list.cook_time} 분</span>
+                    <span> ${list.like} 좋아요</span>
+                    <span> ${list.kcal} kcal</span>
+                  </div>
+                </div>
+                <button>
+                  <img src="/assets/images/icons/book-mark-yellow.png"
+                    alt="즐겨찾기"
+                  />
+                </button>
+                <img alt="요리썸네일" src="${list.thumbnail_image_url}">
+              </article>
+            </a>
+          </li>
+        </c:forEach>
       </ul>
     </div>
   </main>
