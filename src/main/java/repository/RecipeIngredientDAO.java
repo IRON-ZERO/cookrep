@@ -14,7 +14,9 @@ public class RecipeIngredientDAO {
         dbConnection.open();
         this.conn = dbConnection.getConnection();
     }
-    public RecipeIngredientDAO(Connection conn) {}
+    public RecipeIngredientDAO(Connection conn) {
+        this.conn = conn;
+    }
 
     // 개별 insert
     public void addIngredient(String recipeId, int ingredientId, String count) throws SQLException {
