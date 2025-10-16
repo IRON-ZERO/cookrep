@@ -60,7 +60,7 @@
                     </c:when>
 
                     <c:otherwise>
-                        <p class="no-recipes">아직 스크랩한 레시피가 없어요 😅</p>
+                        <p class="no-recipes">아직 업로드한 레시피가 없어요 😅</p>
                     </c:otherwise>
                 </c:choose>
             </div>

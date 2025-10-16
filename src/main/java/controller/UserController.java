@@ -212,8 +212,8 @@ public class UserController extends HttpServlet {
             UserService userService =  new UserService();
             UserDTO user = userService.getProfile(userId);
             req.setAttribute("user", user);
-            ScrapDAO scrapDAO = new ScrapDAO();
-            List<RecipeDTO> scrapedRecipes = scrapDAO.findScrappedRecipesByUser(userId);
+            ScrapService scrapService = new ScrapService();
+            List<RecipeDTO> scrapedRecipes = scrapService.findScrappedRecipesByUser(userId);
 
             req.setAttribute("scrapedRecipes", scrapedRecipes);
             return "/views/mypage/myscrap.jsp";
