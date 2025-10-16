@@ -24,7 +24,7 @@ services:
 
   # Java 앱 컨테이너
   app:
-    image: kangyejini/cookrep:test1  # Java 앱 이미지
+    image: kangyejini/cookrep:run  # Java 앱 이미지
     container_name: cookrep-app
     depends_on:
       db:

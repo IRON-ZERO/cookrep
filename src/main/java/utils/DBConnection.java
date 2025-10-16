@@ -14,6 +14,7 @@ public class DBConnection {
 
     private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private final String JDBC_URL = "jdbc:mysql://localhost:3306/cookrep?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
+
 //    String host = "cookrepsql";   // 컨테이너 이름
 //        String port = "3306";
 //        String dbName = "cookrep";
