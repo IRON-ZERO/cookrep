@@ -8,9 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class RecipeDAO {
 
@@ -199,5 +197,61 @@ public class RecipeDAO {
         }
     }
 
+    /**
+     * 냉장고 재료 기반 추천 레시피 조회
+     * - SQL 레벨에서 COUNT()로 일치 재료 개수를 계산함
+     * - Map<RecipeDTO, Integer> 로 반환 (key: 레시피, value: 일치 재료 수)
+     */
+    public Map<RecipeDTO, Integer> findRecipesWithMatchCount(List<String> ingredients) throws SQLException {
+        Map<RecipeDTO, Integer> result = new LinkedHashMap<>();
+
+        if (ingredients == null || ingredients.isEmpty()) return result;
+
+        // IN (?, ?, ?) 플레이스홀더 생성
+        String placeholders = String.join(",", Collections.nCopies(ingredients.size(), "?"));
+
+        String sql = String.format("""
+            SELECT r.recipe_id, r.user_id, r.title, r.thumbnail_image_url,
+                   r.views, r.people_count, r.prep_time, r.cook_time, r.`like`, r.kcal,
+                   COUNT(i.ingredient_id) AS match_count
+            FROM Recipe r
+            JOIN RecipeIngredient ri ON r.recipe_id = ri.recipe_id
+            JOIN Ingredient i ON ri.ingredient_id = i.ingredient_id
+            WHERE i.name IN (%s)
+            GROUP BY r.recipe_id
+            ORDER BY match_count DESC, r.views DESC
+            LIMIT 30
+            """, placeholders);
+
+        try (Connection con = db.open();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+            // 1️⃣ 파라미터 바인딩
+            for (int i = 0; i < ingredients.size(); i++) {
+                pstmt.setString(i + 1, ingredients.get(i));
+            }
+
+            // 2️⃣ 쿼리 실행
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    RecipeDTO recipe = new RecipeDTO();
+                    recipe.setRecipe_id(rs.getString("recipe_id"));
+                    recipe.setUser_id(rs.getString("user_id"));
+                    recipe.setTitle(rs.getString("title"));
+                    recipe.setThumbnail_image_url(rs.getString("thumbnail_image_url"));
+                    recipe.setViews(rs.getInt("views"));
+                    recipe.setPeople_count(rs.getInt("people_count"));
+                    recipe.setPrep_time(rs.getInt("prep_time"));
+                    recipe.setCook_time(rs.getInt("cook_time"));
+                    recipe.setLike(rs.getInt("like"));
+                    recipe.setKcal(rs.getInt("kcal"));
+
+                    int matchCount = rs.getInt("match_count");
+                    result.put(recipe, matchCount);
+                }
+            }
+        }
+        return result;
+    }
 
 }
