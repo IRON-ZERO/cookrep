@@ -12,18 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDAO {
-    private Connection conn = null;
-
-    public UserDAO() {
-        DBConnection dbConnection = new DBConnection();
-        dbConnection.open();
-        this.conn = dbConnection.getConnection();
-    }
+    DBConnection db = new DBConnection();
 
     public int updateUser(UserDTO userDTO) throws SQLException {
         String sql = "UPDATE user SET  first_name = ?, last_name = ?, country = ?, city = ? WHERE user_id = ?";
         int result = 0;
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try(Connection conn = db.open();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userDTO.getFirstName());
             pstmt.setString(2, userDTO.getLastName());
             pstmt.setString(3, userDTO.getCountry());
@@ -39,7 +34,8 @@ public class UserDAO {
     public User findById(String id) throws SQLException {
         User user = new User();
         String sql =  "SELECT * FROM user WHERE user_id = ?";
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try(Connection conn = db.open();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {

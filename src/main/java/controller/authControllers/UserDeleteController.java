@@ -27,12 +27,12 @@ public class UserDeleteController extends HttpServlet {
 		try {
 			HttpSession session = req.getSession(false);
 			if (session == null || session.getAttribute("userId") == null) {
-				resp.sendRedirect("/views/auth/login.jsp");
+				resp.sendRedirect("/login");
 			}
 			String userId = (String)session.getAttribute("userId");
 			authService.deleteUser(userId);
 			session.invalidate();
-			resp.sendRedirect("/views/auth/login.jsp");
+			resp.sendRedirect("/login");
 		} catch (Exception e) {
 			req.setAttribute("error_msg", "회원탈퇴 중 오류가 발생했습니다.");
 			// 여기에 다시 페이지로 돌려보내줘야

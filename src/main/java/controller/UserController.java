@@ -3,6 +3,7 @@ package controller;
 import dto.recipe.RecipeDTO;
 import dto.user.UserDTO;
 import org.apache.commons.beanutils.BeanUtils;
+import repository.ScrapDAO;
 import service.IngredientService;
 import service.RecipeService;
 import service.ScrapService;
@@ -40,6 +41,7 @@ public class UserController extends HttpServlet {
                     view = getIngredients(req,resp);
                     break;
                 case "/mypage/scrap" :
+                    view = getScrapedRecipe(req,resp);
                     break;
             }
         }else {
@@ -54,6 +56,8 @@ public class UserController extends HttpServlet {
         }
         req.getRequestDispatcher(view).forward(req, resp);
     }
+
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
@@ -199,5 +203,24 @@ public class UserController extends HttpServlet {
         }
 
         return "/views/mypage/myfridge.jsp";
+    }
+    private String getScrapedRecipe(HttpServletRequest req, HttpServletResponse resp) {
+        String userId = (String) req.getSession(false).getAttribute("userId");
+        if (userId == null) return "/views/auth/login.jsp";
+
+        try {
+            UserService userService =  new UserService();
+            UserDTO user = userService.getProfile(userId);
+            req.setAttribute("user", user);
+            ScrapDAO scrapDAO = new ScrapDAO();
+            List<RecipeDTO> scrapedRecipes = scrapDAO.findScrappedRecipesByUser(userId);
+
+            req.setAttribute("scrapedRecipes", scrapedRecipes);
+            return "/views/mypage/myscrap.jsp";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            req.setAttribute("error", "스크랩 레시피를 불러오지 못했습니다.");
+            return "/views/mypage/myscrap.jsp";
+        }
     }
 }

@@ -369,3 +369,7 @@
 .scrap-btn.active .bookmark-icon {
     background: url("/assets/images/icons/scraped_active.png") no-repeat center/contain;
 }
+
+.match {
+    color: #EFEFEF;
+}

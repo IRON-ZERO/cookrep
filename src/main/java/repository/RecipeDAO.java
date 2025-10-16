@@ -62,6 +62,7 @@ public class RecipeDAO {
         }
     }
 
+
     // 사용자 레시피 리스트 조회
     public List<RecipeDTO> getRecipesByUser(String userId) throws SQLException {
         List<RecipeDTO> list = new ArrayList<>();
@@ -88,6 +89,7 @@ public class RecipeDAO {
         }
         return list;
     }
+
 
     // 레시피 상세 조회 (Recipe + Steps)
     public RecipeDTO getRecipeById(String recipeId) throws SQLException {
