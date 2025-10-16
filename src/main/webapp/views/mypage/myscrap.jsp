@@ -22,7 +22,7 @@
 						<c:choose>
 							<c:when test="${not empty scrapedRecipes}">
 								<c:forEach var="recipe" items="${scrapedRecipes}">
-									<div class="recipe-card">
+									<a href="/mypage/recipe?action=detail&recipe_id=${recipe.id}" class="recipe-card">
 										<img src="${recipe.thumbnail_image_url}" alt="${recipe.title}" />
 										<div class="card-overlay">
 											
@@ -55,7 +55,7 @@
 												<span class="likes">좋아요 ${recipe.like}</span>
 											</div>
 										</div>
-									</div>
+									</a>
 								</c:forEach>
 							</c:when>
 							
