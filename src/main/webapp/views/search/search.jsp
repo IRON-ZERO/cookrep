@@ -24,7 +24,7 @@
         <fieldset>
           <legend>레시피 검색</legend>
           <label for="searchInput">레시피 검색</label>
-          <input id="searchInput" name="search-items" placeholder="레시피를 검색해보세요. ','를 사용해 여러 갬색을 할 수 있답니다." />
+          <input id="searchInput" name="search-items" placeholder="레시피를 검색해보세요. ','를 사용해 여러 검색을 할 수 있답니다." />
           <button>검색</button>
         </fieldset>
       </form>

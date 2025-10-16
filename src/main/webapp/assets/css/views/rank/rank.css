@@ -168,7 +168,8 @@
   left: 0;
   top: -140px;
   width: 100%;
-  height: minmax(500px, 1fr);
+  min-height:500px;
+  height: 100%;
   filter: brightness(60%);
   transition: transform ease-in-out 0.2s, filter ease-in-out 0.2s;
 }

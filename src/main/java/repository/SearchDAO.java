@@ -104,11 +104,9 @@ public class SearchDAO {
 		for (int i = 0; i < names.length; i++) {
 			sql.append("title LIKE ?");
 			if (i < names.length - 1) {
-				sql.append("OR");
+				sql.append(" OR ");
 			}
 		}
-
-		//		title like ?
 		try (Connection conn = db.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql.toString());) {
 			for (int i = 0; i < names.length; i++) {
 				pstmt.setString(i + 1, "%" + names[i].trim() + "%");
