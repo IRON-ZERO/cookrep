@@ -120,7 +120,6 @@ public class RecipeController extends HttpServlet {
         }
 
         req.setAttribute("userId", userId); // JSP에서 사용할 수 있도록 request에 세팅
-        System.out.println(userId);
         return "/upload.jsp"; // 업로드 페이지 JSP
     }
 
