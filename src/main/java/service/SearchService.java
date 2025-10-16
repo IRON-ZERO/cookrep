@@ -42,4 +42,14 @@ public class SearchService {
 		}
 	}
 
+	public List<RecipeSearchDTO> searchRecipeByNames(String names) {
+		String[] split = names.split(",");
+		try {
+			return searchRepo.searchRecipeByNames(split);
+		} catch (SQLException e) {
+			log.severe("SQLException : " + e);
+			return Collections.emptyList();
+		}
+	}
+
 }

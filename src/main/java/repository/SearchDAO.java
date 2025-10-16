@@ -93,4 +93,49 @@ public class SearchDAO {
 		}
 	}
 
+	public List<RecipeSearchDTO> searchRecipeByNames(String[] names) throws SQLException {
+		List<RecipeSearchDTO> result = new ArrayList<>();
+		db.open();
+		StringBuilder sql = new StringBuilder("""
+			SELECT recipe_id, title, thumbnail_image_url, views, people_count, prep_time, cook_time, `like`, kcal
+			FROM Recipe
+			WHERE
+			""");
+		for (int i = 0; i < names.length; i++) {
+			sql.append("title LIKE ?");
+			if (i < names.length - 1) {
+				sql.append("OR");
+			}
+		}
+
+		//		title like ?
+		try (Connection conn = db.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql.toString());) {
+			for (int i = 0; i < names.length; i++) {
+				pstmt.setString(i + 1, "%" + names[i].trim() + "%");
+
+			}
+			ResultSet resultSet = pstmt.executeQuery();
+			while (resultSet.next()) {
+				RecipeSearchDTO newItem = new RecipeSearchDTO(
+					resultSet.getString("recipe_id"),
+					resultSet.getString("title"),
+					resultSet.getString("thumbnail_image_url"),
+					resultSet.getInt("views"),
+					resultSet.getInt("people_count"),
+					resultSet.getInt("prep_time"),
+					resultSet.getInt("cook_time"),
+					resultSet.getInt("like"),
+					resultSet.getInt("kcal"));
+				result.add(newItem);
+			}
+			return result;
+		} catch (SQLException e) {
+			log.severe("SQLException in searchRecipeByDefault" + e);
+			throw e;
+		} finally {
+			db.close();
+
+		}
+	}
+
 }

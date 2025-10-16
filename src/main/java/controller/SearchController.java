@@ -19,8 +19,16 @@ public class SearchController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<RecipeSearchDTO> list = searchService.searchRecipeByDefault();
-		req.setAttribute("defaultList", list);
-		req.getRequestDispatcher("/views/search/search.jsp").forward(req, resp);
+		String params = req.getParameter("search-items");
+		System.out.println(params);
+		if (params != null) {
+			List<RecipeSearchDTO> list = searchService.searchRecipeByNames(params);
+			req.setAttribute("defaultList", list);
+			req.getRequestDispatcher("/views/search/search.jsp").forward(req, resp);
+		} else {
+			List<RecipeSearchDTO> list = searchService.searchRecipeByDefault();
+			req.setAttribute("defaultList", list);
+			req.getRequestDispatcher("/views/search/search.jsp").forward(req, resp);
+		}
 	}
 }

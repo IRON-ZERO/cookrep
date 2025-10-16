@@ -20,13 +20,14 @@
   <main>
     <div class="wrapper rank-page__cont">
       <h2>쿠크랩 랭킹 !</h2>
-      <ul class="grid-cont">
-        <c:forEach var="rank" items="${ranking}">
+      <ul class="rank-page__grid-cont">
+        <c:forEach var="rank" varStatus="status" items="${ranking}">
           <li class="rank-page__cont-listitem">
             <a href="#" title="${rank.title}">
               <article>
                 <div>
                   <h3>${rank.title}</h3>
+                  <span>${status.index + 1}</span>
                   <div>
                     <span class="badge-pcount"
                       data-count="${rank.people_count}"
