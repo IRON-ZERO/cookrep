@@ -74,7 +74,9 @@
             // 스크랩 버튼 클릭시 "active" 토글 및 동작
             document.querySelectorAll(".scrap-btn").forEach((btn) => {
                 btn.addEventListener("click", (e) => {
-                    e.stopPropagation();
+                    e.stopPropagation();  // 부모(a) 클릭 막기
+                    e.preventDefault();   // a 태그의 기본 이동도 막기
+
 
                     const recipeId = btn.dataset.recipeId;
                     const isActive = btn.classList.toggle("active");

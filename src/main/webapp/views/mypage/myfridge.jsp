@@ -50,7 +50,7 @@
 						<c:choose>
 							<c:when test="${not empty recommendMap}">
 								<c:forEach var="entry" items="${recommendMap}">
-									<div class="recipe-card">
+									<a href="/mypage/recipe?action=detail&recipe_id=${entry.key.recipe_id}" class="recipe-card">
 										<img src="${entry.key.thumbnail_image_url}" alt="${entry.key.title}" />
 										<div class="card-overlay">
 											<!-- 난이도 -->
@@ -81,7 +81,7 @@
 											<h4>${entry.key.title}</h4>
 											<p class="match">냉장고 재료 일치: ${entry.value}개</p>
 										</div>
-									</div>
+									</>
 								</c:forEach>
 							</c:when>
 							
@@ -106,7 +106,9 @@
             document.querySelector(".recipe-grid").addEventListener("click", (e) => {
                 const btn = e.target.closest(".scrap-btn");
                 if (!btn) return; // scrap-btn이 아니면 무시
-                e.stopPropagation();
+                e.stopPropagation();  // 부모(a) 클릭 막기
+                e.preventDefault();   // a 태그의 기본 이동도 막기
+
 
                 const recipeId = btn.dataset.recipeId;
                 const isActive = btn.classList.toggle("active");
@@ -161,22 +163,24 @@
                 for (const [recipeJson, matchCount] of Object.entries(data.recommendMap)) {
                     const recipe = JSON.parse(recipeJson);
                     container.innerHTML += format(`
-					    <div class="recipe-card">
-					      <img src="{0}" alt="{1}" />
+					    <a href="/mypage/recipe?action=detail&recipe_id={0}" class="recipe-card">
+					      <img src="{1}" alt="{2}" />
 					      <div class="card-overlay">
-							<button class="scrap-btn {2}"
-											data-recipe-id="{3}">
+							<button class="scrap-btn {3}"
+											data-recipe-id="{4}">
 								<i class="bookmark-icon"></i>
 							</button>
-					        <h4>{4}</h4>
-					        <p class="match">냉장고 재료 일치: {5}개</p>
+					        <h4>{5}</h4>
+					        <p class="match">냉장고 재료 일치: {6}개</p>
 					      </div>
-					    </div>
-					  `,recipe.thumbnail_image_url,
+					    </a>
+					  `,recipe.recipe_id,
+	                    recipe.thumbnail_image_url,
 	                    recipe.title,
 	                    data.scrapStatusMap[recipe.recipe_id] ? "active" : "",
 	                    recipe.recipe_id,
-	                    recipe.title, matchCount
+	                    recipe.title,
+	                    matchCount
                     );
                 }
             }
