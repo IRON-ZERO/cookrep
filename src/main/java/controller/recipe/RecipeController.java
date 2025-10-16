@@ -193,6 +193,7 @@ public class RecipeController extends HttpServlet {
                 }
             });
 
+            req.setAttribute("scrapStatusMap", scrapStatusMap);
             req.setAttribute("recipes", recipes);
             req.setAttribute("user",userDTO);
             return "/recipeList.jsp";
