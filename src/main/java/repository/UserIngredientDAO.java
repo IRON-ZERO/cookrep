@@ -23,7 +23,7 @@ public class UserIngredientDAO {
         this.conn = conn;
     }
     public void addIngredientsBatch(String userId, int[] ingredientIds) throws SQLException {
-        String sql = "INSERT INTO UserIngredient (user_id, ingredient_id) VALUES (?, ?)";
+        String sql = "INSERT INTO userIngredient (user_id, ingredient_id) VALUES (?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             for (int id : ingredientIds) {
                 ps.setString(1, userId);
