@@ -22,7 +22,7 @@
 						<c:choose>
 							<c:when test="${not empty scrapedRecipes}">
 								<c:forEach var="recipe" items="${scrapedRecipes}">
-									<a href="/mypage/recipe?action=detail&recipe_id=${recipe.id}" class="recipe-card">
+									<a href="/mypage/recipe?action=detail&recipe_id=${recipe.recipe_id}" class="recipe-card">
 										<img src="${recipe.thumbnail_image_url}" alt="${recipe.title}" />
 										<div class="card-overlay">
 											
@@ -71,30 +71,31 @@
 		
 		<%@ include file="/views/components/footerComp.jsp"%>
 		<script>
-            // 스크랩 버튼 클릭시 "active" 토글 및 동작
-            document.querySelectorAll(".scrap-btn").forEach((btn) => {
-                btn.addEventListener("click", (e) => {
-                    e.stopPropagation();  // 부모(a) 클릭 막기
-                    e.preventDefault();   // a 태그의 기본 이동도 막기
+            // 스크랩 버튼을 추후에 주입하기 때문에 초반 dom은 부모에게 리스너 달고 동작하게 함.
+            // 대신 스크랩 버튼일 때만 작동하게끔
+            document.querySelector(".recipe-grid").addEventListener("click", (e) => {
+                const btn = e.target.closest(".scrap-btn");
+                if (!btn) return; // scrap-btn이 아니면 무시
+                e.stopPropagation();  // 부모(a) 클릭 막기
+                e.preventDefault();   // a 태그의 기본 이동도 막기
 
 
-                    const recipeId = btn.dataset.recipeId;
-                    const isActive = btn.classList.toggle("active");
+                const recipeId = btn.dataset.recipeId;
+                const isActive = btn.classList.toggle("active");
 
-                    fetch(`/scrap`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: new URLSearchParams({
-                            action: isActive ? "add" : "remove",
-                            recipeId: recipeId
-                        })
+                fetch(`/scrap`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams({
+                        action: isActive ? "add" : "remove",
+                        recipeId: recipeId
                     })
-                        .then(res => res.json())
-                        .then(data => {
-                            
-                        })
-                        .catch(err => console.error("Scrap error:", err));
-                });
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Scrap result:", data);
+                    })
+                    .catch(err => console.error("Scrap error:", err));
             });
 		</script>
 	</body>

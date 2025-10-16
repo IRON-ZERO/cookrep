@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.recipe.RecipeDTO;
 import dto.user.UserDTO;
 import repository.RecipeDAO;
+import service.ScrapService;
+import service.UserService;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -25,7 +27,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/mypage/recipe/*")
 public class RecipeController extends HttpServlet {
@@ -165,9 +169,22 @@ public class RecipeController extends HttpServlet {
         try {
             HttpSession session = req.getSession();
             String userId = (String) session.getAttribute("userId");
+
+            UserService userService = new UserService();
+            ScrapService scrapService = new ScrapService();
+            UserDTO userDTO = userService.getProfile(userId);
+
 //            if (userId == null) userId = "u001"; // 임시
 
             List<RecipeDTO> recipes = recipeDAO.getRecipesByUser(userId);
+
+            Map<String, Boolean> scrapStatusMap = new HashMap<>();
+            List<String> scrappedIds = scrapService.getScrappedRecipeIdsByUser(userId);
+
+            for (RecipeDTO recipe : recipes) {
+                scrapStatusMap.put(recipe.getRecipe_id(),
+                        scrappedIds.contains(recipe.getRecipe_id()));
+            }
 
             // 썸네일 Presigned URL 생성
             recipes.forEach(recipe -> {
@@ -177,6 +194,7 @@ public class RecipeController extends HttpServlet {
             });
 
             req.setAttribute("recipes", recipes);
+            req.setAttribute("user",userDTO);
             return "/recipeList.jsp";
         } catch (Exception e) {
             e.printStackTrace();
