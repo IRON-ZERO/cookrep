@@ -91,7 +91,7 @@
                     })
                         .then(res => res.json())
                         .then(data => {
-                            console.log("Scrap result:", data);
+                            
                         })
                         .catch(err => console.error("Scrap error:", err));
                 });
