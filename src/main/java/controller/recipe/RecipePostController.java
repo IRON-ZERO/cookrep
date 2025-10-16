@@ -39,18 +39,11 @@ public class RecipePostController extends HttpServlet {
                 }
             }
 
-            // ---------------- 콘솔 출력 (JSON 확인) ----------------
-            System.out.println("===== RECEIVED JSON =====");
-            System.out.println(sb.toString());
-            System.out.println("=========================");
-
             JsonNode root = objectMapper.readTree(sb.toString());
 
             // ---------------- UUID 생성 ----------------
             String recipeId = UUID.randomUUID().toString();
 
-            // ---------------- JSON → 변수 변환 ----------------
-//            String userId = root.has("userId") ? root.get("userId").asText() : "u001"; // 임시
             // ---------------- 세션에서 userId 가져오기 ----------------
             HttpSession session = req.getSession(false); // 세션이 없으면 null 반환
             String userId = null;

@@ -22,7 +22,20 @@ public class UserService {
     }
     public void updateProfile(UserDTO userDTO) throws SQLException{
         UserDAO userDAO = new UserDAO();
-        int result = userDAO.updateUser(userDTO);
+        UserDTO oldUserDTO = getProfile(userDTO.getId());
+        if (userDTO.getFirstName() != null && !userDTO.getFirstName().isEmpty()){
+            oldUserDTO.setFirstName(userDTO.getFirstName());
+        }
+        if (userDTO.getLastName() != null && !userDTO.getLastName().isEmpty()){
+            oldUserDTO.setLastName(userDTO.getLastName());
+        }
+        if (userDTO.getCountry() != null && !userDTO.getCountry().isEmpty()){
+            oldUserDTO.setCountry(userDTO.getCountry());
+        }
+        if(userDTO.getCity() != null && !userDTO.getCity().isEmpty()){
+            oldUserDTO.setCity(userDTO.getCity());
+        }
+        userDAO.updateUser(oldUserDTO);
 
     }
     public void addIngredient(String userId, int ingredientId) throws SQLException {

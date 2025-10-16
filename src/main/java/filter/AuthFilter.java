@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 public class AuthFilter implements Filter {
 	private static final Set<String> NOT_LOGIN_PAGES = Set.of("/", "/login", "/join");
     private static final Set<String> LOGIN_PAGES = Set.of(
-            "/", "/rank", "/search", "/mypage", "/mypage/freezer", "/new-recipe", "/logout",
+            "/", "/rank", "/search", "/mypage", "/mypage/fridge", "/new-recipe", "/logout",
             "/recipes", "/mypage/recipe", "/mypage/recipe/upload", "/mypage/recipe/list",
             "/mypage/recipe/detail", "/mypage/recipe/delRecipe", "/mypage/recipe/edit",
             "/recipe/register", "/recipe/s3/postrecipe", "/recipe/update" // 추가
@@ -55,6 +55,7 @@ public class AuthFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
+        System.out.println((String)userId);
 
 		// 로그인 안된 사용자
 		if (userId == null) {
