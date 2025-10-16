@@ -84,7 +84,8 @@ public class RecipeAPIService {
 	}
 
 	private String apiUrl(String s_index, String l_index) {
-		final String API_KEY = "06bda7d8439442a5b24f";
+		final String API_KEY = "3303680290354193a8e7"; // 예진
+		//		final String API_KEY = "06bda7d8439442a5b24f"; // 준혁
 		final String URL = "http://openapi.foodsafetykorea.go.kr/api/";
 		String formattedString = String.format("/COOKRCP01/json/%s/%s", s_index, l_index);
 		String API_URL = URL + API_KEY + formattedString;
