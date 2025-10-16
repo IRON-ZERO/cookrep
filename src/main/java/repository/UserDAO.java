@@ -15,7 +15,7 @@ public class UserDAO {
     DBConnection db = new DBConnection();
 
     public int updateUser(UserDTO userDTO) throws SQLException {
-        String sql = "UPDATE user SET  first_name = ?, last_name = ?, country = ?, city = ? WHERE user_id = ?";
+        String sql = "UPDATE User SET  first_name = ?, last_name = ?, country = ?, city = ? WHERE user_id = ?";
         int result = 0;
         try(Connection conn = db.open();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -33,7 +33,7 @@ public class UserDAO {
     // 마이 페이지(프로필) 조회할 때 사용
     public User findById(String id) throws SQLException {
         User user = new User();
-        String sql =  "SELECT * FROM user WHERE user_id = ?";
+        String sql =  "SELECT * FROM User WHERE user_id = ?";
         try(Connection conn = db.open();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
