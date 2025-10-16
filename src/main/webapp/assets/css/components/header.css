@@ -85,7 +85,7 @@ header>div nav:last-child div > a:first-child {
   border-radius: 100%;
 }
 
-header>div nav:last-child div >a>img {
+header>div > nav:last-child> div >a>img {
   width:50px;
   height: 50px;
   

@@ -9,22 +9,24 @@ public class DBConnection {
     private Connection con = null;
     private PreparedStatement pstmt = null;
 
-    private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-//    private final String JDBC_URL = "jdbc:mysql://localhost:3306/cookrep?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
-    String host = "cookrepsql";   // 컨테이너 이름
-        String port = "3306";
-        String dbName = "cookrep";
-        String user = System.getenv("DB_USER");
-        String password = System.getenv("DB_PASSWORD");
+    String user = System.getenv("DB_USER");
+    String password = System.getenv("DB_PASSWORD");
 
-    private final String JDBC_URL = "jdbc:mysql://" + host + ":" + port + "/" + dbName +
-            "?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
+    private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private final String JDBC_URL = "jdbc:mysql://localhost:3306/cookrep?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
+//    String host = "cookrepsql";   // 컨테이너 이름
+//        String port = "3306";
+//        String dbName = "cookrep";
+//
+//
+//    private final String JDBC_URL = "jdbc:mysql://" + host + ":" + port + "/" + dbName +
+//            "?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
 
     // DB 접속
     public Connection open() {
         try {
             Class.forName(JDBC_DRIVER);
-            con = DriverManager.getConnection(JDBC_URL, user, password);
+            con = DriverManager.getConnection(JDBC_URL, "root", "1111");
 //            System.out.println("DB 연결 성공!");
         } catch (ClassNotFoundException e) {
             System.err.println("JDBC 드라이버 로드 실패: " + e.getMessage());

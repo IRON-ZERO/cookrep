@@ -1,7 +1,5 @@
 use cookrep;
 SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
-select * from User;
-select * from Recipe;
 
 -- 사용자 테이블
 CREATE TABLE User (
