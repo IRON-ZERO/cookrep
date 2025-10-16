@@ -10,7 +10,6 @@ public class DBConnection {
     private PreparedStatement pstmt = null;
 
     private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-//    private final String JDBC_URL = "jdbc:mysql://localhost:3306/cookrep?serverTimezone=Asia/Seoul";
     private final String JDBC_URL = "jdbc:mysql://localhost:3306/cookrep?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
 
 

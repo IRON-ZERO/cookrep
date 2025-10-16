@@ -33,6 +33,7 @@
           <a href="/logout">로그아웃</a>
         </div>
       </c:if>
+
     </nav>
   </div>
 </header>

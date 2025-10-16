@@ -71,6 +71,9 @@ public class RecipeUpdateController extends HttpServlet {
 
             String title = (String) reqMap.get("title");
             String thumbnailUrl = (String) reqMap.get("thumbnail_url");
+            Integer peopleCount = reqMap.get("peopleCount") != null ? Integer.parseInt(reqMap.get("peopleCount").toString()) : null;
+            Integer prepTime = reqMap.get("prepTime") != null ? Integer.parseInt(reqMap.get("prepTime").toString()) : null;
+            Integer cookTime = reqMap.get("cookTime") != null ? Integer.parseInt(reqMap.get("cookTime").toString()) : null;
 
             List<Map<String, Object>> stepsList = (List<Map<String, Object>>) reqMap.get("steps");
             List<Step> steps = new ArrayList<>();
@@ -89,7 +92,11 @@ public class RecipeUpdateController extends HttpServlet {
             recipe.setRecipe_id(recipeId);
             recipe.setTitle(title);
             recipe.setThumbnail_image_url(thumbnailUrl);
+            recipe.setPeople_count(peopleCount);
+            recipe.setPrep_time(prepTime);
+            recipe.setCook_time(cookTime);
             recipe.setSteps(steps);
+
 
             // ------------------------------
             // 1) 기존 이미지 URL 조회

@@ -4,36 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Recipe Upload</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
+            rel="stylesheet"
+    >
+    <link rel="stylesheet" href="/assets/css/style.css"/>
 </head>
 <body>
-<h2>레시피 작성</h2>
+<jsp:include page="/views/components/headerComp.jsp" />
+<main>
+    <div class="cont recipe-upload__cont">
+        <h2>레시피 작성</h2>
+        <form id="recipeForm">
+            <div>
+                <label for="recipeTitle" >레시피 제목</label>
+                <input type="text" id="recipeTitle"  placeholder="제목을 입력해주세요"/>
+            </div>
 
-<form id="recipeForm">
-    <h3>레시피 제목</h3>
-    <input type="text" id="recipeTitle" placeholder="레시피 제목 입력"><br><br>
+            <div>
+                <label for="mainImage" >메인 이미지 (필수)</label>
+                <input type="file" id="mainImage" name="mainImage">
+            </div>
 
-    <h3>메인 이미지</h3>
-    <input type="file" id="mainImage" name="mainImage"><br><br>
+            <div>
+                <label for="peopleCount" >인원 수 / 준비시간 / 조리시간</label>
+                <input type="number" id="peopleCount"  placeholder="인원 수">
+                <input type="number" id="prepTime"  placeholder="준비 시간 (분)">
+                <input type="number" id="cookTime"  placeholder="조리 시간 (분)">
+            </div>
 
-    <h3>인원 수</h3>
-    <input type="number" id="peopleCount" placeholder="예: 2"><br><br>
+            <div>
+                <h3>조리 단계</h3>
+                <div id="steps"></div>
+                <button type="button" onclick="addStep()">+ 단계 추가</button>
+            </div>
 
-    <h3>준비 시간 (분)</h3>
-    <input type="number" id="prepTime" placeholder="예: 30"><br><br>
+            <button type="button" onclick="submitRecipe()">레시피 저장</button>
+        </form>
+    </div>
 
-    <h3>조리 시간 (분)</h3>
-    <input type="number" id="cookTime" placeholder="예: 45"><br><br>
+</main>
 
-    <h3>조리 단계</h3>
-    <div id="steps"></div>
-    <button type="button" onclick="addStep()">+ 단계 추가</button><br><br>
-
-    <button type="button" onclick="submitRecipe()">레시피 저장</button>
-</form>
-
+<jsp:include page="/views/components/footerComp.jsp" />
 
 <script>
-    // JSP 세션에서 userId 가져오기
     const userId = "<%= (String)session.getAttribute("userId") %>";
     if (!userId || userId === "null") {
         alert("로그인이 필요합니다.");
@@ -50,35 +66,32 @@
         stepDiv.className = "step";
         stepDiv.innerHTML = `
             <h4>Step ${stepCount}</h4>
-            <textarea placeholder="내용 입력" id="stepContent${stepCount}"></textarea><br>
-            <input type="file" id="stepImage${stepCount}"><br><br>
+            <label for="stepContent${stepCount}">내용</label>
+            <textarea placeholder="조리 내용을 입력하세요" id="stepContent${stepCount}"></textarea>
+            <label for="stepImage${stepCount}">이미지(선택)</label>
+            <input type="file" id="stepImage${stepCount}">
         `;
         container.appendChild(stepDiv);
     }
 
     async function submitRecipe() {
         const fileNames = [];
+        const now = Date.now();
 
-        // const userId = "u001"; // 예시: 세션에서 가져올 수 있음
-        const now = Date.now(); // 밀리초 단위로 유니크 값 생성
-
-        // 메인 이미지
         const mainFile = document.getElementById("mainImage").files[0];
         if (mainFile) {
             fileNames.push(`users/${userId}/recipes/${now}/main/${mainFile.name}`);
         }
 
-        // step 이미지
         for (let i = 1; i <= stepCount; i++) {
             const stepFile = document.getElementById(`stepImage${i}`).files[0];
             if (stepFile) {
                 fileNames.push(
-                    `users/${userId}/recipes/${now}/steps/\${String(i).padStart(2,'0')}_${stepFile.name}`
+                    `users/${userId}/recipes/${now}/steps/${String(i).padStart(2, '0')}_${stepFile.name}`
                 );
             }
         }
 
-        // Presigned URL 요청
         const presignResp = await fetch("/recipe/s3/postrecipe", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -86,7 +99,6 @@
         });
         const presignData = await presignResp.json();
 
-        // S3에 PUT
         for (let i = 0; i < presignData.urls.length; i++) {
             const fileObj = presignData.urls[i];
             let file;
@@ -98,7 +110,6 @@
             }
         }
 
-        // DB에 레시피 등록 요청
         const recipeData = {
             userId,
             title: document.getElementById("recipeTitle").value,
@@ -108,14 +119,13 @@
             steps: []
         };
 
-
         for (let i = 1; i <= stepCount; i++) {
             const content = document.getElementById(`stepContent${i}`).value;
             const stepFile = document.getElementById(`stepImage${i}`).files[0];
             if (stepFile) {
                 recipeData.steps.push({
                     content,
-                    imageUrl: `users/${userId}/recipes/${now}/steps/\${String(i).padStart(2,'0')}_${stepFile.name}`
+                    imageUrl: `users/${userId}/recipes/${now}/steps/${String(i).padStart(2,'0')}_${stepFile.name}`
                 });
             } else {
                 recipeData.steps.push({ content, imageUrl: null });
@@ -137,14 +147,12 @@
             return;
         }
 
-        const result = await registerResp.json(); // { recipe_id: "4154af23-..." }
-
+        const result = await registerResp.json();
         alert("레시피 등록 완료!");
-        // 등록된 레시피 상세 페이지로 이동
         location.href = `/mypage/recipe?action=detail&recipe_id=${result.recipe_id}`;
     }
-
-
 </script>
+
+<script src="/assets/js/header.js"></script>
 </body>
 </html>
