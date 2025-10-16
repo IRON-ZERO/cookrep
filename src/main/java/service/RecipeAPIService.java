@@ -83,6 +83,7 @@ public class RecipeAPIService {
         return null;
     }
 
+
     private String apiUrl(String s_index, String l_index) {
         final String API_KEY = "3303680290354193a8e7"; // 예진
         //		final String API_KEY = "06bda7d8439442a5b24f"; // 준혁
@@ -91,6 +92,7 @@ public class RecipeAPIService {
         String API_URL = URL + API_KEY + formattedString;
         return API_URL;
     }
+
 
     private String apiUrl(String s_index, String l_index, String arguments, REQUEST_ARGUMENTS searchType) {
         final String API_KEY = "06bda7d8439442a5b24f";
