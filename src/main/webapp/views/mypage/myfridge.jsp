@@ -81,7 +81,7 @@
 											<h4>${entry.key.title}</h4>
 											<p class="match">냉장고 재료 일치: ${entry.value}개</p>
 										</div>
-									</>
+									</a>
 								</c:forEach>
 							</c:when>
 							
