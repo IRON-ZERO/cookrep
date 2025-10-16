@@ -40,4 +40,5 @@ function onChangeAddressSelfBtn(){
 }
 
 addressLabel.addEventListener("click", onClickAddressBtn);
-joinAddressSelfCheckbox.addEventListener("change", onChangeAddressSelfBtn)
+joinAddressBtn.addEventListener("click",onClickAddressBtn);
+joinAddressSelfCheckbox.addEventListener("change", onChangeAddressSelfBtn);

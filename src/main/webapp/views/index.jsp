@@ -14,14 +14,44 @@
     rel="stylesheet"
   >
   <link rel="stylesheet" href="/assets/css/style.css"/>
+  <link rel="icon" href="/assets/images/favi/icon-48x48.png"/>
+  <link rel="manifest" href="/assets/manifest.json" type="manifest/json"/>
+  
   <title>CooKRep | Home</title>
 </head>
 <body>
   <%@ include file="/views/components/headerComp.jsp"%>
   <main>
-    <div class="wrapper">hello mother father</div>
+    <div class="wrapper home-page__cont">
+      <h2>쿠크랩 PICK BEST 20</h2>
+      <section class="home-page__pick-list-cont">
+      <ul id="homePagePickList" class="home-page__pick-list">
+        <c:forEach var="r" varStatus="status" items="${recipe}">
+          <li>
+            <a href="#">
+              <article>
+                <div>
+                  <p>
+                    <span> ${r.rcpWay2} </span>
+                    <span> ${r.rcpPat2} </span>
+                  </p>
+                  <h3>${r.rcpNm}</h3>
+                  <c:if test="${not empty r.hashTag}">
+                    <span># ${r.hashTag} </span>
+                  </c:if>
+                  <span> ${status.index + 1} </span>
+                </div>
+                <img alt="음식이미지" src="${r.attFileNoMk}" />
+              </article>
+            </a>
+          </li>
+        </c:forEach>
+      </ul>
+      </section>
+    </div>
   </main>
   <%@ include file="/views/components/footerComp.jsp"%>
   <script src="/assets/js/header.js"></script>
+  <script src="/assets/js/home/home.js"></script>
 </body>
 </html>
