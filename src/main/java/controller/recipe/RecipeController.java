@@ -307,6 +307,9 @@ public class RecipeController extends HttpServlet {
                 key = baseUrl.substring(baseUrl.indexOf(BUCKET_NAME) + BUCKET_NAME.length() + 1);
             } else {
                 key = baseUrl;
+                if (key.isEmpty()){
+                    throw new IllegalArgumentException("S3 객체 키 추출 실패: URL에서 키를 찾을 수 없습니다. (" + url + ")");
+                }
             }
 
             // 삭제 요청
