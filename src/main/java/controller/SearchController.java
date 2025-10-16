@@ -52,4 +52,10 @@ public class SearchController extends HttpServlet {
 			req.getRequestDispatcher("/views/search/search.jsp").forward(req, resp);
 		}
 	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		presigner.close();
+	}
 }

@@ -17,7 +17,7 @@
       <ul class="rank-page__grid-cont">
         <c:forEach var="rank" varStatus="status" items="${ranking}">
           <li class="rank-page__cont-listitem">
-            <a href="/mypage/recipe?action=detail&recipe_id=${rank.recipe_id}" title="${rank.title}">
+            <a href="/mypage/recipe?action=detail&recipe_id=${rank.recipe_id}" title="<c:out value='${rank.title}'/>">
               <article>
                 <div>
                   <h3>${rank.title}</h3>

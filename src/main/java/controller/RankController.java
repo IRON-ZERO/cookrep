@@ -43,4 +43,10 @@ public class RankController extends HttpServlet {
 		req.setAttribute("ranking", rank);
 		req.getRequestDispatcher("/views/rank/rank.jsp").forward(req, resp);
 	}
+
+	@Override
+	public void destroy() {
+		presigner.close();
+
+	}
 }

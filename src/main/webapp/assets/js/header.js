@@ -15,12 +15,24 @@ globalNavList.forEach((val, key, node) => {
 window.addEventListener("scroll", (event) => {
   const yOffset = window.pageYOffset;
   if (yOffset > 100) {
-    main.classList.add("small");
-    header.classList.add("small");
-    logo.classList.add("small");
+    if (main) {
+      main.classList.add("small");
+    }
+    if (header) {
+      header.classList.add("small");
+    }
+    if (logo) {
+      logo.classList.add("small");
+    }
   } else {
-    main.classList.remove("small");
-    header.classList.remove("small");
-    logo.classList.remove("small");
+    if (main) {
+      main.classList.remove("small");
+    }
+    if (header) {
+      header.classList.remove("small");
+    }
+    if (logo) {
+      logo.classList.remove("small");
+    }
   }
 })

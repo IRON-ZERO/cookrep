@@ -6,4 +6,4 @@
 >
 <link rel="stylesheet" href="/assets/css/style.css" />
 <link rel="icon" href="/assets/images/favi/icon-48x48.png" />
-<link rel="manifest" href="/assets/manifest.json" type="manifest/json" />
+<link rel="manifest" href="/assets/manifest.json" type="application/manifest"/>

@@ -25,7 +25,7 @@
       <ul class="grid-cont">
         <c:forEach var="list" items="${defaultList}">
           <li class="search-page__cont-listitem">
-            <a href="/mypage/recipe?action=detail&recipe_id=${list.recipe_id}" title="${list.title}">
+            <a href="/mypage/recipe?action=detail&recipe_id=${list.recipe_id}" title="<c:out value='${list.title}'/>">
               <article>
                 <div>
                   <h3>${list.title}</h3>
