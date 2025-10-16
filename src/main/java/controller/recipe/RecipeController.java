@@ -3,6 +3,7 @@ package controller.recipe;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.recipe.RecipeDTO;
+import dto.user.UserDTO;
 import repository.RecipeDAO;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -108,15 +109,21 @@ public class RecipeController extends HttpServlet {
 
     // ---------------- 레시피 업로드 페이지 ----------------
     private String uploadRecipe(HttpServletRequest req, HttpServletResponse resp) {
-        HttpSession session = req.getSession();
-        String userId = (String) session.getAttribute("userId");
-
-        if (userId == null || userId.isEmpty()) {
-            return "redirect:/login"; // 로그인 필요 시
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            return "redirect:/login";
         }
 
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
+        req.setAttribute("userId", userId); // JSP에서 사용할 수 있도록 request에 세팅
         return "/upload.jsp"; // 업로드 페이지 JSP
     }
+
+
 
     // 내 레시피 수정
     private String editRecipe(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -299,6 +306,9 @@ public class RecipeController extends HttpServlet {
                 key = baseUrl.substring(baseUrl.indexOf(BUCKET_NAME) + BUCKET_NAME.length() + 1);
             } else {
                 key = baseUrl;
+                if (key.isEmpty()){
+                    throw new IllegalArgumentException("S3 객체 키 추출 실패: URL에서 키를 찾을 수 없습니다. (" + url + ")");
+                }
             }
 
             // 삭제 요청

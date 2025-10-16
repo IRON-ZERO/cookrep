@@ -29,10 +29,13 @@
       </c:if>
       <c:if test="${not empty sessionScope.userId}">
         <div>
-          <a href="/mypage">아바타</a>
+          <a href="/mypage">
+            <img alt="아바타이미지" src="/assets/images/icons/user-color.png"/>
+          </a>
           <a href="/logout">로그아웃</a>
         </div>
       </c:if>
+
     </nav>
   </div>
 </header>

@@ -57,6 +57,7 @@ public class AuthFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
+        System.out.println((String)userId);
 
 		// 로그인 안된 사용자
 		if (userId == null) {
