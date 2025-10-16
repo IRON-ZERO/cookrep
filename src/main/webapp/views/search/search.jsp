@@ -6,13 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-  href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
-  rel="stylesheet"
->
-<link rel="stylesheet" href="/assets/css/style.css" />
+<%@ include file="/views/template/head.jsp" %>
 <title>CooKRep | Search</title>
 </head>
 <body>
@@ -31,7 +25,7 @@
       <ul class="grid-cont">
         <c:forEach var="list" items="${defaultList}">
           <li class="search-page__cont-listitem">
-            <a href="#" title="${list.title}">
+            <a href="/mypage/recipe?action=detail&recipe_id=${list.recipe_id}" title="${list.title}">
               <article>
                 <div>
                   <h3>${list.title}</h3>
@@ -40,18 +34,33 @@
                     <span class="badge-level badge-level-${list.cookLevel}"> ${list.cookLevel}</span>
                   </div>
                   <div>
-                    <span> 조회수 ${list.views} </span>
-                    <span> 준비 ${list.prep_time} 분</span>
-                    <span> 요리 ${list.cook_time} 분</span>
-                    <span> ${list.like} 좋아요</span>
-                    <span> ${list.kcal} kcal</span>
+                 <p>
+                    <span>조회수</span>
+                    <span>${list.views}</span>
+                 </p>
+                 <p>
+                    <span>준비</span>
+                    <span>${list.prep_time} 분</span>
+                 </p>
+                 <p>
+                    <span>요리</span>
+                    <span>${list.cook_time} 분</span>
+                 </p>
+                 <p>
+                    <span>좋아요</span>
+                    <span>${list.like}</span>
+                 </p>
+                 <p>
+                    <span>${list.kcal}</span>
+                    <span>kcal</span>
+                 </p>
                   </div>
                 </div>
-                <button>
+            <!--     <button>
                   <img src="/assets/images/icons/book-mark-yellow.png"
                     alt="즐겨찾기"
                   />
-                </button>
+                </button> -->
                 <img alt="요리썸네일" src="${list.thumbnail_image_url}">
               </article>
             </a>

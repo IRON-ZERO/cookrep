@@ -47,7 +47,9 @@
   color: var(--ck-txt);
   filter: drop-shadow(2px 2px 3px var(--ck-subTxt-dark));
 }
-
+.rank-page__cont-listitem{
+  background-color: cadetblue;
+}
 .rank-page__cont-listitem article {
   padding: 20px;
   width: 100%;
@@ -166,7 +168,7 @@
   position: absolute;
   z-index: 10;
   left: 0;
-  top: -140px;
+  top:0;
   width: 100%;
   min-height:500px;
   height: 100%;

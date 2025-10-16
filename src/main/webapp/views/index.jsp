@@ -7,16 +7,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
-    rel="stylesheet"
-  >
-  <link rel="stylesheet" href="/assets/css/style.css"/>
-  <link rel="icon" href="/assets/images/favi/icon-48x48.png"/>
-  <link rel="manifest" href="/assets/manifest.json" type="manifest/json"/>
-  
+  <%@ include file="/views/template/head.jsp" %>
   <title>CooKRep | Home</title>
 </head>
 <body>
@@ -25,28 +16,35 @@
     <div class="wrapper home-page__cont">
       <h2>쿠크랩 PICK BEST 20</h2>
       <section class="home-page__pick-list-cont">
-      <ul id="homePagePickList" class="home-page__pick-list">
-        <c:forEach var="r" varStatus="status" items="${recipe}">
-          <li>
-            <a href="#">
-              <article>
-                <div>
-                  <p>
-                    <span> ${r.rcpWay2} </span>
-                    <span> ${r.rcpPat2} </span>
-                  </p>
-                  <h3>${r.rcpNm}</h3>
-                  <c:if test="${not empty r.hashTag}">
-                    <span># ${r.hashTag} </span>
-                  </c:if>
-                  <span> ${status.index + 1} </span>
-                </div>
-                <img alt="음식이미지" src="${r.attFileNoMk}" />
-              </article>
-            </a>
-          </li>
-        </c:forEach>
-      </ul>
+        <c:choose>
+          <c:when test="${ empty recipe }">
+            <h3>오늘 일일 공공데이터 사용량을 모두 소진하셨어요. 잠시 후 다시 시도해주세요.ㅠㅠ</h3>
+          </c:when>
+          <c:otherwise>
+            <ul id="homePagePickList" class="home-page__pick-list">
+              <c:forEach var="r" varStatus="status" items="${recipe}">
+                <li>
+                  <a href="#">
+                    <article>
+                      <div>
+                        <p>
+                          <span> ${r.rcpWay2} </span>
+                          <span> ${r.rcpPat2} </span>
+                        </p>
+                        <h3>${r.rcpNm}</h3>
+                        <c:if test="${not empty r.hashTag}">
+                          <span># ${r.hashTag} </span>
+                        </c:if>
+                        <span> ${status.index + 1} </span>
+                      </div>
+                      <img alt="음식이미지" src="${r.attFileNoMk}" />
+                    </article>
+                  </a>
+                </li>
+              </c:forEach>
+            </ul>
+          </c:otherwise>
+        </c:choose>
       </section>
     </div>
   </main>

@@ -5,7 +5,7 @@
 <header class="font__notosans">
   <div>
     <a href="/">
-      <img alt="로고이미지" src="/assets/images/logos/logo_2.png" />
+      <img id="headerLogo" alt="로고이미지" src="/assets/images/logos/logo_2.png" />
     </a>
     <nav id="globalNav">
       <ul>
