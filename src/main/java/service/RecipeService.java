@@ -18,16 +18,13 @@ public class RecipeService {
 	 */
     public Map<RecipeDTO, Integer> recommendWithMatchCount(List<String> ingredientNames) throws SQLException {
         Map<RecipeDTO, Integer> result = recipeDAO.findRecipesWithMatchCount(ingredientNames);
-        System.out.println("여기서 일단 멈춤");
 
         // Presigned URL 변환
         for (RecipeDTO recipe : result.keySet()) {
             String key = recipe.getThumbnail_image_url();
             if (key != null && !key.startsWith("https://")) {
                 // 이미 presigned면 건너뜀
-                System.out.println("hello!! "+key);
                 String presignedUrl = presigner.generatePresignedUrl(key);
-                System.out.println(presignedUrl);
                 recipe.setThumbnail_image_url(presignedUrl);
             }
         }
