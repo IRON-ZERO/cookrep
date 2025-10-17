@@ -39,7 +39,9 @@
   text-wrap: nowrap;
   min-width: 200px;
 }
-
+.search-page__cont-listitem {
+    background-color: cadetblue;
+}
 .search-page__cont-listitem article {
   padding: 20px;
   width: 100%;
@@ -73,7 +75,7 @@
   margin-bottom: 0px;
   right: 20px;
   bottom: 20px;
-  transition: all ease-in-out 0.5s ;
+  transition: all ease-in-out 0.5s;
 }
 
 .search-page__cont-listitem:hover article>div>h3 {
@@ -114,7 +116,18 @@
 .search-page__cont-listitem:hover article div>div:last-child {
   right: 0px;
   left: 0px;
-  bottom: 135px;
+  bottom: 100px;
+}
+
+.search-page__cont-listitem article div>div:last-child p {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: center;
+}
+
+.search-page__cont-listitem article div>div:last-child span {
+  color: var(--ck-white);  
 }
 
 .search-page__cont-listitem article>button {

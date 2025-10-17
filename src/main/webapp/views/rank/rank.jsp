@@ -6,13 +6,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-  href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
-  rel="stylesheet"
->
-<link rel="stylesheet" href="/assets/css/style.css" />
+<%@ include file="/views/template/head.jsp" %>
 <title>CooKRep | Rank</title>
 </head>
 <body>
@@ -23,7 +17,7 @@
       <ul class="rank-page__grid-cont">
         <c:forEach var="rank" varStatus="status" items="${ranking}">
           <li class="rank-page__cont-listitem">
-            <a href="#" title="${rank.title}">
+            <a href="/mypage/recipe?action=detail&recipe_id=${rank.recipe_id}" title="<c:out value='${rank.title}'/>">
               <article>
                 <div>
                   <h3>${rank.title}</h3>
@@ -43,11 +37,11 @@
                     <span> ${rank.kcal} kcal</span>
                   </div>
                 </div>
-                <button>
+           <!--      <button>
                   <img src="/assets/images/icons/book-mark-yellow.png"
                     alt="즐겨찾기"
                   />
-                </button>
+                </button> -->
                 <img alt="요리썸네일" src="${rank.thumbnail_image_url}">
               </article>
             </a>
