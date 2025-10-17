@@ -11,23 +11,51 @@ import javax.servlet.http.HttpServletResponse;
 
 import dto.recipe.RecipeSearchDTO;
 import service.SearchService;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import utils.GeneratePresignedUrlUtil;
 
 @WebServlet("/search")
 public class SearchController extends HttpServlet {
 
 	SearchService searchService = SearchService.getInstance();
+	private S3Presigner presigner;
+
+	@Override
+	public void init() {
+		String accessKey = System.getenv("AWS_ACCESS_KEY_ID");
+		String secretKey = System.getenv("AWS_SECRET_ACCESS_KEY");
+
+		AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+
+		presigner = S3Presigner.builder()
+			.credentialsProvider(StaticCredentialsProvider.create(credentials))
+			.region(Region.of("ap-northeast-2")).build();
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String params = req.getParameter("search-items");
 		if (params != null) {
 			List<RecipeSearchDTO> list = searchService.searchRecipeByNames(params);
+			list.forEach(x -> x
+				.setThumbnail_image_url(GeneratePresignedUrlUtil.generatePresignedUrl(presigner, x.getThumbnail_image_url())));
 			req.setAttribute("defaultList", list);
 			req.getRequestDispatcher("/views/search/search.jsp").forward(req, resp);
 		} else {
 			List<RecipeSearchDTO> list = searchService.searchRecipeByDefault();
+			list.forEach(x -> x
+				.setThumbnail_image_url(GeneratePresignedUrlUtil.generatePresignedUrl(presigner, x.getThumbnail_image_url())));
 			req.setAttribute("defaultList", list);
 			req.getRequestDispatcher("/views/search/search.jsp").forward(req, resp);
 		}
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		presigner.close();
 	}
 }

@@ -4,13 +4,7 @@
 <html>
   <head>
   <meta charset="UTF-8">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
-    rel="stylesheet"
-  >
-  <link rel="stylesheet" href="/assets/css/style.css"/>
+<%@ include file="/views/template/head.jsp" %>
   <title>CooKRep | 페이지를 찾을 수 없어요</title>
 </head>
 <body>

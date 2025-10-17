@@ -75,6 +75,8 @@ public class AuthDAO {
 		} catch (SQLException e) {
 			log.severe("signUpUser DAO에서 에러 발생 : " + e.getMessage());
 			throw e;
+		} finally {
+			db.close();
 		}
 	}
 
@@ -105,6 +107,8 @@ public class AuthDAO {
 		} catch (SQLException e) {
 			log.severe("loginUserByNickName DAO에서 에러 발생 : " + e.getMessage());
 			throw e;
+		} finally {
+			db.close();
 		}
 	}
 
@@ -136,6 +140,8 @@ public class AuthDAO {
 		} catch (SQLException e) {
 			log.severe("loginUserByEmail DAO에서 에러 발생 : " + e.getMessage());
 			throw e;
+		} finally {
+			db.close();
 		}
 	}
 
@@ -169,6 +175,8 @@ public class AuthDAO {
 		} catch (SQLException e) {
 			log.severe("deleteUser DAO에서 에러 발생 : " + e.getMessage());
 			throw e;
+		} finally {
+			db.close();
 		}
 	}
 
@@ -196,6 +204,8 @@ public class AuthDAO {
 		} catch (SQLException e) {
 			log.severe("existsUserByNickName DAO에서 에러 발생 : " + e.getMessage());
 			throw e;
+		} finally {
+			db.close();
 		}
 	}
 
@@ -221,6 +231,8 @@ public class AuthDAO {
 		} catch (SQLException e) {
 			log.severe("existsUserByEmail DAO에서 에러 발생 : " + e.getMessage());
 			throw e;
+		} finally {
+			db.close();
 		}
 	}
 }

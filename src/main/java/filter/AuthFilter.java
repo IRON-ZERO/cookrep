@@ -16,36 +16,32 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 	private static final Set<String> NOT_LOGIN_PAGES = Set.of("/", "/login", "/join");
-    private static final Set<String> LOGIN_PAGES = Set.of(
-            "/", "/rank", "/search", "/mypage", "/mypage/fridge", "/new-recipe", "/logout",
-            "/recipes", "/mypage/recipe", "/mypage/recipe/upload", "/mypage/recipe/list",
-            "/mypage/recipe/detail", "/mypage/recipe/delRecipe", "/mypage/recipe/edit",
-            "/recipe/register", "/recipe/s3/postrecipe", "/recipe/update", "/deleteAccount", // 추가
-            "/mypage/scrap", "/scrap", "/mypage/fridge/filter"
-    );
-    private static final Set<String> START_WITH_STATIC_RESOURCE = Set.of("/assets", "/js/", "/images/");
+	private static final Set<String> LOGIN_PAGES = Set.of(
+		"/", "/rank", "/search", "/mypage", "/mypage/fridge", "/new-recipe", "/logout",
+		"/recipes", "/mypage/recipe", "/mypage/recipe/upload", "/mypage/recipe/list",
+		"/mypage/recipe/detail", "/mypage/recipe/delRecipe", "/mypage/recipe/edit",
+		"/recipe/register", "/recipe/s3/postrecipe", "/recipe/update", "/deleteAccount", // 추가
+		"/mypage/scrap", "/scrap", "/mypage/fridge/filter");
+	private static final Set<String> START_WITH_STATIC_RESOURCE = Set.of("/assets", "/js/", "/images/");
 	private static final Set<String> END_WITH_STATIC_RESOURCE = Set.of(".css", ".js", ".png");
 
-    private static final Set<String> PUBLIC_API_PATHS = Set.of("/recipe/s3/postrecipe");
+	private static final Set<String> PUBLIC_API_PATHS = Set.of("/recipe/s3/postrecipe");
 
+	private boolean isStaticResource(String path) {
+		return path.startsWith("/assets/")
+			|| path.startsWith("/js/")
+			|| path.startsWith("/images/")
+			|| path.endsWith(".css")
+			|| path.endsWith(".js")
+			|| path.endsWith(".png")
+			|| path.endsWith(".jpg")
+			|| path.endsWith(".jpeg")
+			|| path.endsWith(".ico")
+			|| path.endsWith(".json")
+			|| path.endsWith(".svg");
+	}
 
-
-
-    private boolean isStaticResource(String path) {
-        return path.startsWith("/assets/")
-            || path.startsWith("/js/")
-            || path.startsWith("/images/")
-            || path.endsWith(".css")
-            || path.endsWith(".js")
-            || path.endsWith(".png")
-            || path.endsWith(".jpg")
-            || path.endsWith(".jpeg")
-            || path.endsWith(".ico")
-            || path.endsWith(".json")
-            || path.endsWith(".svg");
-    }
-
-    @Override
+	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
@@ -57,7 +53,6 @@ public class AuthFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
-        System.out.println((String)userId);
 
 		// 로그인 안된 사용자
 		if (userId == null) {
