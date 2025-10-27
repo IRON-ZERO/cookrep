@@ -1,0 +1,9 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@300&display=swap"
+  rel="stylesheet"
+>
+<link rel="stylesheet" href="/assets/css/style.css" />
+<link rel="icon" href="/assets/images/favi/icon-48x48.png" />
+<link rel="manifest" href="/assets/manifest.json" type="application/manifest"/>

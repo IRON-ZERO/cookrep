@@ -1,0 +1,126 @@
+@charset "UTF-8";
+/* Auth Page Wrapper */
+.auth-page {
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  min-height: 100dvh;
+  position: relative;
+}
+/* Auth Page Background  */
+.auth-page__bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  filter: brightness(0.5);
+}
+
+/* Auth Form Container */
+.auth-page__form--cont {
+  border-radius: 20px;
+  min-width: 500px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+/* Auth Form Container Img */
+.auth-page__form--cont > img {
+  width: 300px;
+  margin: 40px 0px;
+}
+
+.auth-page__form {
+  display: flex;
+  width:100%;
+  height: 100%;
+}
+
+/* Auth Form Fields */
+.auth-page__form--fieldset {
+  width:100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.auth-page__form--fieldset legend{
+  height:0;
+  width:0;
+  opacity:0;
+}
+.auth-page__form--fieldset label {
+  font-size: 25px;
+  color: var(--ck-white);
+}
+
+.auth-page__form--fieldset input::placeholder {
+  line-height: 1.5;
+}
+
+.auth-page__form--fieldset small {
+  color: var(--ck-red);
+  font-weight: 500;
+  font-size: 15px;
+}
+
+/* Form Btn */
+.auth-page__form--fieldset button {
+  background-color: var(--ck-orange);
+  color: var(--ck-white);
+  transition: background-color 0.3s ease-in-out;
+  letter-spacing: 10px;
+  font-size: 18px;
+}
+
+.auth-page__form--fieldset button:hover {
+  background-color: var(--ck-orange-dark);
+}
+.auth-page__form--fieldset button:disabled{
+  background-color:var(--ck-subTxt-dark);
+  cursor: not-allowed;
+}
+
+
+/* Seperator  */
+.auth-page__seperator {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.auth-page__seperator hr {
+  width: 100%;
+  height: 2px;
+}
+
+.auth-page__seperator span {
+  margin: 0px 15px;
+  color: var(--ck-white);
+}
+
+/* Go To Join*/
+.auth-page__link {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  gap: 10px;
+  place-items: end;
+}
+
+.auth-page__link span {
+  color: var(--ck-white);
+}
+
+.auth-page__link a {
+  color: cornflowerblue;
+  transition: color 0.4s ease-in-out;
+}
+
+.auth-page__link a:hover {
+  color: rgb(91, 121, 230);
+}

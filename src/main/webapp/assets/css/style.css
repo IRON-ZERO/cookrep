@@ -1,0 +1,124 @@
+@charset "UTF-8";
+
+/* Reset CSS */
+@import "./reset.css";
+
+/* Views */
+@import "./views/auth/loginPage.css";
+
+@import "./views/auth/joinPage.css";
+
+@import "./views/home/home.css";
+
+@import "./views/search/search.css";
+
+@import "./views/rank/rank.css";
+
+@import "./views/404.css";
+
+@import "./mypage/mypage.css";
+
+/* Components */
+@import "./components/shared.css";
+
+@import "./components/header.css";
+
+@import "./components/footer.css";
+
+@import "./components/grid-comp.css";
+
+@import "./components/badges.css";
+
+@import "./views/auth/authComponents.css";
+
+@import "./recipe/recipeDetail.css";
+
+@import "./recipe/recipeUpload.css";
+
+@import "./recipe/recipeEdit.css";
+
+
+
+/* Global Style */
+:root {
+  --ck-white: #EFEFEF;
+  --ck-green-light: #79c368;
+  --ck-green: #3F7D58;
+  --ck-green-dark: #277b40;
+  --ck-red: #EC5228;
+  --ck-red-dark: #da423a;
+  --ck-orange-pretty: #ff7f32;
+  --ck-orange: #EF9651;
+  --ck-orange-dark: #e27150;
+  --ck-subTxt: #9d9d9d;
+  --ck-subTxt-dark: #666666;
+  --ck-txt: #434343;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100dvh;
+}
+
+body {
+  background-color: var(--ck-white);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  margin-top: 125px;
+  display: flex;
+  flex: 1;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, button, label, input, input::placeholder
+  {
+  color: var(--ck-txt);
+  font-family: "Sunflower", sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-style: normal;
+  font-family: "Sunflower", sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+small, .font__notosans {
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+h2, h3 {
+  margin-bottom: 30px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+input {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #C8C8C8;
+  border-radius: 10px;
+  border: none;
+  padding: 10px 20px;
+}
+
+input::placeholder {
+  color: var(--ck-subTxt);
+}

@@ -1,8 +1,10 @@
 package dto.user;
 
 import model.User;
+import model.UserIngredient;
 
 import java.sql.Date;
+import java.util.List;
 
 // 프로필 출력에 활용할 DTO입니다.
 public class UserDTO {
@@ -14,10 +16,13 @@ public class UserDTO {
     private String city;
     private String email;
 
+    // 유저가 가진 재료
+    private List<UserIngredient> ingredients;
+
     public String getId() {
         return id;
     }
-    // DTO로 변환
+    // DTO로 변환(User -> UserDTO)
     public static UserDTO from(User user){
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
@@ -83,6 +88,14 @@ public class UserDTO {
         this.email = email;
     }
 
+    public List<UserIngredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<UserIngredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -93,6 +106,7 @@ public class UserDTO {
             ", country='" + country + '\'' +
             ", city='" + city + '\'' +
             ", email='" + email + '\'' +
+            ", ingredients=" + ingredients +
             '}';
     }
 }
